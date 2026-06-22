@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1226">
+  <title>BioQuest · SE Biologie leren</title>
+  <meta name="description" content="Leer de SE-stof biologie (zenuwstelsel, waarnemen, afweer) spelend met quizzen, flashcards, proces-puzzels en een AI-tutor.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" id="brand">
+      <span class="logo">🧬</span>
+      <span>BioQuest<small>SE Biologie</small></span>
+    </div>
+    <div class="spacer"></div>
+    <div class="stat streak" title="Dagelijkse streak"><span class="ic">🔥</span><span id="streakVal">0</span></div>
+    <div class="level-wrap">
+      <span class="lvlbadge" id="lvlBadge">Lvl 1</span>
+      <div class="xpbar" title="XP"><span id="xpFill"></span></div>
+      <span class="stat gold" style="padding:4px 8px"><span id="xpText">0 XP</span></span>
+    </div>
+    <button class="icon-btn" id="settingsBtn" title="Instellingen">⚙️</button>
+  </header>
 
+  <main id="app"></main>
+
+  <div class="mascot" id="mascot" title="Klik me!">🧠</div>
+  <canvas id="confetti"></canvas>
+  <div class="toast" id="toast"></div>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
