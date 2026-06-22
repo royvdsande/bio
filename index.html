@@ -3,31 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0f1226">
-  <title>BioQuest · SE Biologie leren</title>
-  <meta name="description" content="Leer de SE-stof biologie (zenuwstelsel, waarnemen, afweer) spelend met quizzen, flashcards, proces-puzzels en een AI-tutor.">
+  <meta name="theme-color" content="#0b0f1f">
+  <title>BioQuest · SE Biologie spelend leren</title>
+  <meta name="description" content="Leer de SE-stof biologie (zenuwstelsel, waarnemen, afweer) spelend: een levelpad, quizzen, flashcards, proces-puzzels en een AI-tutor.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
 </head>
 <body>
+  <!-- sfeer-achtergrond -->
+  <div class="bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
   <header class="topbar">
     <div class="brand" id="brand">
       <span class="logo">🧬</span>
-      <span>BioQuest<small>SE Biologie</small></span>
+      <span class="brand-txt">BioQuest<small>SE Biologie</small></span>
     </div>
     <div class="spacer"></div>
-    <div class="stat streak" title="Dagelijkse streak"><span class="ic">🔥</span><span id="streakVal">0</span></div>
-    <div class="level-wrap">
-      <span class="lvlbadge" id="lvlBadge">Lvl 1</span>
-      <div class="xpbar" title="XP"><span id="xpFill"></span></div>
-      <span class="stat gold" style="padding:4px 8px"><span id="xpText">0 XP</span></span>
+    <div class="hud">
+      <div class="chip-stat streak" id="streakChip" title="Dagelijkse streak">
+        <span class="ic">🔥</span><b id="streakVal">0</b>
+      </div>
+      <div class="chip-stat xp" id="xpChip" title="Level & XP">
+        <span class="lvlring" id="lvlRing"><i id="lvlBadge">1</i></span>
+        <span class="xpcol">
+          <span class="xpnum" id="xpText">0 XP</span>
+          <span class="xpbar"><span id="xpFill"></span></span>
+        </span>
+      </div>
+      <button class="icon-btn" id="settingsBtn" title="Instellingen">⚙️</button>
     </div>
-    <button class="icon-btn" id="settingsBtn" title="Instellingen">⚙️</button>
   </header>
 
   <main id="app"></main>
 
-  <div class="mascot" id="mascot" title="Klik me!">🧠</div>
+  <!-- mascotte "Neo" -->
+  <button class="mascot" id="mascot" title="Hoi! Klik me 👋" aria-label="Mascotte">
+    <svg viewBox="0 0 120 120" width="58" height="58">
+      <defs>
+        <radialGradient id="mg" cx="35%" cy="30%">
+          <stop offset="0%" stop-color="#b79bff"/><stop offset="100%" stop-color="#6c43ff"/>
+        </radialGradient>
+      </defs>
+      <g class="mbody">
+        <circle cx="60" cy="62" r="40" fill="url(#mg)"/>
+        <!-- dendriet-nubjes -->
+        <circle cx="16" cy="48" r="6" fill="#6c43ff"/><line x1="24" y1="52" x2="34" y2="58" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="104" cy="44" r="6" fill="#6c43ff"/><line x1="96" y1="48" x2="86" y2="54" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="30" cy="100" r="5" fill="#6c43ff"/><line x1="36" y1="94" x2="44" y2="86" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
+        <!-- gezicht -->
+        <g class="meyes">
+          <circle cx="48" cy="58" r="7" fill="#fff"/><circle cx="50" cy="60" r="3.4" fill="#1a1030"/>
+          <circle cx="74" cy="58" r="7" fill="#fff"/><circle cx="76" cy="60" r="3.4" fill="#1a1030"/>
+        </g>
+        <path class="mmouth" d="M50 76 q11 10 22 0" stroke="#1a1030" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="40" cy="72" r="5" fill="#ff8db3" opacity=".55"/>
+        <circle cx="82" cy="72" r="5" fill="#ff8db3" opacity=".55"/>
+      </g>
+    </svg>
+  </button>
+
   <canvas id="confetti"></canvas>
   <div class="toast" id="toast"></div>
 
