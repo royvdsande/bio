@@ -3,28 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b0f1f">
+  <meta name="theme-color" content="#58cc02">
   <title>BioQuest · SE Biologie spelend leren</title>
   <meta name="description" content="Leer de SE-stof biologie (zenuwstelsel, waarnemen, afweer) spelend: een levelpad, quizzen, flashcards, proces-puzzels en een AI-tutor.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
 </head>
 <body>
-  <!-- sfeer-achtergrond -->
-  <div class="bg">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-    <div class="grid-overlay"></div>
-  </div>
-
   <header class="topbar">
     <div class="brand" id="brand">
       <span class="logo">🧬</span>
-      <span class="brand-txt">BioQuest<small>SE Biologie</small></span>
+      <span class="brand-txt">BioQuest</span>
     </div>
     <div class="spacer"></div>
     <div class="hud">
@@ -44,28 +36,35 @@
 
   <main id="app"></main>
 
-  <!-- mascotte "Neo" -->
+  <!-- mascotte "Neo" (origineel, in Duolingo-stijl) -->
   <button class="mascot" id="mascot" title="Hoi! Klik me 👋" aria-label="Mascotte">
-    <svg viewBox="0 0 120 120" width="58" height="58">
+    <svg viewBox="0 0 120 120" width="62" height="62">
       <defs>
-        <radialGradient id="mg" cx="35%" cy="30%">
-          <stop offset="0%" stop-color="#b79bff"/><stop offset="100%" stop-color="#6c43ff"/>
-        </radialGradient>
+        <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7ee04a"/><stop offset="100%" stop-color="#58cc02"/>
+        </linearGradient>
       </defs>
       <g class="mbody">
-        <circle cx="60" cy="62" r="40" fill="url(#mg)"/>
-        <!-- dendriet-nubjes -->
-        <circle cx="16" cy="48" r="6" fill="#6c43ff"/><line x1="24" y1="52" x2="34" y2="58" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="104" cy="44" r="6" fill="#6c43ff"/><line x1="96" y1="48" x2="86" y2="54" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="30" cy="100" r="5" fill="#6c43ff"/><line x1="36" y1="94" x2="44" y2="86" stroke="#6c43ff" stroke-width="5" stroke-linecap="round"/>
-        <!-- gezicht -->
+        <ellipse cx="60" cy="64" rx="42" ry="44" fill="url(#mg)" stroke="#46a302" stroke-width="3"/>
+        <!-- buikje -->
+        <ellipse cx="60" cy="74" rx="26" ry="28" fill="#d7ffb8"/>
+        <!-- oogjes -->
         <g class="meyes">
-          <circle cx="48" cy="58" r="7" fill="#fff"/><circle cx="50" cy="60" r="3.4" fill="#1a1030"/>
-          <circle cx="74" cy="58" r="7" fill="#fff"/><circle cx="76" cy="60" r="3.4" fill="#1a1030"/>
+          <circle cx="47" cy="52" r="13" fill="#fff" stroke="#46a302" stroke-width="2"/>
+          <circle cx="73" cy="52" r="13" fill="#fff" stroke="#46a302" stroke-width="2"/>
+          <circle cx="49" cy="54" r="5.5" fill="#3c3c3c"/>
+          <circle cx="71" cy="54" r="5.5" fill="#3c3c3c"/>
+          <circle cx="51" cy="52" r="1.8" fill="#fff"/>
+          <circle cx="73" cy="52" r="1.8" fill="#fff"/>
         </g>
-        <path class="mmouth" d="M50 76 q11 10 22 0" stroke="#1a1030" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <circle cx="40" cy="72" r="5" fill="#ff8db3" opacity=".55"/>
-        <circle cx="82" cy="72" r="5" fill="#ff8db3" opacity=".55"/>
+        <!-- snaveltje -->
+        <path d="M54 64 h12 l-6 7 z" fill="#ffc800" stroke="#e6a800" stroke-width="1.5"/>
+        <!-- blosjes -->
+        <circle cx="38" cy="66" r="4.5" fill="#ff9bb3" opacity=".6"/>
+        <circle cx="82" cy="66" r="4.5" fill="#ff9bb3" opacity=".6"/>
+        <!-- oortjes/veertjes -->
+        <path d="M40 24 q4 -12 12 -6" fill="none" stroke="#46a302" stroke-width="4" stroke-linecap="round"/>
+        <path d="M80 24 q-4 -12 -12 -6" fill="none" stroke="#46a302" stroke-width="4" stroke-linecap="round"/>
       </g>
     </svg>
   </button>

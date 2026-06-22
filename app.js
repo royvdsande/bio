@@ -71,7 +71,7 @@
   }
 
   /* ---------- helpers ---------- */
-  const WORLD_COLORS = { h14: ["#9b6bff", "#6f3bff"], h15: ["#21e6c8", "#0aa6ff"], h16: ["#ff7a8a", "#ff4d6d"] };
+  const WORLD_COLORS = { h14: ["#58cc02", "#46a302"], h15: ["#1cb0f6", "#1899d6"], h16: ["#ce82ff", "#a568cc"] };
   function worldOf(para) { return COURSE.worlds.find(w => w.paragraphs.some(p => p.id === para.id)); }
   const app = $("#app");
   function go(view, ...args) { window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" }); view(...args); }
@@ -174,12 +174,12 @@
       const done = pct >= 70, current = i === currentIdx && !done;
       const node = el("div", "node " + (done ? "done" : current ? "current" : "todo"));
       node.style.left = pts[i].x + "px"; node.style.top = pts[i].y + "px";
-      if (current) { node.style.setProperty("--n1", c1); node.style.setProperty("--n2", c2); }
-      const inner = done ? "✓" : `<span class="ic">${w.icon}</span>`;
-      const starStr = "★★★".slice(0, st) + "☆☆☆".slice(0, 3 - st);
-      node.innerHTML = `${st === 3 ? '<div class="crown">👑</div>' : ""}<div class="disc">${inner}</div>
+      node.style.setProperty("--n1", c1); node.style.setProperty("--n2", c2);
+      const inner = done ? "⭐" : `<span class="ic">${w.icon}</span>`;
+      const starStr = "★★★".slice(0, st * 2) + "☆☆☆".slice(0, (3 - st) * 2);
+      node.innerHTML = `${st === 3 ? '<div class="crown">👑</div>' : ""}<div class="disc"><span class="disc-in">${inner}</span></div>
         <div class="label">${esc(p.id)} ${esc(p.title)}</div>
-        <div class="stars" style="color:${st ? "var(--gold)" : "rgba(255,255,255,.25)"}">${starStr}</div>`;
+        <div class="stars${st ? " has" : ""}">${starStr}</div>`;
       node.onclick = () => go(renderParagraph, w.id, p.id);
       map.appendChild(node);
     });
@@ -271,9 +271,9 @@
       const q = qs[i];
       panel.replaceChildren();
       const top = el("div", "topline");
-      const segs = qs.map((_, si) => `<span class="seg ${si < i ? "on" : ""}"></span>`).join("");
-      top.innerHTML = `<span class="meta">${esc(label)} · ${i + 1}/${qs.length}</span><span class="segbar">${segs}</span>` +
-        (lives ? `<span class="hearts">${Array.from({ length: lives }, (_, h) => `<span class="h ${h >= hp ? "lost" : ""}">❤️</span>`).join("")}</span>` : `<span class="combo" id="combo">${combo > 1 ? "🔥x" + combo : ""}</span>`);
+      const pct = (i / qs.length) * 100;
+      top.innerHTML = `<span class="pbar"><span style="width:${pct}%"></span></span>` +
+        (lives ? `<span class="hearts">${Array.from({ length: lives }, (_, h) => `<span class="h ${h >= hp ? "lost" : ""}">❤️</span>`).join("")}</span>` : `<span class="combo" id="combo">${combo > 1 ? "🔥 " + combo : ""}</span>`);
       panel.appendChild(top);
       panel.appendChild(el("div", "qtext", esc(q.q)));
       const options = el("div", "options");
@@ -289,7 +289,7 @@
         const cb = $("#combo"); if (cb) { cb.textContent = combo > 1 ? "🔥x" + combo : ""; cb.classList.add("bump"); setTimeout(() => cb.classList.remove("bump"), 200); }
         if (combo >= 3) confettiBurst(.35);
       } else { combo = 0; sound("wrong"); if (lives) { hp--; } }
-      panel.appendChild(el("div", "explain", `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`));
+      panel.appendChild(el("div", "explain " + (ok ? "good" : "bad"), `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`));
       const foot = el("div", "qfoot");
       const last = i >= qs.length - 1, dead = lives && hp <= 0;
       const nx = el("button", "btn", dead ? "Game over 💀" : last ? "Klaar 🎉" : "Volgende →");
@@ -344,8 +344,8 @@
       if (i >= deck.length) return done();
       const d = deck[i], c = d.card, box = boxOf(d);
       panel.replaceChildren();
-      const segs = deck.map((_, si) => `<span class="seg ${si < i ? "on" : ""}"></span>`).join("");
-      panel.appendChild(el("div", "topline", `<span class="meta">${esc(label)} · ${i + 1}/${deck.length}</span><span class="segbar">${segs}</span><span class="fc-meta">box ${box}/5</span>`));
+      const pct = (i / deck.length) * 100;
+      panel.appendChild(el("div", "topline", `<span class="pbar"><span style="width:${pct}%"></span></span><span class="fc-meta">box ${box}/5</span>`));
       const stage = el("div", "fc-stage");
       const fc = el("div", "flashcard");
       fc.innerHTML = `<div class="fc-inner">
@@ -470,7 +470,7 @@
   function resultScreen({ emoji, title, rank, stars, score, xpEarned, onRetry, onBack }) {
     const v = el("div", "view"); const panel = el("div", "panel result");
     panel.innerHTML = `<div class="big">${emoji}</div>` + (rank ? `<div class="rank">${rank}</div>` : "") +
-      (stars != null && !rank ? `<div class="stars">${"★".repeat(stars)}<span style="color:rgba(255,255,255,.2)">${"★".repeat(3 - stars)}</span></div>` : "") +
+      (stars != null && !rank ? `<div class="stars">${"★".repeat(stars)}<span class="dim">${"★".repeat(3 - stars)}</span></div>` : "") +
       `<h2>${esc(title)}</h2><div class="score">${esc(score)}</div>` +
       (xpEarned ? `<div class="xpgain" id="xpg">+0 XP</div>` : "");
     const actions = el("div", "actions");
@@ -499,7 +499,7 @@
   function sizeCanvas() { confCanvas.width = innerWidth; confCanvas.height = innerHeight; }
   addEventListener("resize", sizeCanvas); sizeCanvas();
   function confettiBurst(scale = 1) {
-    const colors = ["#8b6bff", "#29e0ff", "#34e39b", "#ffcf4a", "#ff5d7d", "#ff9d3d"];
+    const colors = ["#58cc02", "#1cb0f6", "#ffc800", "#ce82ff", "#ff4b4b", "#ff9600"];
     const n = Math.round(95 * scale);
     for (let k = 0; k < n; k++) confetti.push({ x: innerWidth / 2 + (Math.random() - .5) * 220, y: innerHeight / 3, vx: (Math.random() - .5) * 13, vy: Math.random() * -13 - 4, g: .4 + Math.random() * .3, r: 4 + Math.random() * 7, rot: Math.random() * 6, vr: (Math.random() - .5) * .45, c: colors[(Math.random() * colors.length) | 0], life: 95 });
     if (!confAnim) confLoop();
