@@ -9,12 +9,23 @@ de drie hoofdstukken:
 
 ## Wat zit erin?
 
-- 🗺️ **3 werelden** met in totaal 15 levels (de paragrafen)
+- 🗺️ **3 werelden** met in totaal 15 levels (de paragrafen), gepresenteerd als levelpad
+- 📖 **Lees-modus**: per paragraaf een heldere samenvatting + alle begrippen
 - ⚡ **Quizzen** met directe feedback, combo-multiplier, confetti en geluid
 - 🃏 **Flashcards** met **spaced repetition** (Leitner): moeilijke begrippen komen vaker terug
 - 🔢 **Proces-puzzels**: zet stappen (actiepotentiaal, synaps, afweer, allergie…) in de juiste volgorde
-- 🤖 **AI-tutor** (OpenAI): stelt vragen over de stof, geeft uitleg en overhoort je
 - 🔥 **XP, levels en een dagelijkse streak** voor de motivatie
+
+### Diepe AI-integratie (OpenAI)
+De AI is overal verweven, niet alleen een losse chatbot — en wordt **strikt gegrond op de
+samenvatting + begrippen** van de paragraaf, zodat de inhoud klopt:
+
+- ✍️ **Open oefenen**: de AI maakt échte SE-open-vragen, jij typt je antwoord, en de AI
+  kijkt het na met een score, opbouwende feedback en een modelantwoord. Oneindig veel oefening.
+- 🤖 **"Leg uit waarom"** bij een fout quizantwoord: contextuele uitleg van je misvatting.
+- 💡 **Verdieping in de Lees-modus**: vraag om een voorbeeld, een simpelere uitleg of een ezelsbruggetje.
+- 🎯 **Slimme sessie & aanbeveling**: adaptieve mix die focust op je zwakke plekken.
+- 💬 **AI-tutor**: stelt vragen, legt uit en overhoort je.
 
 Alle voortgang wordt lokaal in je browser bewaard (`localStorage`).
 

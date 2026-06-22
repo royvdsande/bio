@@ -23,6 +23,7 @@ const COURSE = {
         {
           id: "14.1",
           title: "Cellen in het zenuwstelsel",
+          summary: "Een neuron (zenuwcel) heeft een cellichaam met celkern en uitlopers: dendrieten voeren impulsen náár het cellichaam, het axon voert ze eraf. Elke axon-aftakking eindigt in een synaps, waar de overdracht via een neurotransmitter verloopt.\n\nDrie typen neuronen:\n• Sensorisch: van zintuigcellen naar het CZS; cellichaam in een spinaal ganglion.\n• Schakel: liggen in hersenen/ruggenmerg en schakelen impulsen door (meestal geen myeline).\n• Motorisch: van het CZS naar spieren en klieren.\n\nDe myelineschede (cellen van Schwann) om een axon geeft bescherming én een hogere geleidingssnelheid. Gliacellen (~800 miljard) ondersteunen, voeden en vormen de myeline. Een zenuw is een bundel gemyeliniseerde uitlopers met bindweefsel en bloedvaten; een gemengde zenuw bevat zowel sensorische als motorische uitlopers.",
           goals: [
             "Je beschrijft de bouw en functie van de verschillende typen neuronen.",
             "Je beschrijft de bouw van een zenuw."
@@ -54,6 +55,7 @@ const COURSE = {
         {
           id: "14.2",
           title: "Het centrale zenuwstelsel",
+          summary: "Het zenuwstelsel bestaat uit het centrale zenuwstelsel (CZS: hersenen + ruggenmerg) en het perifere zenuwstelsel (de zenuwen daarbuiten). Grijze stof bevat de cellichamen, witte stof de uitlopers met myeline. De bloed-hersenbarrière (tight junctions tussen endotheelcellen + astrocyten) laat selectief stoffen door.\n\nDe grote hersenen (twee helften, verbonden door de hersenbalk) verwerken zintuiginfo, bewustzijn, geheugen en wil. De hersenschors heeft primaire centra (bewustwording) en secundaire centra (herkenning). De thalamus selecteert welke impulsen naar de schors gaan; de hypothalamus regelt homeostase, temperatuur en de biologische klok.\n\nDe kleine hersenen coördineren bewegingen. De hersenstam verbindt alles met het ruggenmerg, bevat centra voor o.a. ademhaling en hartslag, en hier kruisen de zenuwbanen (de linkerhelft stuurt de rechter lichaamszijde aan). Een reflex verloopt via een reflexboog: zintuigcel → sensorisch → schakel → motorisch neuron → spier/klier.",
           goals: [
             "Je beschrijft de bouw van het centrale en perifere zenuwstelsel.",
             "Je beschrijft de bouw en functies van de grote hersenen.",
@@ -89,6 +91,7 @@ const COURSE = {
         {
           id: "14.3",
           title: "Impulsgeleiding",
+          summary: "Over het celmembraan staat een spanningsverschil: de membraanpotentiaal. In rust is dit ≈ −70 mV (rustpotentiaal), gehandhaafd door de Na+-K+-pomp (3 Na+ eruit, 2 K+ erin).\n\nEen voldoende sterke prikkel brengt de potentiaal tot de prikkeldrempel (≈ −50 mV). Dan gaan spanningsafhankelijke Na+-poorten open en stroomt Na+ naar binnen: depolarisatie tot +30 mV. Daarna sluiten de Na+-poorten en openen K+-poorten: K+ stroomt eruit (repolarisatie), met kort een hyperpolarisatie (≈ −80 mV). Tijdens de refractaire periode is het neuron ongevoelig voor een nieuwe prikkel.\n\nAlles-of-niets: een actiepotentiaal is altijd even sterk; een sterkere prikkel geeft alleen een hogere frequentie. Een impuls is een actiepotentiaal die zich over het membraan verplaatst. Bij gemyeliniseerde axonen springt hij van insnoering van Ranvier naar insnoering: sprongsgewijze, snellere geleiding.",
           goals: [
             "Je legt op molecuulniveau uit hoe een actiepotentiaal ontstaat.",
             "Je legt het alles-of-niets principe uit.",
@@ -123,6 +126,7 @@ const COURSE = {
         {
           id: "14.4",
           title: "Impulsoverdracht tussen neuronen",
+          summary: "Neuronen maken contact via synapsen. Tussen het presynaptische membraan (axoneinde) en het postsynaptische membraan zit de synapsspleet (10–40 nm). Overdracht verloopt via een neurotransmitter; er is eenrichtingsverkeer, omdat alleen het axoneinde blaasjes met neurotransmitter bevat.\n\nStappen: de impuls opent Ca2+-poorten → Ca2+ stroomt naar binnen → synaptische blaasjes versmelten met het membraan → exocytose van de neurotransmitter → binding aan receptoren op het postsynaptische membraan.\n\nEen exciterende neurotransmitter (bv. acetylcholine) opent Na+-poorten → depolarisatie richting de prikkeldrempel: een EPSP. Een inhiberende (bv. GABA) opent K+-poorten → hyperpolarisatie, van de drempel af: een IPSP. Het enzym acetylcholinesterase breekt de neurotransmitter weer af. Of er een actiepotentiaal ontstaat, hangt af van de summatie: de optelsom van alle EPSP's en IPSP's.",
           goals: [
             "Je beschrijft de impulsoverdracht via een synaps.",
             "Je legt uit wat summatie inhoudt."
@@ -154,6 +158,7 @@ const COURSE = {
         {
           id: "14.5",
           title: "Het autonome zenuwstelsel",
+          summary: "Het zenuwstelsel kun je naar functie indelen. Het animale zenuwstelsel verwerkt zintuiginformatie en stuurt (willekeurig) de skeletspieren aan. Het autonome zenuwstelsel werkt onwillekeurig (buiten je wil), regelt o.a. hartslag, ademhaling en vertering, en houdt het inwendige milieu constant. De hypothalamus staat hierin centraal.\n\nHet autonome zenuwstelsel heeft twee delen met een antagonistische (tegengestelde) werking; organen krijgen dubbele innervatie:\n• Orthosympatisch: ondersteunt actie/inspanning — snellere hartslag en ademhaling, en het remt de vertering. Loopt via de grensstrengen.\n• Parasympatisch: ondersteunt rust en herstel en bevordert de vertering. Loopt via de zwervende zenuw.",
           goals: [
             "Je beschrijft het verschil tussen het animale en het autonome zenuwstelsel.",
             "Je beschrijft de werking van het para- en orthosympatische zenuwstelsel op organen."
@@ -190,6 +195,7 @@ const COURSE = {
         {
           id: "15.1",
           title: "Evenwicht en zintuigcellen",
+          summary: "Het evenwichtszintuig in het binnenoor bestaat uit een vestibulum en drie halfcirkelvormige kanalen, gevuld met endolymfe. In het vestibulum nemen de maculae (met kalksteentjes) rechtlijnige versnelling/vertraging en de stand t.o.v. de zwaartekracht waar. In de kanalen nemen de cupulae draaibewegingen waar. De haarcellen (mechanoreceptoren) sturen via buigende ciliën impulsen naar het evenwichtscentrum in de hersenstam.\n\nZintuigcellen reageren elk op hun eigen adequate prikkel: mechanoreceptoren (druk/beweging), thermoreceptoren (temperatuur), chemoreceptoren (stoffen) en fotoreceptoren (licht). Een sterkere prikkel geeft meestal een hogere impulsfrequentie.\n\nBij een langdurige, constante prikkel stijgt de prikkeldrempel: adaptatie (gewenning). Pijnzintuigjes vertonen geen gewenning.",
           goals: [
             "Je beschrijft de bouw en werking van het evenwichtszintuig.",
             "Je beschrijft de reactie van zintuigcellen op adequate prikkels.",
@@ -221,6 +227,7 @@ const COURSE = {
         {
           id: "15.2",
           title: "Het gehoorzintuig",
+          summary: "Geluid (trillingen van ~20 tot 20.000 Hz) doorloopt het oor in stappen. Buitenoor: oorschelp en gehoorgang vangen de trilling op; het trommelvlies trilt mee. De buis van Eustachius houdt de luchtdruk aan beide kanten van het trommelvlies gelijk.\n\nMiddenoor: de gehoorbeentjes hamer, aambeeld en stijgbeugel versterken de trilling en geven die via het ovale venster (dat sterker trilt dan het trommelvlies) door aan het binnenoor.\n\nBinnenoor: in het slakkenhuis brengt de trilling de perilymfe en het basilair membraan in beweging. Hoge tonen laten het membraan vooral bij het ovale venster trillen, lage tonen in de top. De haarcellen van het orgaan van Corti buigen met hun ciliën en sturen via de gehoorzenuw impulsen naar de hersenen.\n\nHard geluid (pijngrens ~120 dB; de dB-schaal is logaritmisch) beschadigt de ciliën, wat tot blijvend gehoorverlies en tinnitus (oorsuizen) kan leiden.",
           goals: [
             "Je beschrijft de bouw en werking van het gehoorzintuig.",
             "Je legt het verband uit tussen geluidsvolume en gehoorbeschadiging."
@@ -252,6 +259,7 @@ const COURSE = {
         {
           id: "15.3",
           title: "Het gezichtszintuig",
+          summary: "Licht wordt in het oog gebroken en valt omgekeerd en verkleind op het netvlies; de hersenen draaien het beeld weer om. De grootste breking gebeurt bij het hoornvlies, daarna bij de ooglens. De iris regelt met de kringspier (pupilreflex bij fel licht) en straalsgewijze spiertjes de pupilgrootte; pigmentcellen vangen extra licht weg.\n\nScherp zien gebeurt in de gele vlek (alleen kegeltjes, elk met een eigen zenuwcel). In de blinde vlek (waar de oogzenuw vertrekt) zitten geen receptoren. Accommodatie = vormverandering van de ooglens: boller voor dichtbij, platter voor veraf.\n\nOogafwijkingen: verziend = beeld áchter het netvlies, corrigeren met een bolle +bril (convergerend); bijziend = beeld vóór het netvlies, holle −bril (divergerend). Diepte zie je door stereoscopisch zien: de hersenen vergelijken de iets verschillende beelden van beide ogen (de zenuwen kruisen deels in het optisch chiasma).",
           goals: [
             "Je beschrijft de bouw van het oog en bescherming tegen overbelichting.",
             "Je legt uit hoe je scherp ziet en oogafwijkingen corrigeert.",
@@ -287,6 +295,7 @@ const COURSE = {
         {
           id: "15.4",
           title: "Het netvlies en de hersenen",
+          summary: "Het netvlies bevat twee soorten fotoreceptoren. Staafjes (pigment rodopsine, vitamine A nodig) hebben een lage prikkeldrempel: ze werken bij weinig licht, maar geven alleen grijstinten. Kegeltjes (pigment fotopsine) hebben een hoge prikkeldrempel en geven kleur; er zijn drie typen (rood, groen, blauw), samen goed voor ~10 miljoen kleuren. Wit = alle drie even sterk geprikkeld; zwart = geen enkele boven de drempel.\n\nDe informatie gaat via bipolaire cellen naar ganglioncellen, die hem via de oogzenuw afvoeren. Een groep zintuigcellen op één ganglioncel vormt een receptief veld. Kleine velden (gele vlek, losse kegeltjes) → hoog scheidend vermogen (veel detail); grote velden (staafjes in de rand) → laag scheidend vermogen.\n\nIn de visuele schors achter in de grote hersenen wordt het beeld verwerkt (primair: bewustwording; secundair: herkenning).",
           goals: [
             "Je legt de werking van staafjes en kegeltjes uit.",
             "Je legt uit hoe het netvlies samen met de visuele schors zien mogelijk maakt."
@@ -315,6 +324,7 @@ const COURSE = {
         {
           id: "15.5",
           title: "Zintuigen en regeling",
+          summary: "Je lichaam meet en regelt voortdurend je interne milieu. Inwendige chemoreceptoren in de aortaboog en de halsslagaders meten de pH en de concentraties O2 en CO2; bij meer CO2 gaat de ademhaling sneller. Drukreceptoren in de aortawand meten de bloeddruk. Dit verloopt via regelkringen, vaak met negatieve terugkoppeling (een afwijking wordt gecorrigeerd, bv. de bloeddruk daalt weer).\n\nVoor houding en beweging zijn er zintuigjes in spieren en pezen. Spierspoeltjes (tussen de spiervezels) meten de spierlengte/rek: bij uitrekking ontstaan meer impulsen (rekreflex → de spier trekt samen; ze werken ook als 'fixatiezintuig' om een houding vast te houden). Peeslichaampjes in de pezen meten de spanning: bij te grote uitrekking verslapt de spier via de peesreflex, wat blessures voorkomt.",
           goals: [
             "Je legt de bijdrage uit van inwendige receptoren en regelkringen.",
             "Je legt de bijdrage uit van spierspoeltjes en peeslichaampjes."
@@ -352,6 +362,7 @@ const COURSE = {
         {
           id: "16.1",
           title: "Aangeboren afweer",
+          summary: "De aangeboren afweer is vanaf de geboorte aanwezig en niet-specifiek. De eerste linie is mechanische/fysische afweer: dekweefsels vormen een barrière. De opperhuid heeft een hoornlaag van dode cellen; in de basale cellenlaag delen stamcellen en zitten melanocyten, die met melanine het DNA tegen uv-straling beschermen. Slijmvliezen scheiden slijm met bacteriedodende stoffen af, en traanvocht bevat het bacteriedodende enzym lysozym.\n\nPlanten hebben ook afweer:\n• Mechanisch: stekels en doornen tegen herbivoren.\n• Chemisch: bittere, brandende of giftige stoffen (bv. taxine van de venijnboom, brandharen van de brandnetel).\nSommige planten lokken zelfs de natuurlijke vijanden van hun belagers met geurstoffen.",
           goals: [
             "Je beschrijft de bescherming van het inwendige milieu en de bescherming tegen uv-straling.",
             "Je herkent afweermechanismen bij planten."
@@ -380,6 +391,7 @@ const COURSE = {
         {
           id: "16.2",
           title: "Vervolg aangeboren afweer",
+          summary: "Passeert een ziekteverwekker de eerste linie, dan treedt de aangeboren (niet-specifieke) afweer in het bloed in werking. Bacteriën, parasieten (eukaryoot, bv. de malaria-parasiet Plasmodium), virussen en schimmels kunnen je ziek maken; een RNA-virus zet met reverse transcriptase zijn RNA om naar DNA en bouwt dit met integrase in het gastheer-DNA in.\n\nLichaamseigen vs lichaamsvreemd: alle cellen tonen via MHC-I-moleculen hun eigen antigenen, zodat ze herkenbaar zijn als lichaamseigen. Op vreemde antigenen volgt wél een reactie.\n\nWitte bloedcellen: granulocyten (met granula, giftig voor microben) en macrofagen (fagocytose: opnemen en verteren). NK-cellen doden geïnfecteerde of tumorcellen met perforine (lysis). Het complementsysteem (>30 bloedeiwitten) reageert in een cascade: het activeert witte bloedcellen (via cytokinen), bedekt ziekteverwekkers (opsonisatie) en perforeert hun membraan (lysis).",
           goals: [
             "Je legt uit hoe bacteriën, parasieten, virussen en schimmels je ziek maken.",
             "Je legt uit hoe je afweersysteem onderscheid maakt tussen lichaamsvreemd en lichaamseigen.",
@@ -413,6 +425,7 @@ const COURSE = {
         {
           id: "16.3",
           title: "Verworven afweer en antistoffen",
+          summary: "Ziekteverwekkers die de tweede linie passeren, krijgen te maken met de verworven (specifieke) afweer, gericht op één type ziekteverwekker. Een dendritische cel of macrofaag fagocyteert de indringer en toont diens antigeen op een MHC-II-molecuul (alleen op witte bloedcellen): de cel is nu een antigeen presenterende cel (APC).\n\nIn een lymfeknoop activeert de APC een passende T-helpercel (Th). Die deelt tot een kloon en activeert met cytokinen de cytotoxische T-cellen (Tc) én de B-cellen met de juiste receptor. De Tc-cellen doden geïnfecteerde lichaamscellen (lysis). B-cellen differentiëren tot plasmacellen die grote hoeveelheden antistoffen maken.\n\nEen antistof (immunoglobuline) is Y-vormig; het (hyper)variabele uiteinde bindt aan één specifiek antigeen. T-cellen rijpen in de thymus, B-cellen in het beenmerg; cellen die op lichaamseigen stoffen reageren, sterven daarbij af.",
           goals: [
             "Je beschrijft hoe de verworven afweer ontstaat en de rol van verschillende lymfocyten.",
             "Je legt het ontstaan en de werking van antistoffen uit."
@@ -444,6 +457,7 @@ const COURSE = {
         {
           id: "16.4",
           title: "Immuniteit, vaccinatie en allergie",
+          summary: "Bij immuniteit onderscheid je de cellulaire respons (Tc-cellen doden geïnfecteerde cellen) en de humorale respons (antistoffen van B-/plasmacellen in lichaamsvloeistoffen). Na een infectie blijven geheugencellen achter, waardoor je immuun bent: bij een tweede besmetting reageer je sneller en sterker.\n\nVormen van immuniteit:\n• Natuurlijke actieve: door een echte infectie.\n• Kunstmatige actieve: door vaccinatie (verzwakte/dode/onderdeel ziekteverwekker, of mRNA voor spike-eiwitten).\n• Passieve (tijdelijk, geen geheugencellen): kant-en-klare antistoffen via een antiserum, of natuurlijk via de placenta/borstvoeding.\n\nAntibiotica (bv. penicilline) doden bacteriën; door mutaties kan resistentie ontstaan, overdraagbaar via plasmiden. Allergie: bij het 1e contact maken plasmacellen IgE dat zich aan mestcellen hecht; bij het 2e contact lozen de mestcellen histamine, met een ontstekingsreactie als gevolg. Het allergeen is een op zich onschuldige, lichaamsvreemde stof.",
           goals: [
             "Je beschrijft de cellulaire en humorale respons en de vormen van immuniteit; de rol van vaccinatie.",
             "Je beschrijft de werking van antibiotica en wat resistentie is.",
@@ -479,6 +493,7 @@ const COURSE = {
         {
           id: "16.5",
           title: "Lichaamsvreemde eiwitten: afstoten of niet",
+          summary: "Eiwitten op celmembranen werken als antigenen, ook op rode bloedcellen. Het AB0-stelsel kent antigeen A en B; de allelen A en B zijn codominant, 0 is recessief. In het plasma zitten antistoffen tegen het ontbrekende antigeen: bloedgroep A heeft anti-B, B heeft anti-A, AB heeft geen van beide (universele acceptor), 0 heeft beide (universele donor). Vóór een transfusie controleert een kruisproef of er geen klontering optreedt.\n\nDe resusfactor is antigeen D op de rode bloedcellen: ~85% is Rh+ (de rest Rh−). Een Rh− moeder kan na contact met Rh+ bloed anti-D en geheugencellen maken; een anti-D injectie voorkomt resusantagonisme bij een volgende zwangerschap.\n\nBij transplantaties verschillen de MHC-I-eiwitten (HLA-systeem) per persoon; de afweer herkent een donororgaan als lichaamsvreemd → afstoting. Bij auto-immuunziekten richt de afweer zich ten onrechte tegen lichaamseigen cellen.",
           goals: [
             "Je beschrijft het AB0-systeem en de gevolgen voor bloedtransfusies.",
             "Je legt uit wat de resusfactor is.",

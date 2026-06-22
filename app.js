@@ -123,20 +123,61 @@
     });
     v.appendChild(grid);
 
+    // adaptieve aanbeveling: jouw zwakke plek
+    const weak = weakestParagraph();
+    if (weak) {
+      v.appendChild(el("div", "section-title", "Voor jou aanbevolen"));
+      const rec = el("div", "rec-banner stagger");
+      rec.innerHTML = `<div class="rec-ic">🎯</div>
+        <div class="rec-txt"><h4>Pak je zwakke plek</h4><p>${esc(weak.w.icon + " " + weak.p.id + " " + weak.p.title)} · ${weak.pct}% beheerst</p></div>
+        <span class="rec-go">Oefenen →</span>`;
+      rec.onclick = () => go(renderParagraph, weak.w.id, weak.p.id);
+      v.appendChild(rec);
+    }
+
     v.appendChild(el("div", "section-title", "Snel oefenen"));
     const quick = el("div", "quick stagger");
     const dueCount = countDueCards();
+    const smart = el("div", "qcard");
+    smart.innerHTML = `<div class="qi">🧠</div><div><h4>Slimme sessie</h4><p>Adaptieve mix: focust op wat jij nog lastig vindt</p></div>`;
+    smart.onclick = smartSession;
     const exam = el("div", "qcard");
     exam.innerHTML = `<div class="qi">⚔️</div><div><h4>Examen-battle</h4><p>15 gemixte vragen · 3 levens · haal een S-rang!</p></div>`;
     exam.onclick = startExam;
+    const open = el("div", "qcard");
+    open.innerHTML = `<div class="qi">✍️</div><div><h4>Open SE-vraag <span class="tag" style="position:static">AI</span></h4><p>AI maakt een examenvraag & kijkt je antwoord na</p></div>`;
+    open.onclick = () => { const t = weak ? weak.p : COURSE.worlds[0].paragraphs[0]; startOpen(t); };
     const due = el("div", "qcard");
-    due.innerHTML = `<div class="qi">🧠</div><div><h4>Herhaal-stapel</h4><p>${dueCount ? dueCount + " kaart(en) klaar om te herhalen" : "Niets te herhalen — speel een level!"}</p></div>`;
+    due.innerHTML = `<div class="qi">🔁</div><div><h4>Herhaal-stapel</h4><p>${dueCount ? dueCount + " kaart(en) klaar om te herhalen" : "Niets te herhalen — speel een level!"}</p></div>`;
     due.onclick = () => dueCount ? startReview() : go(renderWorld, "h14");
-    quick.appendChild(exam); quick.appendChild(due);
+    quick.appendChild(smart); quick.appendChild(exam); quick.appendChild(open); quick.appendChild(due);
     v.appendChild(quick);
 
     app.replaceChildren(v);
     mascotSay(pickHomeTip());
+  }
+
+  // zwakste begonnen paragraaf (laagste voortgang > 0)
+  function weakestParagraph() {
+    let best = null;
+    COURSE.worlds.forEach(w => w.paragraphs.forEach(p => {
+      const pct = paraProgress(p);
+      if (pct > 0 && pct < 80 && (!best || pct < best.pct)) best = { w, p, pct };
+    }));
+    return best;
+  }
+
+  // adaptieve mix: vragen, zwaarder gewogen naar lage-voortgang paragrafen
+  function smartSession() {
+    const pool = [];
+    COURSE.worlds.forEach(w => w.paragraphs.forEach(p => {
+      const weight = Math.max(1, Math.round((100 - paraProgress(p)) / 22) + 1); // 1..6
+      p.quiz.forEach(q => { for (let k = 0; k < weight; k++) pool.push({ q, id: p.id + "|" + q.q }); });
+    }));
+    const picked = [], seen = new Set();
+    let guard = 0;
+    while (picked.length < 12 && guard++ < 600) { const it = pool[(Math.random() * pool.length) | 0]; if (seen.has(it.id)) continue; seen.add(it.id); picked.push(it.q); }
+    startQuiz(null, picked, "🧠 Slimme sessie");
   }
 
   /* ===================================================================
@@ -210,8 +251,9 @@
         ${opts.tag ? `<span class="tag">${opts.tag}</span>` : ""}${opts.done ? `<span class="done-pill">✅</span>` : ""}`;
       m.onclick = fn; return m;
     };
-    modes.appendChild(mk("📖", "Leer", p.cards.length + " begrippen", () => startLearn(p), { done: rec.learnDone }));
+    modes.appendChild(mk("📖", "Lees", "Samenvatting + begrippen", () => startLesson(p), { done: rec.learnDone }));
     modes.appendChild(mk("⚡", "Quiz", p.quiz.length + " vragen + combo's", () => startQuiz(p, p.quiz, "⚡ " + p.id), { done: (rec.quizBest || 0) >= 0.99 }));
+    modes.appendChild(mk("✍️", "Open oefenen", "AI maakt & nakijkt SE-vragen", () => startOpen(p), { tag: "AI", done: (rec.openBest || 0) >= 80 }));
     modes.appendChild(mk("🃏", "Flashcards", known + "/" + p.cards.length + " gekend", () => startFlashcards(p)));
     if (p.sequences.length) modes.appendChild(mk("🔢", "Proces", "Zet de stappen op volgorde", () => startSequence(p), { done: rec.seqDone }));
     modes.appendChild(mk("🤖", "AI-tutor", "Laat je uitleggen & overhoren", () => startTutor(p), { tag: "AI" }));
@@ -220,16 +262,43 @@
   }
 
   /* ===================================================================
-     LEER (lesson slides)
+     LEER: samenvatting lezen (+ AI-verdieping) → begrippen
      =================================================================== */
-  function startLearn(p) {
+  function startLesson(p) {
     const emojis = ["💡", "🔬", "🧩", "✨", "📌", "🧠", "⭐", "🔎"];
-    let i = 0; const n = p.cards.length;
+    let phase = "read", i = 0; const n = p.cards.length;
     const v = el("div", "view");
     const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(p).id, p.id); v.appendChild(back);
     const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
 
-    function draw() {
+    function drawRead() {
+      panel.replaceChildren();
+      const card = el("div", "summary");
+      card.innerHTML = `<div class="badge">📖 Samenvatting</div><h2 class="sum-title">${esc(p.id)} ${esc(p.title)}</h2>` + formatSummary(p.summary);
+      panel.appendChild(card);
+      const aiRow = el("div", "chat-suggest");
+      [["🤖 Geef een voorbeeld", "Geef één concreet, alledaags voorbeeld dat deze stof goed illustreert. Maximaal 3 zinnen."],
+      ["✨ Vereenvoudig dit", "Leg deze samenvatting nog eenvoudiger uit, in 3 korte zinnen, alsof ik 12 ben."],
+      ["🧠 Ezelsbruggetje", "Geef een pakkend ezelsbruggetje om de belangrijkste begrippen te onthouden."]]
+        .forEach(([label, prompt]) => { const c = el("button", "chip", label); c.onclick = () => aiElaborate(card, prompt); aiRow.appendChild(c); });
+      panel.appendChild(aiRow);
+      const nav = el("div", "lesson-nav");
+      const b1 = el("button", "btn", "Begrippen oefenen →"); b1.onclick = () => { phase = "terms"; i = 0; drawTerm(); };
+      nav.appendChild(b1); panel.appendChild(nav);
+    }
+    async function aiElaborate(card, prompt) {
+      const old = card.querySelector(".ai-note"); if (old) old.remove();
+      const note = el("div", "ai-note"); note.appendChild(spinnerEl("AI denkt mee…")); card.appendChild(note);
+      try {
+        const reply = await aiChat([
+          { role: "system", content: "Je bent een biologie-bijlesdocent (Nederlands, SE-niveau). Gebruik UITSLUITEND onderstaande leerstof en verzin niets bij.\n\n" + groundingText(p) },
+          { role: "user", content: prompt }
+        ], { temperature: 0.5, max_tokens: 320 });
+        note.replaceChildren(); note.innerHTML = `<div class="ai-tag">🤖 AI-tutor</div>${esc(reply)}`;
+        addXP(2);
+      } catch (e) { note.remove(); const m = aiErr(e); if (m === "needkey") { mascotSay("Stel eerst je AI-sleutel in ⚙️"); openSettings(); } else mascotSay(m); }
+    }
+    function drawTerm() {
       const c = p.cards[i];
       panel.replaceChildren();
       const stage = el("div", "lesson");
@@ -242,9 +311,10 @@
       p.cards.forEach((_, di) => dots.appendChild(el("span", "d" + (di === i ? " on" : ""))));
       panel.appendChild(dots);
       const nav = el("div", "lesson-nav");
-      if (i > 0) { const b = el("button", "btn ghost", "← Vorige"); b.onclick = () => { i--; draw(); }; nav.appendChild(b); }
+      const bp = el("button", "btn ghost", "← Terug"); bp.onclick = () => { if (i > 0) { i--; drawTerm(); } else drawRead(); };
+      nav.appendChild(bp);
       const nx = el("button", "btn", i < n - 1 ? "Volgende →" : "Klaar! Naar de quiz 🚀");
-      nx.onclick = () => { if (i < n - 1) { i++; draw(); } else finish(); };
+      nx.onclick = () => { if (i < n - 1) { i++; drawTerm(); } else finish(); };
       nav.appendChild(nx); panel.appendChild(nav);
     }
     function finish() {
@@ -252,7 +322,104 @@
       markStudiedToday(); mascotCheer(); confettiBurst(.5);
       startQuiz(p, p.quiz, "⚡ " + p.id);
     }
-    draw();
+    drawRead();
+  }
+
+  /* ===================================================================
+     OPEN OEFENEN — AI-gegenereerde SE-vragen, AI nakijkt (active recall)
+     =================================================================== */
+  function startOpen(p) {
+    const asked = [];
+    const v = el("div", "view");
+    const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(p).id, p.id); v.appendChild(back);
+    const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
+
+    function fail(e, retry) {
+      panel.replaceChildren();
+      const m = aiErr(e);
+      if (m === "needkey") {
+        panel.innerHTML = `<div class="qtext">✍️ Open oefenen <span class="tag" style="position:static">AI</span></div>
+          <p style="color:var(--muted-2);font-weight:700">Deze modus laat de AI échte SE-vragen maken en jouw getypte antwoord nakijken. Stel daarvoor eenmalig je OpenAI-sleutel in.</p>`;
+        const b = el("button", "btn", "Sleutel instellen ⚙️"); b.onclick = openSettings; panel.appendChild(b);
+      } else {
+        panel.appendChild(el("div", "qtext", "Er ging iets mis 😕"));
+        panel.appendChild(el("div", "fc-meta", m));
+        const b = el("button", "btn", "Opnieuw"); b.style.marginTop = "16px"; b.onclick = retry; panel.appendChild(b);
+      }
+    }
+    async function nextQuestion() {
+      panel.replaceChildren(); panel.appendChild(spinnerEl("Nieuwe oefenvraag maken…"));
+      try {
+        const data = await aiJSON([
+          { role: "system", content: "Je bent een examenmaker biologie voor het Nederlandse schoolexamen (SE/vwo). Gebruik UITSLUITEND onderstaande leerstof als bron; verzin geen feiten die er niet in staan.\n\n" + groundingText(p) +
+            "\n\nMaak één open oefenvraag op SE-niveau (begin bijv. met 'Leg uit', 'Beschrijf', 'Verklaar' of 'Noem'). Antwoord UITSLUITEND met geldige JSON in dit formaat: {\"vraag\": \"...\", \"kernpunten\": [\"punt1\",\"punt2\",\"punt3\"], \"modelantwoord\": \"...\"}. De kernpunten zijn 2 tot 4 zaken die in een goed antwoord moeten staan." },
+          { role: "user", content: "Maak een nieuwe vraag. Vermijd vragen die hierop lijken: " + (asked.join(" | ") || "(nog geen)") }
+        ], { temperature: 0.7, max_tokens: 500 });
+        if (!data.vraag) throw new Error("Geen vraag ontvangen.");
+        asked.push(data.vraag);
+        renderQuestion(data);
+      } catch (e) { fail(e, nextQuestion); }
+    }
+    function renderQuestion(q) {
+      panel.replaceChildren();
+      panel.appendChild(el("div", "open-head", `<span class="tag" style="position:static">✍️ Open SE-vraag</span>`));
+      panel.appendChild(el("div", "qtext", esc(q.vraag)));
+      const ta = el("textarea", "open-input"); ta.placeholder = "Typ hier je antwoord in je eigen woorden…"; ta.rows = 5;
+      panel.appendChild(ta);
+      const foot = el("div", "open-foot");
+      const hint = el("button", "btn ghost", "💡 Hint"); hint.onclick = () => showHint(q, hint);
+      const skip = el("button", "btn ghost", "Sla over"); skip.onclick = nextQuestion;
+      const check = el("button", "btn", "Nakijken ✓"); check.onclick = () => grade(q, ta.value);
+      foot.appendChild(hint); foot.appendChild(skip); foot.appendChild(check);
+      panel.appendChild(foot);
+      ta.focus();
+    }
+    async function showHint(q, btn) {
+      btn.disabled = true; btn.textContent = "…";
+      try {
+        const h = await aiChat([
+          { role: "system", content: "Geef een korte hint (max 1 zin), GEEN volledig antwoord. Bron:\n" + groundingText(p) },
+          { role: "user", content: "Vraag: " + q.vraag + "\nGeef een subtiele hint." }
+        ], { temperature: 0.4, max_tokens: 80 });
+        mascotSay("💡 " + h);
+      } catch (e) { const m = aiErr(e); if (m === "needkey") openSettings(); }
+      btn.disabled = false; btn.textContent = "💡 Hint";
+    }
+    async function grade(q, answer) {
+      if (!answer.trim()) { mascotSay("Typ eerst een antwoord ✍️"); return; }
+      panel.replaceChildren(); panel.appendChild(spinnerEl("Je antwoord wordt nagekeken…"));
+      try {
+        const res = await aiJSON([
+          { role: "system", content: "Je bent een eerlijke maar bemoedigende SE-corrector biologie. Beoordeel het antwoord van de leerling t.o.v. de kernpunten en het modelantwoord, en UITSLUITEND op basis van deze leerstof.\n\n" + groundingText(p) +
+            "\n\nAntwoord UITSLUITEND met geldige JSON: {\"score\": <geheel getal 0-100>, \"oordeel\": \"korte samenvatting\", \"feedback\": \"1-3 zinnen opbouwende uitleg in het Nederlands\", \"goed\": [\"wat goed was\"], \"gemist\": [\"wat nog ontbrak\"]}." },
+          { role: "user", content: JSON.stringify({ vraag: q.vraag, kernpunten: q.kernpunten, modelantwoord: q.modelantwoord, antwoord_leerling: answer }) }
+        ], { temperature: 0.2, max_tokens: 500 });
+        renderFeedback(q, res, answer);
+      } catch (e) { fail(e, () => grade(q, answer)); }
+    }
+    function renderFeedback(q, res, answer) {
+      const score = clamp(Math.round(res.score || 0), 0, 100);
+      const col = score >= 70 ? "var(--green)" : score >= 40 ? "var(--gold)" : "var(--red)";
+      panel.replaceChildren();
+      const head = el("div", "fb-head");
+      head.innerHTML = `<div class="score-ring" style="--p:${score};--col:${col}"><i>${score}<small>%</small></i></div>
+        <div><div class="fb-verdict">${esc(res.oordeel || (score >= 70 ? "Goed!" : score >= 40 ? "Bijna" : "Nog oefenen"))}</div>
+        <div class="fb-fb">${esc(res.feedback || "")}</div></div>`;
+      panel.appendChild(head);
+      const lists = el("div", "fb-lists");
+      if (res.goed && res.goed.length) lists.appendChild(el("div", "fb-good", `<b>✅ Goed</b><ul>${res.goed.map(x => "<li>" + esc(x) + "</li>").join("")}</ul>`));
+      if (res.gemist && res.gemist.length) lists.appendChild(el("div", "fb-miss", `<b>➕ Nog toevoegen</b><ul>${res.gemist.map(x => "<li>" + esc(x) + "</li>").join("")}</ul>`));
+      panel.appendChild(lists);
+      const model = el("details", "fb-model"); model.innerHTML = `<summary>📘 Bekijk modelantwoord</summary><p>${esc(q.modelantwoord || "")}</p>`;
+      panel.appendChild(model);
+      const foot = el("div", "qfoot"); const nx = el("button", "btn", "Volgende vraag →"); nx.onclick = nextQuestion;
+      const done = el("button", "btn ghost", "Klaar"); done.onclick = () => go(renderParagraph, worldOf(p).id, p.id);
+      foot.appendChild(done); foot.appendChild(nx); panel.appendChild(foot);
+      const gain = 3 + Math.round(score / 12); addXP(gain); markStudiedToday();
+      const rec = state.paras[p.id] || {}; rec.openBest = Math.max(rec.openBest || 0, score); state.paras[p.id] = rec; save();
+      if (score >= 70) { confettiBurst(.6); mascotCheer(); }
+    }
+    nextQuestion();
   }
 
   /* ===================================================================
@@ -289,12 +456,34 @@
         const cb = $("#combo"); if (cb) { cb.textContent = combo > 1 ? "🔥x" + combo : ""; cb.classList.add("bump"); setTimeout(() => cb.classList.remove("bump"), 200); }
         if (combo >= 3) confettiBurst(.35);
       } else { combo = 0; sound("wrong"); if (lives) { hp--; } }
-      panel.appendChild(el("div", "explain " + (ok ? "good" : "bad"), `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`));
+      const exBox = el("div", "explain " + (ok ? "good" : "bad"), `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`);
+      panel.appendChild(exBox);
+      if (!ok) {
+        const why = el("button", "why-btn", "🤖 Leg uit waarom");
+        why.onclick = () => aiWhy(exBox, why, q, q.opts[choice]);
+        exBox.appendChild(why);
+      }
       const foot = el("div", "qfoot");
       const last = i >= qs.length - 1, dead = lives && hp <= 0;
       const nx = el("button", "btn", dead ? "Game over 💀" : last ? "Klaar 🎉" : "Volgende →");
       nx.onclick = () => { if (dead) return finish(); i++; (i < qs.length) ? draw() : finish(); };
       foot.appendChild(nx); panel.appendChild(foot);
+    }
+    async function aiWhy(box, btn, q, chosenText) {
+      btn.replaceWith(spinnerEl("AI legt het uit…"));
+      const ground = para ? groundingText(para) : ("Vraag-uitleg: " + q.explain);
+      try {
+        const reply = await aiChat([
+          { role: "system", content: "Je bent een biologiedocent (Nederlands, SE). Gebruik UITSLUITEND deze leerstof als bron en verzin niets.\n\n" + ground },
+          { role: "user", content: "Vraag: " + q.q + "\nIk koos: \"" + chosenText + "\"\nHet juiste antwoord is: \"" + q.opts[q.ans] + "\".\nLeg in maximaal 3 zinnen uit waarom mijn keuze fout is en waarom het juiste antwoord klopt." }
+        ], { temperature: 0.3, max_tokens: 220 });
+        const note = el("div", "ai-note"); note.innerHTML = `<div class="ai-tag">🤖 AI-tutor</div>${esc(reply)}`;
+        const sp = box.querySelector(".ai-loading"); if (sp) sp.replaceWith(note); else box.appendChild(note);
+        addXP(2);
+      } catch (e) {
+        const sp = box.querySelector(".ai-loading"); if (sp) sp.remove();
+        const m = aiErr(e); if (m === "needkey") { mascotSay("Stel eerst je AI-sleutel in ⚙️"); openSettings(); } else mascotSay(m);
+      }
     }
     function finish() {
       markStudiedToday();
@@ -437,8 +626,8 @@
     panel.appendChild(chat); app.replaceChildren(v);
 
     const sys = "Je bent een enthousiaste, geduldige biologie-bijlesdocent voor een Nederlandse middelbare scholier die zich voorbereidt op een schoolexamen (SE). " +
-      "Antwoord altijd in het Nederlands, kort en helder, met soms een emoji of ezelsbruggetje. Baseer je op deze leerstof van paragraaf " + para.id + " (" + para.title + ").\n\n" +
-      "Leerdoelen:\n- " + para.goals.join("\n- ") + "\n\nBegrippen:\n" + para.cards.map(c => "• " + c.term + ": " + c.def).join("\n") +
+      "Antwoord altijd in het Nederlands, kort en helder, met soms een emoji of ezelsbruggetje. Gebruik UITSLUITEND onderstaande leerstof als bron en verzin niets bij. " +
+      "Leerdoelen:\n- " + para.goals.join("\n- ") + "\n\n" + groundingText(para) +
       "\n\nBlijf bij deze stof; breng afdwalingen vriendelijk terug naar de biologie.";
     const history = [{ role: "system", content: sys }];
     addMsg("ai", `Hoi! 👋 Ik help je met **${para.title}**. Stel een vraag of kies een knopje hierboven. Vraag me gerust om je te overhoren!`);
@@ -448,20 +637,51 @@
       text = (text || "").trim(); if (!text) return;
       ta.value = ""; addMsg("user", text); history.push({ role: "user", content: text });
       const typing = el("div", "msg ai typing"); typing.innerHTML = "<span></span><span></span><span></span>"; log.appendChild(typing); log.scrollTop = log.scrollHeight; sendBtn.disabled = true;
-      try { const reply = await aiChat(history, state.settings.model); typing.remove(); addMsg("ai", reply); history.push({ role: "assistant", content: reply }); addXP(3); }
+      try { const reply = await aiChat(history); typing.remove(); addMsg("ai", reply); history.push({ role: "assistant", content: reply }); addXP(3); }
       catch (e) { typing.remove(); if (e.code === "NO_KEY") { addMsg("sys", "⚙️ Nog geen AI-sleutel ingesteld. Open instellingen (tandwiel) om je OpenAI-key toe te voegen — die wordt onthouden."); openSettings(); } else addMsg("sys", "⚠️ " + e.message); }
       finally { sendBtn.disabled = false; }
     }
   }
 
-  async function aiChat(messages, model) {
+  async function aiChat(messages, opts = {}) {
+    const model = opts.model || state.settings.model || "gpt-4o-mini";
+    const proxyBody = { messages, model };
+    if (opts.json) proxyBody.json = true;
+    if (typeof opts.temperature === "number") proxyBody.temperature = opts.temperature;
+    if (typeof opts.max_tokens === "number") proxyBody.max_tokens = opts.max_tokens;
     try {
-      const r = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages, model }) });
+      const r = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(proxyBody) });
       if (r.ok) { const d = await r.json(); if (d.content) return d.content; if (d.error) throw new Error("OpenAI (server): " + d.error); }
     } catch (e) { if (/OpenAI \(server\)/.test(e.message)) throw e; }
     const key = getKey(); if (!key) { const err = new Error("NO_KEY"); err.code = "NO_KEY"; throw err; }
-    const r2 = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key }, body: JSON.stringify({ model: model || "gpt-4o-mini", messages, temperature: 0.4 }) });
+    const body = { model, messages, temperature: typeof opts.temperature === "number" ? opts.temperature : 0.4 };
+    if (opts.json) body.response_format = { type: "json_object" };
+    if (typeof opts.max_tokens === "number") body.max_tokens = opts.max_tokens;
+    const r2 = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key }, body: JSON.stringify(body) });
     const d2 = await r2.json().catch(() => ({})); if (!r2.ok) throw new Error((d2.error && d2.error.message) || ("OpenAI fout " + r2.status)); return d2.choices[0].message.content;
+  }
+  async function aiJSON(messages, opts = {}) {
+    const raw = await aiChat(messages, Object.assign({ json: true, temperature: 0.3 }, opts));
+    try { return JSON.parse(raw); }
+    catch (e) { const m = raw.match(/\{[\s\S]*\}/); if (m) { try { return JSON.parse(m[0]); } catch (_) { } } throw new Error("Kon het AI-antwoord niet lezen, probeer opnieuw."); }
+  }
+  // grounding-tekst per paragraaf: samenvatting + begrippen (de bron voor de AI)
+  function groundingText(p) {
+    return "BRONTEKST (paragraaf " + p.id + " – " + p.title + "):\n" + (p.summary || "") +
+      "\n\nBEGRIPPEN:\n" + p.cards.map(c => "• " + c.term + ": " + c.def).join("\n");
+  }
+  function spinnerEl(text) { const d = el("div", "ai-loading"); d.innerHTML = `<span class="spinner"></span><span>${esc(text || "AI denkt na…")}</span>`; return d; }
+  function aiErr(e) { return e && e.code === "NO_KEY" ? "needkey" : ("⚠️ " + (e && e.message || "Er ging iets mis.")); }
+  function formatSummary(txt) {
+    const out = []; let list = null;
+    String(txt).split("\n").forEach(line => {
+      line = line.trim();
+      if (!line) { if (list) { out.push(list); list = null; } return; }
+      if (line.startsWith("•")) { if (!list) list = '<ul class="sum-list">'; list += "<li>" + esc(line.replace(/^•\s*/, "")) + "</li>"; }
+      else { if (list) { out.push(list + "</ul>"); list = null; } out.push("<p>" + esc(line) + "</p>"); }
+    });
+    if (list) out.push(list + "</ul>");
+    return out.join("");
   }
 
   /* ===================================================================

@@ -25,13 +25,21 @@ export default async function handler(req, res) {
       return;
     }
 
+    const payload = {
+      model,
+      messages,
+      temperature: typeof body.temperature === "number" ? body.temperature : 0.4,
+    };
+    if (body.json) payload.response_format = { type: "json_object" };
+    if (typeof body.max_tokens === "number") payload.max_tokens = body.max_tokens;
+
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + key,
       },
-      body: JSON.stringify({ model, messages, temperature: 0.4 }),
+      body: JSON.stringify(payload),
     });
 
     const data = await r.json();
