@@ -25,6 +25,7 @@
     quiz: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 1-1 1.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
     exam: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     spark: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/></svg>',
+    video: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9.2v5.6l5-2.8z" fill="currentColor"/></svg>',
     gear: '<svg class="ic ic-gear" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1l-.4-2.6H10.9l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4.2l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>',
   };
   const icon = (name) => ICONS[name] || "";
@@ -36,7 +37,7 @@
   /* ---------- state ---------- */
   const defaultState = () => ({
     xp: 0, streakDays: 0, lastDay: null, day: { d: null, xp: 0 },
-    cards: {}, paras: {},
+    cards: {}, paras: {}, videos: {},
     settings: { sound: true, model: "gpt-4o-mini", niveau: null, methode: null }
   });
   let state = load();
@@ -83,7 +84,29 @@
     const parts = [quiz, cardPct, rec.learnDone ? 1 : 0];
     return Math.round((parts.reduce((a, b) => a + b, 0) / parts.length) * 100);
   }
-  function topicProgress(topic) { const v = topic.paragraphs.map(p => paraProgress(topic, p)); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : 0; }
+  function topicProgress(topic) {
+    if (!topic.paragraphs.length && hasVideos(topic)) return videoProgress(topic);
+    const v = topic.paragraphs.map(p => paraProgress(topic, p)); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : 0;
+  }
+
+  /* ---------- videoleerlijn ---------- */
+  const hasVideos = (topic) => Array.isArray(topic.videos) && topic.videos.length > 0;
+  const allVideos = (topic) => hasVideos(topic) ? topic.videos.reduce((a, s) => a.concat(s.items), []) : [];
+  const vkey = (topic, item) => topic.id + ":vid:" + (parseYouTube(item.url).id || item.url);
+  function videoProgress(topic) {
+    const all = allVideos(topic); if (!all.length) return 0;
+    const seen = all.filter(it => state.videos[vkey(topic, it)]).length;
+    return Math.round((seen / all.length) * 100);
+  }
+  function parseYouTube(url) {
+    const out = { id: "", start: 0 };
+    if (!url) return out;
+    const idm = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
+    if (idm) out.id = idm[1];
+    const tm = url.match(/[?&]t=(\d+)/) || url.match(/[?&]start=(\d+)/);
+    if (tm) out.start = parseInt(tm[1], 10) || 0;
+    return out;
+  }
 
   /* ---------- topbar ---------- */
   function refreshTopbar() {
@@ -200,12 +223,16 @@
       if (topic) {
         const pct = topicProgress(topic);
         card.classList.add(topic.theme);
+        const videoOnly = !topic.paragraphs.length && hasVideos(topic);
+        const meta = videoOnly
+          ? `${allVideos(topic).length} video's · videoleerlijn`
+          : `${topic.paragraphs.length} paragrafen · ${topic.exams.length} examenopgaven`;
         card.innerHTML = `
           <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">${topic.icon}</span><span class="ch-domain">${esc(topic.domain)}</span></div>
           <h3>${esc(ch.title)}</h3>
-          <div class="ch-meta">${topic.paragraphs.length} paragrafen · ${topic.exams.length} examenopgaven</div>
+          <div class="ch-meta">${meta}</div>
           <div class="ch-bar"><span style="width:0%"></span></div>
-          <div class="ch-foot"><span class="ch-pct">${pct}% beheerst</span><span class="ch-go">Open →</span></div>`;
+          <div class="ch-foot"><span class="ch-pct">${pct}% ${videoOnly ? "bekeken" : "beheerst"}</span><span class="ch-go">Open →</span></div>`;
         card.onclick = () => go(renderChapter, topic.id);
         requestAnimationFrame(() => { const b = card.querySelector(".ch-bar > span"); if (b) b.style.width = pct + "%"; });
       } else {
@@ -278,25 +305,33 @@
   function renderChapter(topicId, tab) {
     const topic = getTopic(topicId);
     if (!topic) return go(renderHome);
-    tab = tab || "theorie";
+
+    const TAB_DEFS = [];
+    if (hasVideos(topic)) TAB_DEFS.push(["videos", icon("video"), "Video's"]);
+    if (topic.paragraphs.length) TAB_DEFS.push(
+      ["theorie", icon("book"), "Theorie"],
+      ["flitskaarten", icon("cards"), "Flitskaarten"],
+      ["oefenvragen", icon("quiz"), "Oefenvragen"],
+      ["examen", icon("exam"), "Examenopgaven"]
+    );
+    const validTabs = TAB_DEFS.map(t => t[0]);
+    if (!validTabs.includes(tab)) tab = validTabs[0] || "theorie";
+
     const v = el("div", "view");
     const back = el("button", "backbtn", "← Overzicht"); back.onclick = () => go(renderHome); v.appendChild(back);
 
     const banner = el("div", "ch-banner " + topic.theme);
     const pct = topicProgress(topic);
+    const metaBits = [];
+    if (topic.paragraphs.length) metaBits.push(topic.paragraphs.length + " paragrafen");
+    if (hasVideos(topic)) metaBits.push(allVideos(topic).length + " video's");
     banner.innerHTML = `<div class="ch-banner-ic">${topic.icon}</div>
       <div class="ch-banner-txt"><h2>${esc(topic.title)}</h2><p>${esc(topic.intro)}</p>
       <div class="ch-banner-bar"><span style="width:${pct}%"></span></div>
-      <div class="ch-banner-meta">${pct}% beheerst · ${topic.paragraphs.length} paragrafen</div></div>`;
+      <div class="ch-banner-meta">${pct}% ${topic.paragraphs.length ? "beheerst" : "bekeken"}${metaBits.length ? " · " + metaBits.join(" · ") : ""}</div></div>`;
     v.appendChild(banner);
 
     const tabs = el("div", "tabs");
-    const TAB_DEFS = [
-      ["theorie", icon("book"), "Theorie"],
-      ["flitskaarten", icon("cards"), "Flitskaarten"],
-      ["oefenvragen", icon("quiz"), "Oefenvragen"],
-      ["examen", icon("exam"), "Examenopgaven"]
-    ];
     TAB_DEFS.forEach(([id, ic, label]) => {
       const t = el("button", "tab" + (id === tab ? " on" : ""), `${ic}<span>${label}</span>`);
       t.onclick = () => go(renderChapter, topicId, id);
@@ -308,10 +343,93 @@
     v.appendChild(body);
     app.replaceChildren(v);
 
-    if (tab === "theorie") tabTheorie(topic, body);
+    if (tab === "videos") tabVideos(topic, body);
+    else if (tab === "theorie") tabTheorie(topic, body);
     else if (tab === "flitskaarten") tabFlashcards(topic, body);
     else if (tab === "oefenvragen") tabQuiz(topic, body);
     else if (tab === "examen") tabExam(topic, body);
+  }
+
+  /* ---------- tab: video's (videoleerlijn) ---------- */
+  function tabVideos(topic, body) {
+    body.appendChild(el("p", "tab-lead", "Bekijk de videoleerlijn van dit hoofdstuk. Elke video hoort bij een paragraaf en heeft de belangrijkste begrippen erbij. Markeer een video als bekeken om je voortgang bij te houden — dat levert ook XP op."));
+
+    const all = allVideos(topic);
+    const watchedCount = () => all.filter(it => state.videos[vkey(topic, it)]).length;
+    const prog = el("div", "vid-progress");
+    const updateProg = () => {
+      const w = watchedCount(), pct = all.length ? Math.round(w / all.length * 100) : 0;
+      prog.innerHTML = `<div class="vid-prog-bar"><span style="width:${pct}%"></span></div>
+        <div class="vid-prog-lab">${w}/${all.length} video's bekeken · ${pct}%</div>`;
+    };
+    updateProg();
+    body.appendChild(prog);
+
+    topic.videos.forEach(section => {
+      const sec = el("section", "vid-section");
+      sec.innerHTML = `<div class="vid-sec-head"><span class="vid-sec-id">${esc(section.id)}</span>
+        <div><h3 class="vid-sec-title">${esc(section.title || "")}</h3>${section.intro ? `<p class="vid-sec-intro">${esc(section.intro)}</p>` : ""}</div></div>`;
+      const grid = el("div", "vid-grid");
+      section.items.forEach(item => grid.appendChild(videoCard(topic, item, updateProg)));
+      sec.appendChild(grid);
+      body.appendChild(sec);
+    });
+  }
+
+  function videoCard(topic, item, onWatchChange) {
+    const yt = parseYouTube(item.url);
+    const key = vkey(topic, item);
+    const card = el("article", "vid-card" + (state.videos[key] ? " watched" : ""));
+
+    const frame = el("div", "vid-frame");
+    if (yt.id) {
+      const src = `https://www.youtube-nocookie.com/embed/${yt.id}?rel=0&modestbranding=1${yt.start ? "&start=" + yt.start : ""}`;
+      const iframe = el("iframe");
+      iframe.src = src;
+      iframe.title = item.title;
+      iframe.loading = "lazy";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.setAttribute("allowfullscreen", "");
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.appendChild(iframe);
+    } else {
+      frame.appendChild(el("a", "vid-fallback", `▶ Bekijk op YouTube`)).href = item.url;
+    }
+    card.appendChild(frame);
+
+    const info = el("div", "vid-info");
+    const head = el("div", "vid-head");
+    head.innerHTML = `<h4 class="vid-title">${esc(item.title)}</h4>${item.duration ? `<span class="vid-dur">${esc(item.duration)}</span>` : ""}`;
+    info.appendChild(head);
+    if (item.desc) info.appendChild(el("p", "vid-desc", esc(item.desc)));
+    if (item.note) info.appendChild(el("div", "vid-note", "⏱️ " + esc(item.note)));
+    if (item.terms && item.terms.length) {
+      const tags = el("div", "vid-terms");
+      item.terms.forEach(t => tags.appendChild(el("span", "vid-term", esc(t))));
+      info.appendChild(tags);
+    }
+
+    const foot = el("div", "vid-foot");
+    const watchBtn = el("button", "btn ghost small vid-watch");
+    const setLabel = () => { watchBtn.innerHTML = state.videos[key] ? "✓ Bekeken" : "Markeer als bekeken"; };
+    setLabel();
+    watchBtn.onclick = () => {
+      if (state.videos[key]) {
+        delete state.videos[key];
+        card.classList.remove("watched");
+      } else {
+        state.videos[key] = { at: Date.now() };
+        card.classList.add("watched");
+        addXP(5); markStudiedToday();
+      }
+      save(); setLabel(); if (onWatchChange) onWatchChange();
+    };
+    const openLink = el("a", "vid-open", "YouTube ↗"); openLink.href = item.url; openLink.target = "_blank"; openLink.rel = "noopener";
+    foot.appendChild(watchBtn); foot.appendChild(openLink);
+    info.appendChild(foot);
+
+    card.appendChild(info);
+    return card;
   }
 
   /* ---------- tab: theorie ---------- */

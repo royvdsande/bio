@@ -5,8 +5,10 @@
 
    METHODS        -> keuze Biologie voor Jou / Nectar
    TOPICS         -> de hoofdstukken met de échte leerstof:
-       topic  -> { id, title, icon, theme, domain, intro, paragraphs[], exams[] }
+       topic  -> { id, title, icon, theme, domain, intro, paragraphs[], exams[], videos[]? }
        paragraph -> { id, title, summary, goals[], cards[], quiz[], sequences[] }
+         videoSection -> { id, title, intro, items[] }   (optionele videoleerlijn)
+           videoItem -> { title, url, desc, terms[], duration, note? }
          card     -> { term, def }
          quiz     -> { q, options[], answer(index), explain }
          sequence -> { title, steps[] }  (stappen in juiste volgorde)
@@ -1854,6 +1856,183 @@ const TOPICS = [
         ]
       }
     ]
+  },
+
+  /* ===================== GEDRAG (Nectar H1) ===================== */
+  {
+    id: "gedrag",
+    title: "Gedrag",
+    icon: "🐾",
+    theme: "t-teal",
+    domain: "Gedrag",
+    intro: "Waarom doen dieren en mensen wat ze doen? In dit hoofdstuk ontdek je aan de hand van korte video's de functie van gedrag, hoe je gedrag onderzoekt met een ethogram, hoe dieren communiceren en het verschil tussen aangeboren en aangeleerd gedrag.",
+    paragraphs: [],
+    exams: [],
+    /* videoleerlijn: per paragraaf een reeks korte video's met begrippen */
+    videos: [
+      {
+        id: "1.1",
+        title: "De functie van gedrag",
+        intro: "Gedrag helpt een individu overleven en zorgt voor het voortbestaan van de soort. Prikkels van binnen én buiten sturen dat gedrag aan.",
+        items: [
+          {
+            title: "Gedrag en functie",
+            url: "https://www.youtube.com/watch?v=Yugi9PePcVc",
+            desc: "De functie van gedrag voor het overleven van een individu en het voortbestaan van de soort.",
+            terms: ["voortbewegen", "lichaamsverzorging", "sociaal gedrag", "voedsel zoeken", "baltsgedrag", "voortplantingsgedrag", "territoriumgedrag", "broedzorggedrag"],
+            duration: "10'21"
+          },
+          {
+            title: "Rats Save Humans From Landmines",
+            url: "https://www.youtube.com/watch?v=L0swUc492hU",
+            desc: "Het trainen van ratten bij het opsporen van landmijnen.",
+            terms: ["geur", "uitwendige prikkel"],
+            duration: "3'43"
+          },
+          {
+            title: "This Lizard Escapes the Heat in an Unusual Way",
+            url: "https://www.youtube.com/watch?v=1rkkKyYCxio",
+            desc: "Een overlevingsstrategie van een hagedis in de hitte van de woestijn.",
+            terms: ["uitwendige prikkels"],
+            duration: "1'49"
+          },
+          {
+            title: "Warring Elephants | Deadly Instincts",
+            url: "https://www.youtube.com/watch?v=KpN-P1OVzl4",
+            desc: "Mannelijke olifanten die paringsbereid zijn en twee mannetjes die vechten om de vrouwtjes.",
+            terms: ["inwendige prikkels", "hormonen"],
+            duration: "2'55"
+          }
+        ]
+      },
+      {
+        id: "1.2",
+        title: "Gedrag onderzoeken en ontwikkelen",
+        intro: "Met een ethogram breng je gedrag systematisch in kaart. Gedrag ontwikkelt zich onder invloed van inprenting, opvoeding en sleutelprikkels.",
+        items: [
+          {
+            title: "Ethogram",
+            url: "https://www.youtube.com/watch?v=65BSiATmVwg",
+            desc: "Het bestuderen van het gedrag van een hond aan de hand van een ethogram.",
+            terms: ["gedragselementen", "ethogram", "signalen"],
+            duration: "9'12"
+          },
+          {
+            title: "Inprenten en opvoeden",
+            url: "https://www.youtube.com/watch?v=LDcnnAEwzV8",
+            desc: "Ganzen leren wie hun moeder is door middel van inprenting; geïsoleerd opgegroeide vrouwtjesapen groeien op tot minder goede moeders.",
+            terms: ["inprenten", "opvoeden", "sociaal gedrag"],
+            duration: "10'10"
+          },
+          {
+            title: "Signalen en sleutelprikkels",
+            url: "https://www.youtube.com/watch?v=8-2ys48Uw6E&t=210s",
+            desc: "Gedrag van stekelbaarsjes, roodborstjes, meeuwen en koekoeken onder invloed van signalen, sleutelprikkels en supernormale prikkels.",
+            terms: ["signalen en sleutelprikkels", "supernormale prikkels"],
+            duration: "10'28"
+          }
+        ]
+      },
+      {
+        id: "1.3",
+        title: "Communicatie",
+        intro: "Dieren en mensen wisselen informatie uit met signalen en rituelen. Ook omgericht gedrag hoort bij communicatie.",
+        items: [
+          {
+            title: "The Waggle Dance",
+            url: "https://www.youtube.com/watch?v=12Q8FfyLLso",
+            desc: "Bijen geven door middel van een kwispeldans de locatie van een voedselbron aan.",
+            terms: ["communicatie"],
+            duration: "2'38"
+          },
+          {
+            title: "Futen",
+            url: "https://www.youtube.com/watch?v=ZbRrxw-H6xA",
+            desc: "Balts van een mannetjesfuut en een vrouwtjesfuut.",
+            terms: ["ritueel gedrag"],
+            duration: "1'44"
+          },
+          {
+            title: "Greetings From Around the World",
+            url: "https://www.youtube.com/watch?v=nANhSfCGAs4",
+            desc: "Culturele verschillen tussen de begroeting van mensen.",
+            terms: ["communicatie", "ritueel gedrag", "begroetingsgedrag", "cultuur"],
+            duration: "1'47"
+          },
+          {
+            title: "Dugout Frustration",
+            url: "https://www.youtube.com/watch?v=m1rYUov-DaE",
+            desc: "Sporters vertonen omgericht gedrag en richten hun woede op de dug-out.",
+            terms: ["omgericht gedrag"],
+            duration: "4'20"
+          }
+        ]
+      },
+      {
+        id: "1.4",
+        title: "Aangeboren en aangeleerd gedrag",
+        intro: "Sommig gedrag is aangeboren, ander gedrag leer je door ervaring, bijvoorbeeld via klassieke of operante conditionering.",
+        items: [
+          {
+            title: "Aangeleerd of erfelijk?",
+            url: "https://www.youtube.com/watch?v=E_aG1elN38A",
+            desc: "Een onderzoek van William Thorpe: is de zang van vinken aangeboren of aangeleerd?",
+            terms: ["aangeleerd", "aangeboren", "inprinting"],
+            duration: "6'07"
+          },
+          {
+            title: "Chimps vs Humans",
+            url: "https://www.youtube.com/watch?v=cPiDHXtM0VA",
+            desc: "Een geheugenwedstrijd tussen chimpansee en mens.",
+            terms: ["aangeleerd gedrag"],
+            duration: "2'21"
+          },
+          {
+            title: "Klassieke Conditionering",
+            url: "https://www.youtube.com/watch?v=nnYN5v5VTAA",
+            desc: "Onderzoek van Pavlov aan klassieke conditionering van honden.",
+            terms: ["prikkels", "klassieke conditionering"],
+            duration: "6'01",
+            note: "Bekijk van 0:00 tot 4:32"
+          },
+          {
+            title: "Operante Conditionering",
+            url: "https://www.youtube.com/watch?v=3PbbDRoHfcU",
+            desc: "Onderzoek naar het leren van de weg in een doolhof van jonge kuikens; onderzoek naar hoe katten leren uit een kooi te ontsnappen.",
+            terms: ["operante conditionering"],
+            duration: "5'38"
+          }
+        ]
+      },
+      {
+        id: "1.5",
+        title: "Leren door inzicht",
+        intro: "Dieren kunnen problemen oplossen met inzicht en gereedschap, en tonen soms verrassend inlevingsvermogen.",
+        items: [
+          {
+            title: "Two Monkeys Were Paid Unequally",
+            url: "https://www.youtube.com/watch?v=meiU6TxysCg",
+            desc: "Een onderzoek naar het effect van verschillende beloning bij apen.",
+            terms: ["inlevingsvermogen"],
+            duration: "2'43"
+          },
+          {
+            title: "Monkeys Use Tools to Open Shells",
+            url: "https://www.youtube.com/watch?v=FzIYaZk9s-o",
+            desc: "Apen gebruiken gereedschap voor het openen van schelpen.",
+            terms: ["inzicht"],
+            duration: "2'20"
+          },
+          {
+            title: "Inzicht: Chimpanzee Problem Solving",
+            url: "https://www.youtube.com/watch?v=fPz6uvIbWZE",
+            desc: "Een aap toont inzicht om bij een 'onbereikbaar' lekker hapje te komen.",
+            terms: ["inzicht"],
+            duration: "1'03"
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -1894,7 +2073,7 @@ const CURRICULUM = {
       nectar: {
         editie: "editie 4.1",
         chapters: [
-          { num: "1", title: "Gedrag", topic: null },
+          { num: "1", title: "Gedrag", topic: "gedrag" },
           { num: "2", title: "Cellen", topic: null },
           { num: "3", title: "Onderzoek doen", topic: null },
           { num: "4", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
@@ -1942,7 +2121,7 @@ const CURRICULUM = {
       nectar: {
         editie: "editie 4.1",
         chapters: [
-          { num: "1", title: "Gedrag", topic: null },
+          { num: "1", title: "Gedrag", topic: "gedrag" },
           { num: "2", title: "Cel en leven", topic: null },
           { num: "3", title: "Wetenschappelijk onderzoek", topic: null },
           { num: "4", title: "Voortplanting", topic: "voortplanting" },
