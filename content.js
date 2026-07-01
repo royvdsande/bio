@@ -1496,6 +1496,364 @@ const TOPICS = [
         ]
       }
     ]
+  },
+
+  /* ===================== VOEDING EN VERTERING ===================== */
+  {
+    id: "vertering",
+    title: "Voeding en vertering",
+    icon: "🍎",
+    theme: "t-brown",
+    domain: "Voeding & vertering",
+    intro: "Je eten moet worden afgebroken tot kleine, opneembare moleculen. Je leert de bouw van het verteringsstelsel, hoe verteringsenzymen voedingsstoffen splitsen en hoe de verteerde stoffen in het bloed worden opgenomen.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Voedingsstoffen en het verteringskanaal",
+        summary: "Voedingsstoffen zijn koolhydraten, eiwitten, vetten, water, mineralen (zouten) en vitamines. Koolhydraten en vetten zijn vooral brandstof; eiwitten vooral bouwstof; vitamines en mineralen heb je in kleine hoeveelheden nodig. Voedingsvezels worden niet verteerd, maar bevorderen de darmwerking.\n\nHet verteringskanaal loopt van mond → slokdarm → maag → dunne darm → dikke darm → endeldarm → anus. Verteringsklieren (o.a. speekselklieren, maagwand, alvleesklier en lever) geven verteringssappen af. Bij de mechanische vertering (kauwen, maagbewegingen) wordt het voedsel kleiner gemaakt; bij de chemische vertering splitsen enzymen de grote moleculen. Spierbewegingen van de darmwand (peristaltiek) duwen het voedsel voort.",
+        goals: [
+          "Je noemt de voedingsstoffen en hun functie.",
+          "Je beschrijft de bouw van het verteringskanaal en het verschil tussen mechanische en chemische vertering."
+        ],
+        cards: [
+          { term: "Koolhydraten", def: "Voedingsstof die vooral als brandstof dient (bv. zetmeel, suikers)." },
+          { term: "Eiwitten", def: "Voedingsstof die vooral als bouwstof dient; opgebouwd uit aminozuren." },
+          { term: "Vetten", def: "Energierijke voedingsstof (brand- en reservestof); opgebouwd uit vetzuren en glycerol." },
+          { term: "Vitamines en mineralen", def: "Stoffen die je in kleine hoeveelheden nodig hebt voor een goede werking van je lichaam." },
+          { term: "Voedingsvezels", def: "Onverteerbare stoffen die de darmwerking (peristaltiek) bevorderen." },
+          { term: "Verteringskanaal", def: "Mond → slokdarm → maag → dunne darm → dikke darm → endeldarm → anus." },
+          { term: "Mechanische vertering", def: "Het fijnmaken van voedsel (kauwen, maagbewegingen), zonder de moleculen te splitsen." },
+          { term: "Chemische vertering", def: "Het splitsen van grote voedingsmoleculen door verteringsenzymen." },
+          { term: "Peristaltiek", def: "Spierbewegingen van de darmwand die het voedsel voortduwen." }
+        ],
+        quiz: [
+          { q: "Welke voedingsstof is vooral bouwstof?", options: ["Koolhydraten", "Eiwitten", "Vetten", "Water"], answer: 1, explain: "Eiwitten leveren vooral bouwstof (aminozuren); koolhydraten en vetten vooral brandstof." },
+          { q: "Wat is de functie van voedingsvezels?", options: ["Energie leveren", "De darmwerking bevorderen", "Eiwit verteren", "Vet opnemen"], answer: 1, explain: "Vezels worden niet verteerd maar bevorderen de peristaltiek/darmwerking." },
+          { q: "Wat is peristaltiek?", options: ["Het splitsen van moleculen", "Spierbewegingen die voedsel voortduwen", "Opname van glucose", "Het maken van gal"], answer: 1, explain: "Peristaltiek zijn de spierbewegingen van de darmwand die het voedsel voortduwen." },
+          { q: "Wat gebeurt er bij mechanische vertering?", options: ["Moleculen worden gesplitst", "Voedsel wordt fijngemaakt", "Stoffen worden opgenomen", "Enzymen worden gemaakt"], answer: 1, explain: "Mechanische vertering maakt het voedsel kleiner (kauwen, maagbewegingen) zonder de moleculen te splitsen." },
+          { q: "Wat is de juiste volgorde in het verteringskanaal?", options: ["Maag → slokdarm → dunne darm", "Slokdarm → maag → dunne darm → dikke darm", "Mond → maag → slokdarm", "Dunne darm → maag → dikke darm"], answer: 1, explain: "Mond → slokdarm → maag → dunne darm → dikke darm → endeldarm → anus." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Verteringsenzymen",
+        summary: "Verteringsenzymen splitsen grote voedingsmoleculen (polymeren) in kleine, opneembare bouwstenen (monomeren). Amylase (in speeksel en alvleessap) splitst zetmeel/koolhydraten tot glucose. Proteasen splitsen eiwitten tot aminozuren; pepsine werkt in de maag in een zuur milieu. Lipase (uit de alvleesklier) splitst vetten tot vetzuren en glycerol.\n\nGal (gemaakt in de lever, opgeslagen in de galblaas) bevat geen enzymen, maar emulgeert vet: het verdeelt grote vetdruppels in kleine druppeltjes, zodat lipase een groter oppervlak heeft en het vet sneller verteert. Elk enzym heeft een optimum-pH: pepsine werkt in het zure maagsap, de enzymen in de dunne darm juist in een meer basisch milieu.",
+        goals: [
+          "Je koppelt verteringsenzymen aan hun voedingsstof en product.",
+          "Je legt uit wat gal doet bij de vetvertering."
+        ],
+        cards: [
+          { term: "Verteringsenzym", def: "Enzym dat grote voedingsmoleculen splitst in opneembare bouwstenen." },
+          { term: "Amylase", def: "Enzym dat zetmeel/koolhydraten splitst tot glucose (speeksel, alvleessap)." },
+          { term: "Protease (o.a. pepsine)", def: "Enzym dat eiwitten splitst tot aminozuren; pepsine werkt in het zure maagsap." },
+          { term: "Lipase", def: "Enzym (alvleesklier) dat vetten splitst tot vetzuren en glycerol." },
+          { term: "Gal", def: "Vloeistof uit de lever (opgeslagen in de galblaas) die vet emulgeert; bevat geen enzymen." },
+          { term: "Emulgeren", def: "Grote vetdruppels verdelen in kleine druppeltjes, zodat lipase beter werkt." },
+          { term: "Monomeer/polymeer", def: "Kleine bouwsteen (monomeer) versus groot molecuul (polymeer) opgebouwd uit bouwstenen." },
+          { term: "Optimum-pH", def: "De zuurgraad waarbij een enzym het snelst werkt (bv. pepsine in zuur milieu)." }
+        ],
+        quiz: [
+          { q: "Welk enzym splitst zetmeel tot glucose?", options: ["Lipase", "Amylase", "Pepsine", "Protease"], answer: 1, explain: "Amylase splitst zetmeel/koolhydraten tot glucose." },
+          { q: "Wat splitst lipase?", options: ["Eiwitten", "Koolhydraten", "Vetten tot vetzuren en glycerol", "DNA"], answer: 2, explain: "Lipase splitst vetten in vetzuren en glycerol." },
+          { q: "Wat doet gal?", options: ["Eiwit verteren", "Vet emulgeren", "Zetmeel splitsen", "Glucose opnemen"], answer: 1, explain: "Gal emulgeert vet (kleine druppeltjes) zodat lipase beter werkt; het bevat zelf geen enzymen." },
+          { q: "In welk milieu werkt pepsine?", options: ["Basisch", "Neutraal", "Zuur (maag)", "Zonder water"], answer: 2, explain: "Pepsine heeft een optimum bij lage pH: het zure maagsap." },
+          { q: "Waartoe worden eiwitten verteerd?", options: ["Glucose", "Vetzuren", "Aminozuren", "Glycerol"], answer: 2, explain: "Proteasen splitsen eiwitten tot aminozuren." }
+        ],
+        sequences: []
+      },
+      {
+        id: "3",
+        title: "Opname en de rol van de lever",
+        summary: "De opname (resorptie) van verteerde voedingsstoffen gebeurt vooral in de dunne darm. De binnenwand heeft darmplooien, darmvlokken (villi) en microvilli, waardoor het oppervlak enorm groot is en de opname snel gaat. Glucose en aminozuren gaan naar de bloedcapillairen in de darmvlokken; vetzuren en glycerol worden grotendeels via de lymfevaten afgevoerd.\n\nHet bloed uit de darm gaat via de poortader eerst naar de lever. De lever regelt de bloedglucose (opslag als glycogeen), maakt gal en ontgift schadelijke stoffen; zo zet hij het giftige ammoniak om in ureum. In de dikke darm wordt vooral water (en zouten) opgenomen; wat overblijft verlaat als ontlasting het lichaam.",
+        goals: [
+          "Je legt uit hoe de bouw van de dunne darm de opname vergroot.",
+          "Je beschrijft de functies van de lever bij de vertering."
+        ],
+        cards: [
+          { term: "Resorptie (opname)", def: "Opname van verteerde voedingsstoffen in het bloed/de lymfe, vooral in de dunne darm." },
+          { term: "Darmvlok (villus)", def: "Uitstulping van de darmwand die het opnameoppervlak vergroot." },
+          { term: "Microvilli", def: "Nog kleinere uitstulpingen op de darmcellen; vergroten het oppervlak verder." },
+          { term: "Poortader", def: "Bloedvat dat bloed uit de darm eerst naar de lever voert." },
+          { term: "Lever", def: "Orgaan dat o.a. de bloedglucose regelt, gal maakt en giftige stoffen ontgift." },
+          { term: "Glycogeen", def: "Opslagvorm van glucose in de lever (en spieren)." },
+          { term: "Ontgifting / ureum", def: "De lever maakt giftige stoffen onschadelijk, bv. ammoniak → ureum." },
+          { term: "Dikke darm", def: "Hier worden vooral water en zouten opgenomen; de rest wordt ontlasting." }
+        ],
+        quiz: [
+          { q: "Waar worden voedingsstoffen vooral opgenomen?", options: ["In de maag", "In de dunne darm", "In de dikke darm", "In de slokdarm"], answer: 1, explain: "De opname (resorptie) gebeurt vooral in de dunne darm, met een groot oppervlak door de darmvlokken." },
+          { q: "Wat vergroot het opnameoppervlak van de dunne darm?", options: ["Peristaltiek", "Darmvlokken en microvilli", "Gal", "De poortader"], answer: 1, explain: "Darmplooien, darmvlokken (villi) en microvilli maken het oppervlak enorm groot." },
+          { q: "Waar gaat het bloed uit de darm eerst naartoe?", options: ["Naar het hart", "Naar de lever (via de poortader)", "Naar de nieren", "Naar de longen"], answer: 1, explain: "Via de poortader gaat het darmbloed eerst naar de lever." },
+          { q: "Hoe slaat de lever glucose op?", options: ["Als vet", "Als glycogeen", "Als ureum", "Als eiwit"], answer: 1, explain: "De lever slaat overtollige glucose op als glycogeen." },
+          { q: "Wat wordt er vooral opgenomen in de dikke darm?", options: ["Glucose", "Water en zouten", "Vetzuren", "Aminozuren"], answer: 1, explain: "In de dikke darm wordt vooral water (en zouten) opgenomen." }
+        ],
+        sequences: [
+          { title: "Weg van een boterham door de vertering", steps: ["Mond: kauwen + amylase (zetmeel)", "Slokdarm: peristaltiek", "Maag: pepsine in zuur milieu (eiwit)", "Dunne darm: enzymen + gal verteren verder", "Resorptie via darmvlokken", "Poortader → lever", "Dikke darm: wateropname → ontlasting"] }
+        ]
+      }
+    ],
+    exams: [
+      {
+        id: "vt-ex1",
+        title: "Waarom is vetvertering zonder gal traag?",
+        context: "Bij iemand van wie de galblaas is verwijderd en bij wie de galstroom is verstoord, verloopt de vertering van vet slechter. Onverteerd vet komt in de ontlasting terecht.",
+        question: "Leg uit waarom vet zonder (voldoende) gal slechter wordt verteerd. Gebruik in je antwoord het begrip emulgeren en het enzym lipase.",
+        points: 2,
+        model: [
+          "Gal emulgeert vet: het verdeelt grote vetdruppels in veel kleine druppeltjes, waardoor het totale oppervlak veel groter wordt (1 p).",
+          "Zonder gal blijft het vet in grote druppels; lipase kan dan maar op een klein oppervlak inwerken, zodat het vet langzaam/onvolledig wordt verteerd (1 p)."
+        ]
+      },
+      {
+        id: "vt-ex2",
+        title: "Bouw van de dunne darm",
+        context: "De binnenwand van de dunne darm is niet glad, maar zit vol plooien en darmvlokken met microvilli. De dunne darm is bovendien enkele meters lang.",
+        question: "Leg uit hoe deze bouw bijdraagt aan een efficiënte opname van voedingsstoffen.",
+        points: 2,
+        model: [
+          "De plooien, darmvlokken en microvilli (en de lengte) vergroten het inwendige oppervlak enorm (1 p).",
+          "Een groter oppervlak zorgt dat er meer voedingsstoffen tegelijk (sneller/vollediger) kunnen worden opgenomen in het bloed/de lymfe (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== TRANSPORT / BLOEDSOMLOOP ===================== */
+  {
+    id: "transport",
+    title: "Transport",
+    icon: "❤️",
+    theme: "t-rose",
+    domain: "Transport",
+    intro: "Je bloed vervoert stoffen door je hele lichaam. Je leert de bouw en werking van het hart, de verschillende bloedvaten met hun bloeddruk en stroomsnelheid, en de samenstelling en functies van bloed, weefselvloeistof en lymfe.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Het hart en de dubbele bloedsomloop",
+        summary: "De mens heeft een dubbele, gesloten bloedsomloop. In de kleine (long)bloedsomloop pompt de rechterkamer bloed naar de longen, waar het zuurstof opneemt; het komt terug in de linkerboezem. In de grote (lichaams)bloedsomloop pompt de linkerkamer zuurstofrijk bloed naar het lichaam; het komt terug in de rechterboezem.\n\nHet hart heeft vier holten: twee boezems (atria) en twee kamers (ventrikels), gescheiden door het harttussenschot. Hartkleppen zorgen dat het bloed maar één kant op stroomt: kleppen tussen boezem en kamer, en kleppen bij de aorta en de longslagader. De hartslag wordt op gang gebracht door de sinusknoop (gangmaker) en versneld of vertraagd door het autonome zenuwstelsel en adrenaline.",
+        goals: [
+          "Je beschrijft de bouw van het hart en de dubbele bloedsomloop.",
+          "Je legt uit hoe hartkleppen en de sinusknoop werken."
+        ],
+        cards: [
+          { term: "Dubbele bloedsomloop", def: "Bloed stroomt via twee circuits: langs de longen én langs het lichaam." },
+          { term: "Kleine (long)bloedsomloop", def: "Rechterkamer → longen → linkerboezem; hier neemt het bloed O2 op." },
+          { term: "Grote (lichaams)bloedsomloop", def: "Linkerkamer → lichaam → rechterboezem." },
+          { term: "Boezem (atrium)", def: "Holte die bloed ontvangt en naar de kamer pompt." },
+          { term: "Kamer (ventrikel)", def: "Holte die bloed het lichaam of de longen in pompt; heeft een dikke spierwand." },
+          { term: "Hartkleppen", def: "Kleppen die het bloed maar één kant op laten stromen." },
+          { term: "Harttussenschot", def: "Wand die de linker- en rechterharthelft scheidt (geen menging)." },
+          { term: "Sinusknoop", def: "De gangmaker die de hartslag op gang brengt (ritme)." }
+        ],
+        quiz: [
+          { q: "Welke holte pompt bloed het lichaam in?", options: ["Rechterkamer", "Linkerkamer", "Linkerboezem", "Rechterboezem"], answer: 1, explain: "De linkerkamer pompt zuurstofrijk bloed de grote bloedsomloop (het lichaam) in." },
+          { q: "Waar neemt het bloed zuurstof op?", options: ["In het lichaam", "In de longen (kleine bloedsomloop)", "In de lever", "In de nieren"], answer: 1, explain: "In de kleine bloedsomloop stroomt het bloed langs de longen en neemt daar O2 op." },
+          { q: "Wat is de functie van hartkleppen?", options: ["Het hart sneller laten kloppen", "Bloed maar één kant op laten stromen", "Bloed zuurstof geven", "De hartspier voeden"], answer: 1, explain: "Hartkleppen voorkomen terugstroom: het bloed stroomt maar één richting op." },
+          { q: "Wat doet de sinusknoop?", options: ["Bloed filteren", "De hartslag op gang brengen", "Zuurstof binden", "Kleppen sluiten"], answer: 1, explain: "De sinusknoop is de gangmaker die het ritme van de hartslag bepaalt." },
+          { q: "Waarom heeft de linkerkamer een dikkere wand dan de rechter?", options: ["Hij is groter", "Hij moet bloed door het hele lichaam pompen (hogere druk)", "Hij ligt hoger", "Hij ontvangt meer bloed"], answer: 1, explain: "De linkerkamer moet tegen een hoge druk in bloed door het hele lichaam pompen." }
+        ],
+        sequences: [
+          { title: "Weg van het bloed door hart en longen", steps: ["Lichaam → rechterboezem", "Rechterkamer", "Longslagader → longen (O2 op)", "Longader → linkerboezem", "Linkerkamer", "Aorta → lichaam"] }
+        ]
+      },
+      {
+        id: "2",
+        title: "Bloedvaten, bloeddruk en stroomsnelheid",
+        summary: "Er zijn drie soorten bloedvaten. Slagaders (arteriën) voeren bloed van het hart af; ze hebben een dikke, gespierde en elastische wand en een hoge bloeddruk die met de hartslag pulseert. Aders (venen) voeren bloed naar het hart toe; ze hebben een dunnere wand, een lage druk en aderkleppen die terugstromen tegengaan. Haarvaten (capillairen) hebben een wand van maar één cellaag, zodat er uitwisseling van stoffen met de weefsels mogelijk is.\n\nDe bloeddruk is het hoogst in de aorta en daalt geleidelijk richting de haarvaten. De stroomsnelheid is hoog in de aorta, het laagst in de haarvaten (samen hebben die de grootste doorsnede) — juist gunstig voor uitwisseling — en neemt in de aders weer wat toe richting het hart.",
+        goals: [
+          "Je beschrijft de bouw en functie van slagaders, aders en haarvaten.",
+          "Je legt het verloop van bloeddruk en stroomsnelheid uit."
+        ],
+        cards: [
+          { term: "Slagader (arterie)", def: "Voert bloed van het hart af; dikke, elastische, gespierde wand; hoge druk." },
+          { term: "Ader (vene)", def: "Voert bloed naar het hart toe; dunnere wand, lage druk, met aderkleppen." },
+          { term: "Haarvat (capillair)", def: "Vat met een wand van één cellaag; hier vindt uitwisseling met de weefsels plaats." },
+          { term: "Aderklep", def: "Klep in aders die terugstromen van bloed voorkomt." },
+          { term: "Bloeddruk", def: "De druk van het bloed op de vaatwand; hoog in de aorta, laag in de haarvaten." },
+          { term: "Systolisch/diastolisch", def: "Bovendruk (kamer knijpt samen) en onderdruk (kamer ontspant)." },
+          { term: "Stroomsnelheid", def: "De snelheid van het bloed; het laagst in de haarvaten (grootste totale doorsnede)." }
+        ],
+        quiz: [
+          { q: "Welk bloedvat voert bloed van het hart af?", options: ["Ader", "Slagader", "Haarvat", "Lymfevat"], answer: 1, explain: "Slagaders (arteriën) voeren bloed van het hart af; aders voeren het aan." },
+          { q: "Waar vindt uitwisseling van stoffen met de weefsels plaats?", options: ["In de slagaders", "In de aders", "In de haarvaten", "In het hart"], answer: 2, explain: "Haarvaten hebben een wand van één cellaag; daar wisselen stoffen uit met de weefsels." },
+          { q: "Waar is de bloeddruk het hoogst?", options: ["In de haarvaten", "In de aorta", "In de aders", "In de longader"], answer: 1, explain: "De bloeddruk is het hoogst in de aorta en daalt richting de haarvaten." },
+          { q: "Waarom is de stroomsnelheid het laagst in de haarvaten?", options: ["Ze zijn het langst", "Samen hebben ze de grootste doorsnede", "Ze liggen ver van het hart", "Ze hebben kleppen"], answer: 1, explain: "De gezamenlijke doorsnede van de haarvaten is het grootst; daardoor is de snelheid er het laagst (gunstig voor uitwisseling)." },
+          { q: "Wat doen aderkleppen?", options: ["Bloed zuurstof geven", "Terugstromen van bloed voorkomen", "De druk verhogen", "Bloed filteren"], answer: 1, explain: "Aderkleppen zorgen dat het bloed in de aders niet terugstroomt." }
+        ],
+        sequences: []
+      },
+      {
+        id: "3",
+        title: "Bloed, weefselvloeistof en lymfe",
+        summary: "Bloed bestaat uit bloedplasma en bloedcellen. Bloedplasma is water met opgeloste stoffen: voedingsstoffen, afvalstoffen, eiwitten en hormonen. De bloedcellen zijn: rode bloedcellen (erytrocyten), die met hemoglobine zuurstof vervoeren en geen celkern hebben; witte bloedcellen (leukocyten), die voor de afweer zorgen; en bloedplaatjes (trombocyten), die betrokken zijn bij de bloedstolling.\n\nIn de haarvaten wordt een deel van het plasma naar buiten geperst: dat is weefselvloeistof, die stoffen uitwisselt met de cellen. Het grootste deel keert terug in het bloed; de rest wordt via de lymfevaten als lymfe afgevoerd en komt uiteindelijk weer in het bloed. Lymfeknopen filteren de lymfe en spelen een rol bij de afweer.",
+        goals: [
+          "Je beschrijft de samenstelling en functies van bloed.",
+          "Je legt het verband uit tussen bloed, weefselvloeistof en lymfe."
+        ],
+        cards: [
+          { term: "Bloedplasma", def: "Vloeibaar deel van het bloed: water met o.a. voedingsstoffen, afvalstoffen, eiwitten en hormonen." },
+          { term: "Rode bloedcel (erytrocyt)", def: "Cel zonder kern met hemoglobine; vervoert zuurstof." },
+          { term: "Hemoglobine", def: "Ijzerhoudend eiwit in rode bloedcellen dat zuurstof bindt." },
+          { term: "Witte bloedcel (leukocyt)", def: "Bloedcel die zorgt voor de afweer tegen ziekteverwekkers." },
+          { term: "Bloedplaatje (trombocyt)", def: "Celfragment dat betrokken is bij de bloedstolling." },
+          { term: "Weefselvloeistof", def: "Uit de haarvaten geperst plasma dat stoffen uitwisselt met de cellen." },
+          { term: "Lymfe", def: "Weefselvloeistof die via de lymfevaten wordt afgevoerd en weer in het bloed komt." },
+          { term: "Lymfeknoop", def: "Verdikking in het lymfestelsel die de lymfe filtert; betrokken bij de afweer." }
+        ],
+        quiz: [
+          { q: "Wat vervoeren de rode bloedcellen?", options: ["Afvalstoffen", "Zuurstof (met hemoglobine)", "Antistoffen", "Hormonen"], answer: 1, explain: "Rode bloedcellen vervoeren met hemoglobine zuurstof; ze hebben geen kern." },
+          { q: "Welke cellen zorgen voor de afweer?", options: ["Rode bloedcellen", "Witte bloedcellen", "Bloedplaatjes", "Plasma"], answer: 1, explain: "Witte bloedcellen (leukocyten) verzorgen de afweer." },
+          { q: "Waarbij zijn bloedplaatjes betrokken?", options: ["Zuurstoftransport", "Bloedstolling", "Afweer", "Vertering"], answer: 1, explain: "Bloedplaatjes (trombocyten) spelen een rol bij de bloedstolling." },
+          { q: "Wat is weefselvloeistof?", options: ["Bloed in de aders", "Uit de haarvaten geperst plasma dat cellen omspoelt", "Lymfe in de knopen", "Maagsap"], answer: 1, explain: "Weefselvloeistof is uit de haarvaten geperst plasma dat stoffen met de cellen uitwisselt." },
+          { q: "Waar komt lymfe uiteindelijk terecht?", options: ["In de darm", "Weer in het bloed", "In de nieren", "In de longen"], answer: 1, explain: "Lymfe wordt via de lymfevaten afgevoerd en komt uiteindelijk weer in het bloed." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "tr-ex1",
+        title: "Dikte van de hartwand",
+        context: "Als je een hart doorsnijdt, zie je dat de wand van de linkerkamer veel dikker is dan die van de rechterkamer.",
+        question: "Verklaar het verschil in wanddikte tussen de linker- en de rechterkamer. Gebruik in je antwoord de twee bloedsomlopen.",
+        points: 2,
+        model: [
+          "De rechterkamer pompt bloed alleen naar de longen (kleine bloedsomloop), over een korte afstand en tegen een lage druk (1 p).",
+          "De linkerkamer pompt bloed door de hele grote bloedsomloop (het lichaam) en moet daarvoor een veel hogere druk leveren, dus heeft hij een dikkere spierwand (1 p)."
+        ]
+      },
+      {
+        id: "tr-ex2",
+        title: "Stroomsnelheid en uitwisseling",
+        context: "In de haarvaten is de stroomsnelheid van het bloed veel lager dan in de aorta, hoewel de haarvaten heel dun zijn.",
+        question: "Leg uit waarom de lage stroomsnelheid in de haarvaten gunstig is voor het lichaam.",
+        points: 2,
+        model: [
+          "In de haarvaten vindt de uitwisseling van stoffen (O2, voeding, afvalstoffen) met de weefsels plaats (1 p).",
+          "Doordat het bloed er langzaam stroomt, is er meer tijd voor deze uitwisseling, zodat die vollediger verloopt (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== GASWISSELING EN UITSCHEIDING ===================== */
+  {
+    id: "gaswisseling",
+    title: "Gaswisseling en uitscheiding",
+    icon: "🫁",
+    theme: "t-sky",
+    domain: "Gaswisseling & uitscheiding",
+    intro: "Je lichaam neemt zuurstof op, geeft koolstofdioxide af en verwijdert afvalstoffen. Je leert de bouw en werking van de longen (gaswisseling), de nieren (uitscheiding) en hoe deze organen de homeostase bewaken.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Ademhaling en gaswisseling",
+        summary: "Ingeademde lucht gaat via neus/mond → keel → luchtpijp → bronchiën → bronchiolen → longblaasjes (alveoli). In de longblaasjes vindt de gaswisseling plaats: door diffusie gaat zuurstof (O2) naar het bloed en koolstofdioxide (CO2) van het bloed naar de longblaasjes. Het zeer grote oppervlak, de dunne wand (één cellaag) en de vele haarvaten maken dit efficiënt.\n\nBij het inademen trekt het middenrif samen (wordt plat) en gaan de ribben omhoog: het borstvolume neemt toe, de druk in de longen daalt en lucht stroomt naar binnen. Bij uitademen ontspant het middenrif. De ademhaling wordt geregeld door het ademhalingscentrum in de hersenstam, dat vooral reageert op de CO2-concentratie in het bloed: meer CO2 → sneller en dieper ademen.",
+        goals: [
+          "Je beschrijft de weg van de lucht en de gaswisseling in de longblaasjes.",
+          "Je legt uit hoe de ademhalingsbewegingen en -regeling werken."
+        ],
+        cards: [
+          { term: "Longblaasje (alveolus)", def: "Klein blaasje in de long met een dunne wand waar de gaswisseling plaatsvindt." },
+          { term: "Gaswisseling", def: "Uitwisseling van O2 (naar bloed) en CO2 (uit bloed) in de longblaasjes." },
+          { term: "Diffusie", def: "Verplaatsing van stoffen van hoge naar lage concentratie; drijft de gaswisseling." },
+          { term: "Luchtpijp en bronchiën", def: "Buizen die de lucht van de keel naar de longblaasjes leiden." },
+          { term: "Middenrif", def: "Spier onder de longen; samentrekken → inademen, ontspannen → uitademen." },
+          { term: "Inademen/uitademen", def: "Borstvolume groter (druk lager) → lucht in; volume kleiner → lucht uit." },
+          { term: "Ademhalingscentrum", def: "Deel van de hersenstam dat de ademhaling regelt, vooral op basis van CO2." },
+          { term: "Groot oppervlak longblaasjes", def: "Zorgt samen met de dunne wand voor een snelle, efficiënte gaswisseling." }
+        ],
+        quiz: [
+          { q: "Waar vindt de gaswisseling plaats?", options: ["In de luchtpijp", "In de longblaasjes", "In het middenrif", "In de bronchiën"], answer: 1, explain: "De gaswisseling (O2 in, CO2 uit) vindt plaats in de longblaasjes (alveoli)." },
+          { q: "Door welk proces gaan O2 en CO2 door de wand?", options: ["Actief transport", "Diffusie", "Osmose van cellen", "Peristaltiek"], answer: 1, explain: "O2 en CO2 verplaatsen zich door diffusie (van hoge naar lage concentratie)." },
+          { q: "Wat gebeurt er bij het inademen?", options: ["Middenrif ontspant", "Middenrif trekt samen en het borstvolume neemt toe", "De longen krimpen", "De druk in de longen stijgt"], answer: 1, explain: "Bij inademen trekt het middenrif samen; het borstvolume neemt toe en de druk daalt, dus stroomt lucht in." },
+          { q: "Waarop reageert het ademhalingscentrum vooral?", options: ["Op de O2-concentratie", "Op de CO2-concentratie in het bloed", "Op de temperatuur", "Op de hartslag"], answer: 1, explain: "Het ademhalingscentrum in de hersenstam reageert vooral op de CO2-concentratie: meer CO2 → sneller ademen." },
+          { q: "Waardoor is de gaswisseling in de longen efficiënt?", options: ["Dikke wand", "Groot oppervlak en dunne wand met veel haarvaten", "Weinig bloedvaten", "Trage luchtstroom"], answer: 1, explain: "Het grote oppervlak, de dunne wand (één cellaag) en de vele haarvaten maken de gaswisseling efficiënt." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "De nieren en uitscheiding",
+        summary: "Uitscheiding is het verwijderen van afvalstoffen uit het bloed. De nieren verwijderen vooral ureum (afbraakproduct van eiwitten), overtollig water en zouten. De functionele eenheid van de nier is de nefron. In het nierkapsel (kapsel van Bowman) wordt bloed onder druk gefilterd: bij deze ultrafiltratie gaan kleine moleculen (water, glucose, zouten, ureum) de nierbuis in, terwijl bloedcellen en grote eiwitten in het bloed achterblijven.\n\nIn de nierbuisjes worden nuttige stoffen weer teruggeresorbeerd naar het bloed: (bijna) alle glucose, veel water en een deel van de zouten. Wat overblijft is urine (vooral water, ureum en zouten). De urine gaat via de urineleiders naar de urineblaas. Naast de nieren scheiden ook de longen (CO2 en water), de huid (zweet) en de lever (gal) stoffen uit.",
+        goals: [
+          "Je beschrijft hoe de nier bloed filtert en urine vormt.",
+          "Je noemt de uitscheidingsorganen en hun afvalstoffen."
+        ],
+        cards: [
+          { term: "Uitscheiding", def: "Het verwijderen van afvalstoffen uit het bloed/lichaam." },
+          { term: "Nier / nefron", def: "Uitscheidingsorgaan; de nefron is de functionele eenheid die urine vormt." },
+          { term: "Nierkapsel (kapsel van Bowman)", def: "Begin van de nefron waar het bloed wordt gefilterd." },
+          { term: "Ultrafiltratie", def: "Filtratie onder druk: kleine moleculen eruit, bloedcellen en eiwitten blijven achter." },
+          { term: "Terugresorptie", def: "Opname van nuttige stoffen (glucose, water, zouten) uit de nierbuis terug in het bloed." },
+          { term: "Ureum", def: "Afvalstof uit de afbraak van eiwitten (ammoniak), uitgescheiden via de nieren." },
+          { term: "Urine", def: "Wat na terugresorptie overblijft: water, ureum en zouten." },
+          { term: "Uitscheidingsorganen", def: "Nieren (urine), longen (CO2/water), huid (zweet) en lever (gal)." }
+        ],
+        quiz: [
+          { q: "Wat is de belangrijkste afvalstof die de nieren verwijderen?", options: ["Glucose", "Ureum", "Zuurstof", "Eiwitten"], answer: 1, explain: "De nieren verwijderen vooral ureum (afbraak van eiwitten), plus overtollig water en zouten." },
+          { q: "Wat gebeurt er bij ultrafiltratie?", options: ["Urine wordt geconcentreerd", "Bloed wordt onder druk gefilterd (kleine moleculen eruit)", "Glucose wordt gemaakt", "CO2 wordt uitgeademd"], answer: 1, explain: "Bij ultrafiltratie in het nierkapsel gaan kleine moleculen de nierbuis in; bloedcellen en eiwitten blijven achter." },
+          { q: "Wat gebeurt er met glucose in een gezonde nier?", options: ["Het verdwijnt in de urine", "Het wordt (bijna) volledig teruggeresorbeerd", "Het wordt afgebroken tot ureum", "Het blijft in het kapsel"], answer: 1, explain: "Glucose is nuttig en wordt in de nierbuisjes (bijna) volledig teruggeresorbeerd naar het bloed." },
+          { q: "Welk orgaan scheidt CO2 uit?", options: ["De nieren", "De longen", "De lever", "De darm"], answer: 1, explain: "De longen scheiden CO2 (en water) uit; de nieren scheiden ureum uit." },
+          { q: "Waar wordt urine opgeslagen?", options: ["In de nier", "In de urineblaas", "In de lever", "In de darm"], answer: 1, explain: "Urine gaat via de urineleiders naar de urineblaas." }
+        ],
+        sequences: [
+          { title: "Vorming van urine in de nefron", steps: ["Bloed komt in het nierkapsel", "Ultrafiltratie: kleine moleculen naar de nierbuis", "Terugresorptie van glucose, water en zouten", "Overblijvende vloeistof = urine", "Urine via urineleider naar de blaas"] }
+        ]
+      },
+      {
+        id: "3",
+        title: "Homeostase: osmoregulatie en thermoregulatie",
+        summary: "De nieren zijn belangrijk voor de homeostase van het inwendige milieu. Ze regelen de hoeveelheid water en zouten: de osmoregulatie. Bij een tekort aan water maakt de hypofyse meer van het hormoon ADH; dat laat de nierbuizen extra water terugresorberen, zodat je weinig, geconcentreerde urine maakt. Bij veel water komt er weinig ADH vrij en produceer je veel, verdunde urine.\n\nDe huid draagt bij aan de thermoregulatie. Bij warmte verwijden de huidbloedvaten en ga je zweten; verdampend zweet onttrekt warmte aan het lichaam. Bij kou vernauwen de huidbloedvaten en ga je rillen. Zo houdt het lichaam de temperatuur, het watergehalte en het zoutgehalte binnen nauwe grenzen, via negatieve terugkoppeling.",
+        goals: [
+          "Je legt uit hoe de nieren met ADH het watergehalte regelen (osmoregulatie).",
+          "Je legt uit hoe de huid bijdraagt aan de thermoregulatie."
+        ],
+        cards: [
+          { term: "Homeostase", def: "Het handhaven van een constant inwendig milieu (temperatuur, water, zouten)." },
+          { term: "Osmoregulatie", def: "Het regelen van het water- en zoutgehalte van het lichaam." },
+          { term: "ADH", def: "Hormoon uit de hypofyse dat de nierbuizen meer water laat terugresorberen." },
+          { term: "Terugresorptie van water", def: "Opname van water uit de nierbuis terug in het bloed; bepaalt hoe geconcentreerd de urine is." },
+          { term: "Thermoregulatie", def: "Het constant houden van de lichaamstemperatuur." },
+          { term: "Zweten", def: "Afgifte van zweet; verdamping onttrekt warmte aan het lichaam (koelt af)." },
+          { term: "Negatieve terugkoppeling", def: "Terugkoppeling die een afwijking corrigeert richting de streefwaarde." },
+          { term: "Inwendig milieu", def: "De vloeistof rond de cellen (weefselvloeistof/bloed) die constant gehouden wordt." }
+        ],
+        quiz: [
+          { q: "Wat regelt de osmoregulatie?", options: ["De lichaamstemperatuur", "Het water- en zoutgehalte", "De bloedglucose", "De hartslag"], answer: 1, explain: "Osmoregulatie is het regelen van het water- en zoutgehalte van het lichaam." },
+          { q: "Wat doet het hormoon ADH?", options: ["Verlaagt de bloedglucose", "Laat de nieren meer water terugresorberen", "Verhoogt de temperatuur", "Maakt urine aan"], answer: 1, explain: "ADH laat de nierbuizen extra water terugresorberen, zodat je weinig, geconcentreerde urine maakt." },
+          { q: "Wat gebeurt er als je veel water drinkt?", options: ["Veel ADH, weinig urine", "Weinig ADH, veel verdunde urine", "Meer zweten", "Geen effect op de urine"], answer: 1, explain: "Bij veel water komt er weinig ADH vrij, zodat je veel, verdunde urine produceert." },
+          { q: "Hoe koelt zweten je af?", options: ["Het isoleert de huid", "Verdampend zweet onttrekt warmte aan het lichaam", "Het verwarmt de huid", "Het vernauwt de bloedvaten"], answer: 1, explain: "Verdampend zweet onttrekt warmte aan de huid, waardoor je afkoelt." },
+          { q: "Homeostase werkt meestal via...", options: ["Positieve terugkoppeling", "Negatieve terugkoppeling", "Toeval", "Diffusie"], answer: 1, explain: "Homeostase gebruikt vooral negatieve terugkoppeling: afwijkingen worden gecorrigeerd." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "gu-ex1",
+        title: "Snellere ademhaling bij inspanning",
+        context: "Als je hard sport, gaan je spieren meer verbranden. Je gaat vanzelf sneller en dieper ademen, ook al denk je er niet bij na.",
+        question: "Leg uit hoe het komt dat je bij inspanning automatisch sneller gaat ademen. Gebruik in je antwoord CO2 en het ademhalingscentrum.",
+        points: 3,
+        model: [
+          "Bij inspanning verbranden de spieren meer, waardoor er meer CO2 in het bloed ontstaat (1 p).",
+          "Het ademhalingscentrum in de hersenstam meet de verhoogde CO2-concentratie (1 p).",
+          "Het ademhalingscentrum laat je daardoor sneller en dieper ademen, zodat er meer O2 wordt opgenomen en CO2 wordt afgevoerd (1 p)."
+        ]
+      },
+      {
+        id: "gu-ex2",
+        title: "Weinig gedronken, donkere urine",
+        context: "Iemand heeft een hele dag intensief gesport en weinig gedronken. Aan het eind van de dag plast hij weinig en is zijn urine donker en geconcentreerd.",
+        question: "Leg met het hormoon ADH uit waarom de urine dan geconcentreerd is. Gebruik het begrip terugresorptie.",
+        points: 2,
+        model: [
+          "Door het watertekort geeft de hypofyse meer ADH af (1 p).",
+          "ADH zorgt dat de nierbuizen meer water terugresorberen naar het bloed, zodat er weinig, geconcentreerde (donkere) urine overblijft (1 p)."
+        ]
+      }
+    ]
   }
 ];
 
@@ -1526,9 +1884,9 @@ const CURRICULUM = {
           { num: "7", title: "Ecologie en milieu", topic: "ecologie" },
           { num: "8", title: "Stofwisseling in de cel", topic: "stofwisseling" },
           { num: "9", title: "DNA", topic: "dna" },
-          { num: "10", title: "Voeding en vertering", topic: null },
-          { num: "11", title: "Transport", topic: null },
-          { num: "12", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "10", title: "Voeding en vertering", topic: "vertering" },
+          { num: "11", title: "Transport", topic: "transport" },
+          { num: "12", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "13", title: "Afweer", topic: "afweer" },
           { num: "14", title: "Samenhang in de biologie", topic: null }
         ]
@@ -1541,14 +1899,14 @@ const CURRICULUM = {
           { num: "3", title: "Onderzoek doen", topic: null },
           { num: "4", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
           { num: "5", title: "Voeding en energie", topic: "stofwisseling" },
-          { num: "6", title: "Voeding, vertering en gezondheid", topic: null },
+          { num: "6", title: "Voeding, vertering en gezondheid", topic: "vertering" },
           { num: "7", title: "Soorten en relaties", topic: null },
           { num: "8", title: "Ecosystemen en evenwicht", topic: "ecologie" },
           { num: "9", title: "Erfelijkheid", topic: "erfelijkheid" },
           { num: "10", title: "Evolutie", topic: "evolutie" },
-          { num: "11", title: "Transport", topic: null },
+          { num: "11", title: "Transport", topic: "transport" },
           { num: "12", title: "Gezondheid", topic: "afweer" },
-          { num: "13", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "13", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "14", title: "Reageren", topic: "zenuwstelsel" },
           { num: "15", title: "Op weg naar het examen", topic: null }
         ]
@@ -1574,9 +1932,9 @@ const CURRICULUM = {
           { num: "9", title: "Stofwisseling in de cel", topic: "stofwisseling" },
           { num: "10", title: "DNA", topic: "dna" },
           { num: "11", title: "Planten", topic: null },
-          { num: "12", title: "Voeding en vertering", topic: null },
-          { num: "13", title: "Transport", topic: null },
-          { num: "14", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "12", title: "Voeding en vertering", topic: "vertering" },
+          { num: "13", title: "Transport", topic: "transport" },
+          { num: "14", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "15", title: "Afweer", topic: "afweer" },
           { num: "16", title: "Samenhang in de biologie", topic: null }
         ]
@@ -1593,9 +1951,9 @@ const CURRICULUM = {
           { num: "7", title: "Evolutie", topic: "evolutie" },
           { num: "8", title: "Kenmerken van ecosystemen", topic: "ecologie" },
           { num: "9", title: "Systeem Aarde en de mens", topic: null },
-          { num: "10", title: "Bloedsomloop", topic: null },
-          { num: "11", title: "Voeding en vertering", topic: null },
-          { num: "12", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "10", title: "Bloedsomloop", topic: "transport" },
+          { num: "11", title: "Voeding en vertering", topic: "vertering" },
+          { num: "12", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "13", title: "Hormonen", topic: "hormonen" },
           { num: "14", title: "Zenuwstelsel", topic: "zenuwstelsel" },
           { num: "15", title: "Waarnemen", topic: "waarnemen" },

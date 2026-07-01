@@ -214,7 +214,7 @@
           <h3>${esc(ch.title)}</h3>
           <div class="ch-meta">Inhoud in ontwikkeling</div>
           <div class="ch-foot"><span class="soon-pill">Binnenkort</span></div>`;
-        card.onclick = () => mascotSay("Dit hoofdstuk wordt nog toegevoegd. Er zijn al 10 hoofdstukken volledig uitgewerkt — kies er een met een gekleurde balk! ✨");
+        card.onclick = () => mascotSay("Dit hoofdstuk wordt nog toegevoegd. Er zijn al veel hoofdstukken volledig uitgewerkt — kies er een met een gekleurde balk! ✨");
       }
       grid.appendChild(card);
     });

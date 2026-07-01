@@ -25,7 +25,7 @@ titel** voor de gekozen methode en niveau, op basis van de officiële
 inhoudsopgaven (Biologie voor Jou 7e editie met thema-nummering; Nectar editie
 4.1 met doorlopende hoofdstuknummering).
 
-Nu volledig uitgewerkt zijn **10 onderwerpen** die het grootste deel van het
+Nu volledig uitgewerkt zijn **13 onderwerpen** die het grootste deel van het
 examenprogramma dekken:
 
 - **Zenuwstelsel**, **Waarnemen**, **Hormonen & homeostase** (domein Regeling)
@@ -35,6 +35,9 @@ examenprogramma dekken:
 - **Evolutie**
 - **Ecologie**
 - **Stofwisseling in de cel** (enzymen, dissimilatie, fotosynthese)
+- **Voeding en vertering**
+- **Transport** (hart, bloedvaten, bloed)
+- **Gaswisseling en uitscheiding** (longen, nieren, homeostase)
 
 Deze onderwerpen worden gedeeld tussen de methodes en niveaus en gekoppeld aan
 het juiste hoofdstuk. De overige hoofdstukken staan als "binnenkort" in het

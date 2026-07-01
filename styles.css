@@ -123,6 +123,9 @@ main { max-width: 680px; margin: 0 auto; padding: 22px clamp(14px, 3vw, 20px) 12
 .t-indigo{ --acc: #6c8cff; --acc-d: #4d6ce0; --acc-soft: #e2e8ff; }
 .t-lime  { --acc: #7cb518; --acc-d: #649413; --acc-soft: #eaf7cd; }
 .t-amber { --acc: #f0a500; --acc-d: #cf8b00; --acc-soft: #ffeec2; }
+.t-brown { --acc: #c1741a; --acc-d: #9c5c12; --acc-soft: #f6e6cf; }
+.t-rose  { --acc: #f43f5e; --acc-d: #d92544; --acc-soft: #ffe0e6; }
+.t-sky   { --acc: #0ea5e9; --acc-d: #0284c7; --acc-soft: #d6f0fd; }
 
 /* section title with a count */
 .section-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 30px 4px 14px; flex-wrap: wrap; }
