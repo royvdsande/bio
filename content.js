@@ -16,7 +16,8 @@
                  (examenopgave in examenstijl mét puntenantwoordmodel)
    CURRICULUM     -> per niveau (havo/vwo) de hoofdstuk-indeling,
                      met per methode de hoofdstuknaam. Een hoofdstuk
-                     verwijst naar een topic (of null = in ontwikkeling).
+                     verwijst naar een topic (basis in content.js,
+                     aanvullingen in remaining-content.js).
    ============================================================ */
 
 /* ---------- methodes ---------- */
@@ -2041,8 +2042,8 @@ const TOPICS = [
    met de juiste hoofdstuknummers en -titels (bovenbouw):
      • Biologie voor Jou (7e editie) — thema-nummering
      • Nectar (editie 4.1) — doorlopende hoofdstuknummering
-   Elk hoofdstuk verwijst met 'topic' naar de uitgewerkte leerstof
-   (of null als de inhoud nog in ontwikkeling is).
+   Elk hoofdstuk verwijst met 'topic' naar de uitgewerkte leerstof.
+   De resterende aanvullingen staan in remaining-content.js.
    Bron: officiële inhoudsopgaven/thema-overzichten van de methodes.
    ============================================================ */
 const CURRICULUM = {
@@ -2054,7 +2055,7 @@ const CURRICULUM = {
       bvj: {
         editie: "7e editie",
         chapters: [
-          { num: "1", title: "Inleiding in de biologie", topic: null },
+          { num: "1", title: "Inleiding in de biologie", topic: "inleiding-biologie" },
           { num: "2", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
           { num: "3", title: "Genetica", topic: "erfelijkheid" },
           { num: "4", title: "Evolutie", topic: "evolutie" },
@@ -2067,19 +2068,19 @@ const CURRICULUM = {
           { num: "11", title: "Transport", topic: "transport" },
           { num: "12", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "13", title: "Afweer", topic: "afweer" },
-          { num: "14", title: "Samenhang in de biologie", topic: null }
+          { num: "14", title: "Samenhang in de biologie", topic: "samenhang-biologie" }
         ]
       },
       nectar: {
         editie: "editie 4.1",
         chapters: [
           { num: "1", title: "Gedrag", topic: "gedrag" },
-          { num: "2", title: "Cellen", topic: null },
-          { num: "3", title: "Onderzoek doen", topic: null },
+          { num: "2", title: "Cellen", topic: "cellen" },
+          { num: "3", title: "Onderzoek doen", topic: "onderzoek" },
           { num: "4", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
           { num: "5", title: "Voeding en energie", topic: "stofwisseling" },
           { num: "6", title: "Voeding, vertering en gezondheid", topic: "vertering" },
-          { num: "7", title: "Soorten en relaties", topic: null },
+          { num: "7", title: "Soorten en relaties", topic: "soorten-populaties" },
           { num: "8", title: "Ecosystemen en evenwicht", topic: "ecologie" },
           { num: "9", title: "Erfelijkheid", topic: "erfelijkheid" },
           { num: "10", title: "Evolutie", topic: "evolutie" },
@@ -2087,7 +2088,7 @@ const CURRICULUM = {
           { num: "12", title: "Gezondheid", topic: "afweer" },
           { num: "13", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "14", title: "Reageren", topic: "zenuwstelsel" },
-          { num: "15", title: "Op weg naar het examen", topic: null }
+          { num: "15", title: "Op weg naar het examen", topic: "examenvaardigheden" }
         ]
       }
     }
@@ -2100,36 +2101,36 @@ const CURRICULUM = {
       bvj: {
         editie: "7e editie",
         chapters: [
-          { num: "1", title: "Inleiding in de biologie", topic: null },
+          { num: "1", title: "Inleiding in de biologie", topic: "inleiding-biologie" },
           { num: "2", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
           { num: "3", title: "Genetica", topic: "erfelijkheid" },
           { num: "4", title: "Evolutie", topic: "evolutie" },
           { num: "5", title: "Ecologie", topic: "ecologie" },
-          { num: "6", title: "Mens en milieu", topic: null },
+          { num: "6", title: "Mens en milieu", topic: "mens-milieu" },
           { num: "7", title: "Regeling", topic: "hormonen" },
           { num: "8", title: "Waarneming en gedrag", topic: "waarnemen" },
           { num: "9", title: "Stofwisseling in de cel", topic: "stofwisseling" },
           { num: "10", title: "DNA", topic: "dna" },
-          { num: "11", title: "Planten", topic: null },
+          { num: "11", title: "Planten", topic: "planten" },
           { num: "12", title: "Voeding en vertering", topic: "vertering" },
           { num: "13", title: "Transport", topic: "transport" },
           { num: "14", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
           { num: "15", title: "Afweer", topic: "afweer" },
-          { num: "16", title: "Samenhang in de biologie", topic: null }
+          { num: "16", title: "Samenhang in de biologie", topic: "samenhang-biologie" }
         ]
       },
       nectar: {
         editie: "editie 4.1",
         chapters: [
           { num: "1", title: "Gedrag", topic: "gedrag" },
-          { num: "2", title: "Cel en leven", topic: null },
-          { num: "3", title: "Wetenschappelijk onderzoek", topic: null },
+          { num: "2", title: "Cel en leven", topic: "cellen" },
+          { num: "3", title: "Wetenschappelijk onderzoek", topic: "onderzoek" },
           { num: "4", title: "Voortplanting", topic: "voortplanting" },
           { num: "5", title: "Erfelijkheid", topic: "erfelijkheid" },
-          { num: "6", title: "Soorten en populaties", topic: null },
+          { num: "6", title: "Soorten en populaties", topic: "soorten-populaties" },
           { num: "7", title: "Evolutie", topic: "evolutie" },
           { num: "8", title: "Kenmerken van ecosystemen", topic: "ecologie" },
-          { num: "9", title: "Systeem Aarde en de mens", topic: null },
+          { num: "9", title: "Systeem Aarde en de mens", topic: "mens-milieu" },
           { num: "10", title: "Bloedsomloop", topic: "transport" },
           { num: "11", title: "Voeding en vertering", topic: "vertering" },
           { num: "12", title: "Gaswisseling en uitscheiding", topic: "gaswisseling" },
@@ -2139,8 +2140,8 @@ const CURRICULUM = {
           { num: "16", title: "Afweer", topic: "afweer" },
           { num: "17", title: "DNA", topic: "dna" },
           { num: "18", title: "Eiwitten", topic: "stofwisseling" },
-          { num: "19", title: "Sport", topic: null },
-          { num: "20", title: "Planten", topic: null }
+          { num: "19", title: "Sport", topic: "sport" },
+          { num: "20", title: "Planten", topic: "planten" }
         ]
       }
     }

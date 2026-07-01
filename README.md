@@ -13,7 +13,7 @@ je alleen inzet wanneer jíj dat wilt.
 ## Wat kan je ermee?
 
 Na het kiezen van niveau + methode zie je een **overzicht met alle
-hoofdstukken**. Elk volledig uitgewerkt hoofdstuk biedt vier tabbladen:
+hoofdstukken**. Elk hoofdstuk biedt in elk geval vier leertabbladen:
 
 - 📖 **Theorie** — de samengevatte leerstof met heldere uitleg en leerdoelen per paragraaf.
 - 🃏 **Flitskaarten** — alle begrippen, met **spaced repetition** (Leitner): moeilijke kaarten komen vaker terug.
@@ -25,8 +25,7 @@ titel** voor de gekozen methode en niveau, op basis van de officiële
 inhoudsopgaven (Biologie voor Jou 7e editie met thema-nummering; Nectar editie
 4.1 met doorlopende hoofdstuknummering).
 
-Nu volledig uitgewerkt zijn **13 onderwerpen** die het grootste deel van het
-examenprogramma dekken:
+Volledig uitgewerkt zijn de kernonderwerpen én de aanvullende methodehoofdstukken:
 
 - **Zenuwstelsel**, **Waarnemen**, **Hormonen & homeostase** (domein Regeling)
 - **Afweer** (immuunsysteem, bloedgroepen)
@@ -38,10 +37,13 @@ examenprogramma dekken:
 - **Voeding en vertering**
 - **Transport** (hart, bloedvaten, bloed)
 - **Gaswisseling en uitscheiding** (longen, nieren, homeostase)
+- **Gedrag**, **Cellen**, **Onderzoek doen**, **Soorten en populaties**
+- **Mens en milieu**, **Planten**, **Sport**
+- **Inleiding in de biologie**, **Samenhang in de biologie** en **Op weg naar het examen**
 
 Deze onderwerpen worden gedeeld tussen de methodes en niveaus en gekoppeld aan
-het juiste hoofdstuk. De overige hoofdstukken staan als "binnenkort" in het
-overzicht en zijn eenvoudig uit te breiden via `content.js`.
+het juiste hoofdstuk. Nectar-hoofdstukken behouden daarnaast hun videoleerlijn
+waar die beschikbaar is. Biologie voor Jou gebruikt geen video-tabblad.
 
 Daarnaast: 🔥 **XP, levels en een dagelijkse streak**, een **slimme sessie**
 (adaptieve mix die op je zwakke plekken focust) en een **examentraining**
@@ -91,6 +93,7 @@ De app probeert altijd eerst de server-route (`/api/ai`) en valt anders terug op
 | `index.html` | Pagina-structuur |
 | `styles.css` | Vormgeving (speels, licht thema) |
 | `content.js` | Alle leerstof: methodes, curriculum (HAVO/VWO), hoofdstukken met theorie, begrippen, oefenvragen en examenopgaven met antwoordmodel |
+| `remaining-content.js` | Aanvullende leerstof en runtime-koppelingen voor de resterende hoofdstukken |
 | `app.js` | De engine: overzicht, hoofdstuk-tabbladen, quiz, flitskaarten, examenopgaven, AI, XP/streak |
 | `api/ai.js` | Vercel serverless proxy naar OpenAI |
 
