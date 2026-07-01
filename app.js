@@ -92,7 +92,7 @@
   /* ---------- videoleerlijn ---------- */
   const hasVideos = (topic) => Array.isArray(topic.videos) && topic.videos.length > 0;
   const allVideos = (topic) => hasVideos(topic) ? topic.videos.reduce((a, s) => a.concat(s.items), []) : [];
-  const vkey = (topic, item) => topic.id + ":vid:" + (parseYouTube(item.url).id || item.url);
+  const vkey = (topic, item) => (topic.videoKey || topic.id) + ":vid:" + (parseYouTube(item.url).id || item.url);
   function videoProgress(topic) {
     const all = allVideos(topic); if (!all.length) return 0;
     const seen = all.filter(it => state.videos[vkey(topic, it)]).length;
@@ -106,6 +106,38 @@
     const tm = url.match(/[?&]t=(\d+)/) || url.match(/[?&]start=(\d+)/);
     if (tm) out.start = parseInt(tm[1], 10) || 0;
     return out;
+  }
+
+  function chapterTopic(chapter, levelId, methodId) {
+    const base = chapter.topic ? getTopic(chapter.topic) : null;
+    const chapterVideos = Array.isArray(chapter.videos) && chapter.videos.length ? chapter.videos : null;
+    const videos = chapterVideos || (base && base.videos);
+    if (!base && !videos) return null;
+
+    const topic = Object.assign({
+      id: `${methodId}-${levelId}-${chapter.num}`,
+      title: chapter.title,
+      icon: "🎬",
+      theme: "t-blue",
+      domain: "Videoleerlijn",
+      intro: `${METHODS[methodId]?.name || "Methode"} ${levelId.toUpperCase()} hoofdstuk ${chapter.num}: bekijk de videoleerlijn bij ${chapter.title}.`,
+      paragraphs: [],
+      exams: []
+    }, base || {});
+
+    topic.title = chapter.title || topic.title;
+    if (videos) topic.videos = videos;
+    if (chapterVideos || !base) topic.videoKey = `${levelId}:${methodId}:${chapter.num}`;
+    topic.chapterRef = { levelId, methodId, num: chapter.num };
+    return topic;
+  }
+
+  function chapterTopicFromRef(ref) {
+    if (!ref) return null;
+    const levelData = CURRICULUM[ref.levelId];
+    const chapters = levelData && levelData.methodes[ref.methodId] && levelData.methodes[ref.methodId].chapters;
+    const chapter = chapters && chapters.find(ch => ch.num === ref.num);
+    return chapter ? chapterTopic(chapter, ref.levelId, ref.methodId) : null;
   }
 
   /* ---------- topbar ---------- */
@@ -212,13 +244,13 @@
     /* chapters grid */
     const chapters = cur.methodes[m.id].chapters;
     const editie = cur.methodes[m.id].editie;
-    const ready = chapters.filter(ch => ch.topic && getTopic(ch.topic)).length;
+    const ready = chapters.filter(ch => chapterTopic(ch, cur.id, m.id)).length;
     const st = el("div", "section-title-row");
     st.innerHTML = `<span class="section-title" style="margin:0">Hoofdstukken · ${esc(m.name)} (${esc(editie)})</span><span class="st-count">${ready}/${chapters.length} beschikbaar</span>`;
     v.appendChild(st);
     const grid = el("div", "chapters stagger");
     chapters.forEach(ch => {
-      const topic = ch.topic ? getTopic(ch.topic) : null;
+      const topic = chapterTopic(ch, cur.id, m.id);
       const card = el("div", "chapter" + (topic ? "" : " soon"));
       if (topic) {
         const pct = topicProgress(topic);
@@ -226,14 +258,14 @@
         const videoOnly = !topic.paragraphs.length && hasVideos(topic);
         const meta = videoOnly
           ? `${allVideos(topic).length} video's · videoleerlijn`
-          : `${topic.paragraphs.length} paragrafen · ${topic.exams.length} examenopgaven`;
+          : `${topic.paragraphs.length} paragrafen${hasVideos(topic) ? " · " + allVideos(topic).length + " video's" : ""} · ${topic.exams.length} examenopgaven`;
         card.innerHTML = `
           <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">${topic.icon}</span><span class="ch-domain">${esc(topic.domain)}</span></div>
           <h3>${esc(ch.title)}</h3>
           <div class="ch-meta">${meta}</div>
           <div class="ch-bar"><span style="width:0%"></span></div>
           <div class="ch-foot"><span class="ch-pct">${pct}% ${videoOnly ? "bekeken" : "beheerst"}</span><span class="ch-go">Open →</span></div>`;
-        card.onclick = () => go(renderChapter, topic.id);
+        card.onclick = () => go(renderChapter, topic.id, undefined, topic.chapterRef);
         requestAnimationFrame(() => { const b = card.querySelector(".ch-bar > span"); if (b) b.style.width = pct + "%"; });
       } else {
         card.innerHTML = `
@@ -302,18 +334,19 @@
   /* ===================================================================
      HOOFDSTUK — tabbladen
      =================================================================== */
-  function renderChapter(topicId, tab) {
-    const topic = getTopic(topicId);
+  function renderChapter(topicId, tab, chapterRef) {
+    const topic = chapterTopicFromRef(chapterRef) || getTopic(topicId);
     if (!topic) return go(renderHome);
+    const activeChapterRef = chapterRef || topic.chapterRef || null;
 
     const TAB_DEFS = [];
-    if (hasVideos(topic)) TAB_DEFS.push(["videos", icon("video"), "Video's"]);
     if (topic.paragraphs.length) TAB_DEFS.push(
       ["theorie", icon("book"), "Theorie"],
       ["flitskaarten", icon("cards"), "Flitskaarten"],
       ["oefenvragen", icon("quiz"), "Oefenvragen"],
       ["examen", icon("exam"), "Examenopgaven"]
     );
+    if (hasVideos(topic)) TAB_DEFS.push(["videos", icon("video"), "Video's"]);
     const validTabs = TAB_DEFS.map(t => t[0]);
     if (!validTabs.includes(tab)) tab = validTabs[0] || "theorie";
 
@@ -334,7 +367,7 @@
     const tabs = el("div", "tabs");
     TAB_DEFS.forEach(([id, ic, label]) => {
       const t = el("button", "tab" + (id === tab ? " on" : ""), `${ic}<span>${label}</span>`);
-      t.onclick = () => go(renderChapter, topicId, id);
+      t.onclick = () => go(renderChapter, topicId, id, activeChapterRef);
       tabs.appendChild(t);
     });
     v.appendChild(tabs);

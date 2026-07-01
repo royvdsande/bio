@@ -193,8 +193,7 @@ main { max-width: 680px; margin: 0 auto; padding: 22px clamp(14px, 3vw, 20px) 12
 .ch-banner-bar > span { display: block; height: 100%; border-radius: 999px; background: #fff; }
 .ch-banner-meta { color: rgba(255,255,255,.95); font-weight: 800; font-size: 12px; margin-top: 7px; }
 
-.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; overflow: visible; padding-bottom: 4px; margin-bottom: 18px; }
 .tab { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; background: #fff; border: 2px solid var(--line);
   color: var(--muted-2); padding: 10px 16px; border-radius: 999px; font-weight: 800; font-size: 14px; box-shadow: 0 3px 0 var(--line); transition: transform .1s, border-color .15s, color .15s; }
 .tab .ic { width: 18px; height: 18px; }
