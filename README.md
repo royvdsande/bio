@@ -1,31 +1,45 @@
-# 🧬 BioQuest — SE Biologie spelend leren
+# 🧬 BioQuest — Biologie HAVO & VWO leren en oefenen
 
-Een speelse, visuele leerwebsite voor het schoolexamen biologie, gebaseerd op
-de drie hoofdstukken:
+Een speelse, overzichtelijke leerwebsite voor biologie in de bovenbouw van
+**HAVO en VWO**. Je kiest je **niveau** (HAVO/VWO) en je **methode**
+(**Biologie voor Jou** of **Nectar**) en krijgt per hoofdstuk alles wat je
+nodig hebt om te leren én te oefenen — met een speels, motiverend jasje en
+optionele AI-hulp.
 
-- **H14 — Zenuwstelsel** 🧠 (neuronen, hersenen, impulsgeleiding, synapsen, autonoom zenuwstelsel)
-- **H15 — Waarnemen** 👁️ (evenwicht, gehoor, oog, netvlies, zintuigen & regeling)
-- **H16 — Afweer** 🛡️ (aangeboren & verworven afweer, immuniteit, bloedgroepen)
+Het idee: biologiepagina.nl, maar dan met een strak, gebruiksvriendelijk
+ontwerp, speelse features (XP, streak, combo's, confetti) en AI-integratie die
+je alleen inzet wanneer jíj dat wilt.
 
-## Wat zit erin?
+## Wat kan je ermee?
 
-- 🗺️ **3 werelden** met in totaal 15 levels (de paragrafen), gepresenteerd als levelpad
-- 📖 **Lees-modus**: per paragraaf een heldere samenvatting + alle begrippen
-- ⚡ **Quizzen** met directe feedback, combo-multiplier, confetti en geluid
-- 🃏 **Flashcards** met **spaced repetition** (Leitner): moeilijke begrippen komen vaker terug
-- 🔢 **Proces-puzzels**: zet stappen (actiepotentiaal, synaps, afweer, allergie…) in de juiste volgorde
-- 🔥 **XP, levels en een dagelijkse streak** voor de motivatie
+Na het kiezen van niveau + methode zie je een **overzicht met alle
+hoofdstukken**. Elk volledig uitgewerkt hoofdstuk biedt vier tabbladen:
 
-### Diepe AI-integratie (OpenAI)
-De AI is overal verweven, niet alleen een losse chatbot — en wordt **strikt gegrond op de
-samenvatting + begrippen** van de paragraaf, zodat de inhoud klopt:
+- 📖 **Theorie** — de samengevatte leerstof met heldere uitleg en leerdoelen per paragraaf.
+- 🃏 **Flitskaarten** — alle begrippen, met **spaced repetition** (Leitner): moeilijke kaarten komen vaker terug.
+- ⚡ **Oefenvragen** — meerkeuzevragen met directe feedback en combo-bonus.
+- 📝 **Examenopgaven** — examenopgaven in examenstijl **mét een puntenantwoordmodel**, zodat je precies ziet hoe je scoort.
 
-- ✍️ **Open oefenen**: de AI maakt échte SE-open-vragen, jij typt je antwoord, en de AI
-  kijkt het na met een score, opbouwende feedback en een modelantwoord. Oneindig veel oefening.
-- 🤖 **"Leg uit waarom"** bij een fout quizantwoord: contextuele uitleg van je misvatting.
-- 💡 **Verdieping in de Lees-modus**: vraag om een voorbeeld, een simpelere uitleg of een ezelsbruggetje.
-- 🎯 **Slimme sessie & aanbeveling**: adaptieve mix die focust op je zwakke plekken.
-- 💬 **AI-tutor**: stelt vragen, legt uit en overhoort je.
+Nu volledig uitgewerkt: **Zenuwstelsel**, **Waarnemen** en **Afweer** (de
+kern van het domein Regeling). De overige hoofdstukken staan als
+"binnenkort" in het overzicht en worden later gevuld.
+
+Daarnaast: 🔥 **XP, levels en een dagelijkse streak**, een **slimme sessie**
+(adaptieve mix die op je zwakke plekken focust) en een **examentraining**
+(gemixte vragen met levens en een S-rang).
+
+## AI — alleen als jij het wilt
+
+AI wordt hier bewust **niet** overal automatisch ingezet. Het draait puur op
+jouw keuze en heeft telkens een duidelijke reden:
+
+- 💡 **Verdieping bij de theorie**: vraag om een voorbeeld, een simpelere uitleg of een ezelsbruggetje.
+- 🤖 **"Leg uit waarom"** bij een fout quizantwoord: uitleg van je misvatting.
+- ✍️ **Nakijken van je examenantwoord**: feedback op je **inhoud** (kloppen de biologiepunten t.o.v. het antwoordmodel?) én op je **formulering** (helder, volledig, correct vakjargon), plus een geschatte score.
+
+De AI wordt **strikt gegrond op de samenvatting + begrippen** van het
+hoofdstuk, zodat de inhoud klopt. Zonder AI-sleutel werkt de site gewoon; de
+AI-knoppen vragen dan eenmalig om een sleutel.
 
 Alle voortgang wordt lokaal in je browser bewaard (`localStorage`).
 
@@ -38,34 +52,30 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-(Direct het bestand openen via `file://` werkt ook, maar een servertje is netter.)
-
-## De AI-tutor instellen
-
-Je hoeft je sleutel **maar één keer** in te stellen. Er zijn twee manieren:
+## De AI instellen (optioneel)
 
 ### Optie A — Vercel (aanbevolen, sleutel blijft server-side)
-1. Deploy het project op [Vercel](https://vercel.com) (zero-config; de map `api/` wordt automatisch een serverless functie).
-2. Ga in je project naar **Settings → Environment Variables**.
-3. Voeg toe: `OPENAI_API_KEY` = jouw OpenAI-sleutel (`sk-...`).
-4. Redeploy. De AI werkt nu automatisch via `/api/ai` — je hoeft in de app niets in te vullen.
+1. Deploy het project op [Vercel](https://vercel.com) (de map `api/` wordt automatisch een serverless functie).
+2. Ga naar **Settings → Environment Variables** en voeg toe: `OPENAI_API_KEY` = jouw OpenAI-sleutel (`sk-...`).
+3. Redeploy. De AI werkt nu automatisch via `/api/ai`.
 
-### Optie B — Sleutel in de browser (bv. op GitHub Pages)
+### Optie B — Sleutel in de browser (bv. GitHub Pages)
 1. Open de app → tandwiel ⚙️ rechtsboven.
-2. Plak je OpenAI API-key. Die wordt in je browser (`localStorage`) bewaard en **komt nooit in de code of de repo**.
+2. Plak je OpenAI API-key. Die wordt alleen in je browser (`localStorage`) bewaard en komt nooit in de code of de repo.
 
-De app probeert altijd eerst de server-route (`/api/ai`). Is daar geen sleutel
-ingesteld, dan valt hij automatisch terug op de lokaal opgeslagen key.
+De app probeert altijd eerst de server-route (`/api/ai`) en valt anders terug op de lokaal opgeslagen key.
 
 ## Bestanden
 
 | Bestand | Functie |
 |---|---|
 | `index.html` | Pagina-structuur |
-| `styles.css` | Vormgeving |
-| `content.js` | Alle leerstof (begrippen, quizvragen, processen) |
-| `app.js` | De game-engine (quiz, flashcards, sequence, AI, XP/streak) |
+| `styles.css` | Vormgeving (speels, licht thema) |
+| `content.js` | Alle leerstof: methodes, curriculum (HAVO/VWO), hoofdstukken met theorie, begrippen, oefenvragen en examenopgaven met antwoordmodel |
+| `app.js` | De engine: overzicht, hoofdstuk-tabbladen, quiz, flitskaarten, examenopgaven, AI, XP/streak |
 | `api/ai.js` | Vercel serverless proxy naar OpenAI |
 
-De leerstof in `content.js` is met de hand uitgewerkt op basis van de drie
-Word-documenten. Vragen of begrippen aanpassen? Pas gewoon `content.js` aan.
+De leerstof in `content.js` is met de hand uitgewerkt op basis van de
+hoofdstukken zenuwstelsel, waarnemen en afweer. Vragen, begrippen of
+examenopgaven aanpassen of uitbreiden? Pas gewoon `content.js` aan — het
+datamodel staat bovenaan het bestand toegelicht.
