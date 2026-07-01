@@ -187,18 +187,22 @@
     v.appendChild(hero);
 
     /* chapters grid */
-    v.appendChild(el("div", "section-title", "Hoofdstukken"));
+    const chapters = cur.methodes[m.id].chapters;
+    const editie = cur.methodes[m.id].editie;
+    const ready = chapters.filter(ch => ch.topic && getTopic(ch.topic)).length;
+    const st = el("div", "section-title-row");
+    st.innerHTML = `<span class="section-title" style="margin:0">Hoofdstukken · ${esc(m.name)} (${esc(editie)})</span><span class="st-count">${ready}/${chapters.length} beschikbaar</span>`;
+    v.appendChild(st);
     const grid = el("div", "chapters stagger");
-    cur.chapters.forEach(ch => {
+    chapters.forEach(ch => {
       const topic = ch.topic ? getTopic(ch.topic) : null;
-      const name = ch.names[m.id] || ch.names.bvj;
       const card = el("div", "chapter" + (topic ? "" : " soon"));
       if (topic) {
         const pct = topicProgress(topic);
         card.classList.add(topic.theme);
         card.innerHTML = `
-          <div class="ch-top"><span class="ch-emoji">${topic.icon}</span><span class="ch-domain">${esc(topic.domain)}</span></div>
-          <h3>${esc(name)}</h3>
+          <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">${topic.icon}</span><span class="ch-domain">${esc(topic.domain)}</span></div>
+          <h3>${esc(ch.title)}</h3>
           <div class="ch-meta">${topic.paragraphs.length} paragrafen · ${topic.exams.length} examenopgaven</div>
           <div class="ch-bar"><span style="width:0%"></span></div>
           <div class="ch-foot"><span class="ch-pct">${pct}% beheerst</span><span class="ch-go">Open →</span></div>`;
@@ -206,11 +210,11 @@
         requestAnimationFrame(() => { const b = card.querySelector(".ch-bar > span"); if (b) b.style.width = pct + "%"; });
       } else {
         card.innerHTML = `
-          <div class="ch-top"><span class="ch-emoji">📚</span><span class="ch-domain">${esc(ch.code)}</span></div>
-          <h3>${esc(name)}</h3>
+          <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">📚</span></div>
+          <h3>${esc(ch.title)}</h3>
           <div class="ch-meta">Inhoud in ontwikkeling</div>
           <div class="ch-foot"><span class="soon-pill">Binnenkort</span></div>`;
-        card.onclick = () => mascotSay("Dit hoofdstuk wordt binnenkort toegevoegd. De hoofdstukken Zenuwstelsel, Waarnemen en Afweer zijn nu volledig uitgewerkt! ✨");
+        card.onclick = () => mascotSay("Dit hoofdstuk wordt nog toegevoegd. Er zijn al 10 hoofdstukken volledig uitgewerkt — kies er een met een gekleurde balk! ✨");
       }
       grid.appendChild(card);
     });

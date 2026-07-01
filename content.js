@@ -668,47 +668,945 @@ const TOPICS = [
         ]
       }
     ]
+  },
+
+  /* ===================== HORMONEN & HOMEOSTASE ===================== */
+  {
+    id: "hormonen",
+    title: "Hormonen & homeostase",
+    icon: "⚗️",
+    theme: "t-orange",
+    domain: "Regeling",
+    intro: "Naast het zenuwstelsel regelt je lichaam veel processen met hormonen: langzamere, langer werkende signaalstoffen. Je leert de bouw van het hormoonstelsel, hoe hormonen werken, hoe je bloedglucose wordt geregeld en hoe homeostase via terugkoppeling in stand blijft.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Het hormoonstelsel",
+        summary: "Hormonen zijn signaalstoffen die door hormoonklieren (endocriene klieren) rechtstreeks aan het bloed worden afgegeven. Ze verspreiden zich door het hele lichaam, maar werken alleen op doelwitcellen met de juiste receptor. Vergeleken met het zenuwstelsel werkt hormonale regeling langzamer, maar het effect houdt langer aan.\n\nBelangrijke klieren: de hypofyse (stuurklier), de schildklier (thyroxine → stofwisselingssnelheid), de bijnieren (o.a. adrenaline en cortisol), de eilandjes van Langerhans in de alvleesklier (insuline en glucagon) en de geslachtsklieren.\n\nDe hypothalamus koppelt het zenuwstelsel aan het hormoonstelsel: hij stuurt via afgiftehormonen de hypofyse aan, die op haar beurt andere klieren aanstuurt.",
+        goals: [
+          "Je beschrijft de bouw en functie van het hormoonstelsel.",
+          "Je legt uit hoe de hypothalamus en hypofyse andere klieren aansturen."
+        ],
+        cards: [
+          { term: "Hormoon", def: "Signaalstof die door een hormoonklier aan het bloed wordt afgegeven en op doelwitcellen werkt." },
+          { term: "Hormoonklier (endocriene klier)", def: "Klier zonder afvoerbuis die haar product (hormoon) rechtstreeks aan het bloed afgeeft." },
+          { term: "Doelwitcel", def: "Cel met een receptor die past bij een bepaald hormoon; alleen daar heeft het hormoon effect." },
+          { term: "Hypofyse", def: "Stuurklier onder de hypothalamus die met hormonen andere hormoonklieren aanstuurt." },
+          { term: "Hypothalamus", def: "Hersendeel dat het zenuwstelsel en hormoonstelsel koppelt en de hypofyse aanstuurt." },
+          { term: "Schildklier", def: "Klier die thyroxine maakt en zo de snelheid van de stofwisseling regelt." },
+          { term: "Bijnier", def: "Klier die o.a. adrenaline (snelle stressreactie) en cortisol afgeeft." },
+          { term: "Eilandjes van Langerhans", def: "Groepjes cellen in de alvleesklier die insuline en glucagon maken." }
+        ],
+        quiz: [
+          { q: "Waar geeft een hormoonklier haar hormoon aan af?", options: ["Aan een afvoerbuis", "Rechtstreeks aan het bloed", "Aan de darm", "Aan een zenuw"], answer: 1, explain: "Endocriene klieren hebben geen afvoerbuis; ze geven hun hormoon rechtstreeks aan het bloed af." },
+          { q: "Waarom werkt een hormoon alleen op bepaalde cellen?", options: ["Alleen die cellen liggen bij de klier", "Alleen doelwitcellen hebben de juiste receptor", "Het bloed bereikt alleen die cellen", "Hormonen kiezen willekeurig"], answer: 1, explain: "Een hormoon werkt alleen op doelwitcellen met een passende receptor." },
+          { q: "Welke klier is de 'stuurklier' die andere klieren aanstuurt?", options: ["Schildklier", "Hypofyse", "Bijnier", "Alvleesklier"], answer: 1, explain: "De hypofyse stuurt met hormonen andere hormoonklieren aan." },
+          { q: "Wat is een verschil tussen hormonale en zenuwregeling?", options: ["Hormonen werken sneller", "Hormonen werken langzamer maar langer", "Hormonen werken alleen lokaal", "Zenuwen werken via het bloed"], answer: 1, explain: "Hormonale regeling is langzamer dan zenuwregeling, maar het effect houdt langer aan." },
+          { q: "Welk hersendeel koppelt het zenuwstelsel aan het hormoonstelsel?", options: ["Kleine hersenen", "Hypothalamus", "Hersenbalk", "Thalamus"], answer: 1, explain: "De hypothalamus stuurt de hypofyse aan en verbindt zo beide regelsystemen." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Regeling van de bloedglucose",
+        summary: "De glucoseconcentratie in je bloed wordt strak geregeld door twee hormonen uit de eilandjes van Langerhans. Na een maaltijd stijgt de bloedglucose; de bètacellen geven insuline af. Insuline zorgt dat lever- en spiercellen glucose opnemen en als glycogeen opslaan, waardoor de bloedglucose daalt.\n\nBij een lage bloedglucose (bv. tijdens inspanning of vasten) geven de alfacellen glucagon af. Glucagon zet de lever aan om glycogeen weer af te breken tot glucose, dat aan het bloed wordt afgegeven; de bloedglucose stijgt. Insuline en glucagon werken dus antagonistisch.\n\nBij diabetes type 1 maakt de alvleesklier (te) weinig insuline (auto-immuun); bij type 2 reageren de cellen minder goed op insuline (ongevoeligheid).",
+        goals: [
+          "Je legt uit hoe insuline en glucagon de bloedglucose regelen.",
+          "Je beschrijft het verschil tussen diabetes type 1 en type 2."
+        ],
+        cards: [
+          { term: "Insuline", def: "Hormoon van de bètacellen; verlaagt de bloedglucose door opname en opslag als glycogeen te stimuleren." },
+          { term: "Glucagon", def: "Hormoon van de alfacellen; verhoogt de bloedglucose door glycogeen in de lever af te breken tot glucose." },
+          { term: "Glycogeen", def: "Opslagvorm van glucose, vooral in lever en spieren." },
+          { term: "Bètacellen", def: "Cellen in de eilandjes van Langerhans die insuline maken." },
+          { term: "Alfacellen", def: "Cellen in de eilandjes van Langerhans die glucagon maken." },
+          { term: "Diabetes type 1", def: "Te weinig insuline doordat de insulineproducerende cellen zijn beschadigd (auto-immuun)." },
+          { term: "Diabetes type 2", def: "De doelwitcellen reageren minder goed op insuline (insulineongevoeligheid)." },
+          { term: "Antagonistische werking", def: "Twee hormonen (insuline en glucagon) met een tegengesteld effect op de bloedglucose." }
+        ],
+        quiz: [
+          { q: "Welk hormoon verlaagt de bloedglucose?", options: ["Glucagon", "Insuline", "Adrenaline", "Thyroxine"], answer: 1, explain: "Insuline laat cellen glucose opnemen en als glycogeen opslaan, waardoor de bloedglucose daalt." },
+          { q: "Wat doet glucagon?", options: ["Slaat glucose op", "Breekt glycogeen af tot glucose", "Verlaagt de bloedglucose", "Maakt insuline"], answer: 1, explain: "Glucagon zet de lever aan glycogeen af te breken tot glucose → bloedglucose stijgt." },
+          { q: "Waar worden insuline en glucagon gemaakt?", options: ["In de lever", "In de eilandjes van Langerhans", "In de bijnieren", "In de hypofyse"], answer: 1, explain: "De bèta- en alfacellen in de eilandjes van Langerhans (alvleesklier) maken insuline en glucagon." },
+          { q: "Wat kenmerkt diabetes type 1?", options: ["Cellen reageren slecht op insuline", "Te weinig insulineproductie", "Te veel glucagon", "Te veel glycogeen"], answer: 1, explain: "Bij type 1 maakt de alvleesklier (te) weinig insuline door beschadigde bètacellen." },
+          { q: "Insuline en glucagon werken op de bloedglucose...", options: ["Versterkend (samen)", "Antagonistisch (tegengesteld)", "Helemaal niet", "Alleen 's nachts"], answer: 1, explain: "Insuline verlaagt en glucagon verhoogt de bloedglucose: een antagonistische regeling." }
+        ],
+        sequences: [
+          { title: "Bloedglucose stijgt na een maaltijd", steps: ["Bloedglucose stijgt", "Bètacellen geven insuline af", "Lever- en spiercellen nemen glucose op", "Glucose wordt opgeslagen als glycogeen", "Bloedglucose daalt naar normaal"] }
+        ]
+      },
+      {
+        id: "3",
+        title: "Homeostase en terugkoppeling",
+        summary: "Homeostase is het handhaven van een constant inwendig milieu (o.a. temperatuur, bloedglucose, pH, osmotische waarde), ondanks veranderingen buiten of binnen het lichaam. Dit gebeurt via regelkringen met meestal negatieve terugkoppeling: als een waarde afwijkt van de streefwaarde, komt een reactie op gang die de afwijking tegenwerkt.\n\nEen regelkring bevat een receptor (meet), een regelcentrum (vergelijkt met de norm, vaak de hypothalamus) en een effector (voert de reactie uit). Voorbeeld thermoregulatie: bij kou vernauwen huidbloedvaten, ga je rillen en staan haartjes overeind; bij warmte verwijden bloedvaten en ga je zweten.\n\nBij positieve terugkoppeling versterkt een reactie zichzelf juist (bv. weeën bij de bevalling), maar dat is minder algemeen.",
+        goals: [
+          "Je legt uit wat homeostase is en hoe een regelkring werkt.",
+          "Je legt het verschil uit tussen negatieve en positieve terugkoppeling."
+        ],
+        cards: [
+          { term: "Homeostase", def: "Het handhaven van een min of meer constant inwendig milieu ondanks veranderingen." },
+          { term: "Regelkring", def: "Keten van receptor → regelcentrum → effector die een waarde op peil houdt." },
+          { term: "Negatieve terugkoppeling", def: "Terugkoppeling die een afwijking tegenwerkt en de waarde terug naar de norm brengt." },
+          { term: "Positieve terugkoppeling", def: "Terugkoppeling die een proces juist versterkt (bv. weeën)." },
+          { term: "Effector", def: "Orgaan/cel (spier of klier) die de reactie uitvoert." },
+          { term: "Streefwaarde (norm)", def: "De waarde waarnaar het regelcentrum de grootheid probeert terug te brengen." },
+          { term: "Thermoregulatie", def: "Het constant houden van de lichaamstemperatuur (o.a. zweten, rillen, bloedvaten)." }
+        ],
+        quiz: [
+          { q: "Wat is homeostase?", options: ["Snel groeien", "Een constant inwendig milieu handhaven", "Hormonen maken", "Cellen delen"], answer: 1, explain: "Homeostase is het handhaven van een min of meer constant inwendig milieu." },
+          { q: "Wat doet negatieve terugkoppeling?", options: ["Versterkt de afwijking", "Werkt de afwijking tegen", "Heeft geen effect", "Stopt de regelkring"], answer: 1, explain: "Negatieve terugkoppeling corrigeert een afwijking terug naar de streefwaarde." },
+          { q: "Wat doet je lichaam bij kou?", options: ["Bloedvaten in de huid verwijden", "Zweten", "Huidbloedvaten vernauwen en rillen", "Ademhaling stopt"], answer: 2, explain: "Bij kou vernauwen huidbloedvaten (minder warmteverlies) en ga je rillen (warmteproductie)." },
+          { q: "Welk onderdeel van een regelkring meet de waarde?", options: ["Effector", "Receptor", "Klier", "Spier"], answer: 1, explain: "De receptor meet de waarde; het regelcentrum vergelijkt met de norm; de effector reageert." },
+          { q: "Een voorbeeld van positieve terugkoppeling is...", options: ["Bloedglucoseregeling", "Temperatuurregeling", "Weeën bij de bevalling", "Osmoregulatie"], answer: 2, explain: "Weeën versterken zichzelf: een klassiek voorbeeld van positieve terugkoppeling." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "hm-ex1",
+        title: "Bloedglucose na het sporten",
+        context: "Tijdens een lange hardlooptraining daalt de glucoseconcentratie in het bloed van een sporter. Kort daarna is de concentratie weer normaal, terwijl de sporter niets heeft gegeten.",
+        question: "Leg uit hoe het lichaam de bloedglucose weer op peil brengt. Gebruik in je antwoord een hormoon, het orgaan dat reageert en het begrip glycogeen.",
+        points: 3,
+        model: [
+          "Bij een lage bloedglucose geven de alfacellen (eilandjes van Langerhans) glucagon af (1 p).",
+          "Glucagon zet de lever aan om glycogeen af te breken tot glucose (1 p).",
+          "De glucose wordt aan het bloed afgegeven, zodat de bloedglucose weer stijgt naar de normale waarde (1 p)."
+        ]
+      },
+      {
+        id: "hm-ex2",
+        title: "Koorts en negatieve terugkoppeling",
+        context: "Iemand met griep krijgt koorts: de streefwaarde voor de lichaamstemperatuur wordt tijdelijk hoger ingesteld. In de opwarmfase heeft de persoon het koud en rilt hij, terwijl zijn temperatuur al boven de 37 °C is.",
+        question: "Leg met behulp van een regelkring uit waarom iemand met een oplopende koorts juist ligt te rillen.",
+        points: 2,
+        model: [
+          "Het regelcentrum (hypothalamus) heeft de streefwaarde verhoogd; de gemeten temperatuur ligt nog onder die nieuwe streefwaarde (1 p).",
+          "Via negatieve terugkoppeling zet het lichaam warmteproductie/-behoud in gang (rillen, bloedvaten vernauwen) om de temperatuur naar de hogere streefwaarde te brengen (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== VOORTPLANTING ===================== */
+  {
+    id: "voortplanting",
+    title: "Voortplanting & seksualiteit",
+    icon: "👶",
+    theme: "t-pink",
+    domain: "Voortplanting",
+    intro: "Hoe ontstaat nieuw leven? Je leert de bouw van de geslachtsorganen, de vorming van geslachtscellen, de hormonale regeling van de menstruatiecyclus en wat er gebeurt bij bevruchting, zwangerschap en anticonceptie.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Geslachtsorganen en geslachtscellen",
+        summary: "De mannelijke geslachtscellen (zaadcellen) worden vanaf de puberteit continu gevormd in de zaadballen (testes): de spermatogenese. Ze rijpen in de bijbal; bij een zaadlozing gaan ze via de zaadleider en mengen ze met vocht van o.a. de prostaat tot sperma.\n\nDe vrouwelijke geslachtscellen (eicellen) rijpen in de eierstokken. Alle onrijpe eicellen zijn al bij de geboorte aanwezig; per cyclus rijpt meestal één eicel in een follikel (oögenese).\n\nGeslachtscellen (gameten) zijn haploïd (n): ze hebben de helft van het aantal chromosomen. Ze ontstaan door meiose (reductiedeling). Bij de bevruchting versmelten een zaadcel en een eicel tot een diploïde (2n) zygote, met chromosomen van beide ouders.",
+        goals: [
+          "Je beschrijft de vorming van zaadcellen en eicellen.",
+          "Je legt uit waarom geslachtscellen haploïd zijn."
+        ],
+        cards: [
+          { term: "Zaadbal (testis)", def: "Mannelijke geslachtsklier waarin zaadcellen worden gevormd (spermatogenese)." },
+          { term: "Eierstok (ovarium)", def: "Vrouwelijke geslachtsklier waarin eicellen rijpen (oögenese)." },
+          { term: "Follikel", def: "Blaasje in de eierstok waarin een eicel rijpt; maakt oestrogeen." },
+          { term: "Gameet", def: "Geslachtscel (zaadcel of eicel); is haploïd (n)." },
+          { term: "Meiose (reductiedeling)", def: "Celdeling die het aantal chromosomen halveert; vormt haploïde geslachtscellen." },
+          { term: "Haploïd (n) / diploïd (2n)", def: "Haploïd = enkelvoudig chromosoomstel (gameet); diploïd = dubbel stel (lichaamscel/zygote)." },
+          { term: "Zygote", def: "Diploïde cel die ontstaat bij de versmelting van een zaadcel en een eicel." },
+          { term: "Prostaat / sperma", def: "De prostaat levert vocht dat met zaadcellen sperma vormt." }
+        ],
+        quiz: [
+          { q: "Waar worden zaadcellen gevormd?", options: ["In de prostaat", "In de zaadballen", "In de bijbal", "In de zaadleider"], answer: 1, explain: "De spermatogenese vindt plaats in de zaadballen (testes)." },
+          { q: "Hoeveel chromosoomstellen heeft een gameet?", options: ["Twee (2n)", "Eén (n)", "Vier", "Geen"], answer: 1, explain: "Geslachtscellen zijn haploïd (n): één chromosoomstel." },
+          { q: "Welke celdeling vormt geslachtscellen?", options: ["Mitose", "Meiose", "Klieving", "Deling van bacteriën"], answer: 1, explain: "Meiose (reductiedeling) halveert het aantal chromosomen." },
+          { q: "Wat ontstaat bij de bevruchting?", options: ["Een follikel", "Een haploïde cel", "Een diploïde zygote", "Een gameet"], answer: 2, explain: "Zaadcel + eicel versmelten tot een diploïde (2n) zygote." },
+          { q: "Wanneer zijn de onrijpe eicellen aangelegd?", options: ["Elke maand nieuw", "Al bij de geboorte", "Vanaf de puberteit", "Na de eerste bevruchting"], answer: 1, explain: "Bij de geboorte zijn alle onrijpe eicellen al aanwezig; per cyclus rijpt er meestal één." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "De menstruatiecyclus",
+        summary: "De cyclus (gemiddeld 28 dagen) wordt geregeld door hormonen uit de hypofyse en de eierstokken. FSH (uit de hypofyse) laat een follikel rijpen. De follikel maakt oestrogeen, dat het baarmoederslijmvlies laat groeien. Een sterke stijging (piek) van LH veroorzaakt rond dag 14 de ovulatie (eisprong).\n\nDe achtergebleven follikel wordt het gele lichaam en maakt progesteron (en oestrogeen); die houden het slijmvlies dik en goed doorbloed. Wordt de eicel niet bevrucht, dan verdwijnt het gele lichaam en dalen progesteron en oestrogeen. Het slijmvlies wordt afgestoten: de menstruatie. Door de lage hormoonwaarden komt weer FSH vrij en begint een nieuwe cyclus (negatieve terugkoppeling).",
+        goals: [
+          "Je beschrijft de rol van FSH, LH, oestrogeen en progesteron in de cyclus.",
+          "Je legt uit wat er gebeurt als de eicel niet bevrucht wordt."
+        ],
+        cards: [
+          { term: "FSH", def: "Hormoon uit de hypofyse dat een follikel laat rijpen." },
+          { term: "LH", def: "Hormoon uit de hypofyse; een LH-piek veroorzaakt de ovulatie." },
+          { term: "Oestrogeen", def: "Hormoon uit de follikel dat het baarmoederslijmvlies laat groeien." },
+          { term: "Progesteron", def: "Hormoon uit het gele lichaam dat het baarmoederslijmvlies op peil houdt." },
+          { term: "Ovulatie (eisprong)", def: "Het vrijkomen van een rijpe eicel uit de follikel, rond dag 14." },
+          { term: "Gele lichaam", def: "De achtergebleven follikel na de ovulatie; maakt progesteron." },
+          { term: "Baarmoederslijmvlies", def: "Laag in de baarmoeder die groeit voor innesteling en bij menstruatie wordt afgestoten." },
+          { term: "Menstruatie", def: "Afstoten van het baarmoederslijmvlies als er geen bevruchting is." }
+        ],
+        quiz: [
+          { q: "Welk hormoon veroorzaakt de ovulatie?", options: ["Een FSH-daling", "Een LH-piek", "Progesteron", "Insuline"], answer: 1, explain: "Een sterke LH-piek zorgt rond dag 14 voor de eisprong." },
+          { q: "Wat doet oestrogeen in de cyclus?", options: ["Slijmvlies laten groeien", "Ovulatie stoppen", "Menstruatie starten", "FSH maken"], answer: 0, explain: "Oestrogeen (uit de follikel) laat het baarmoederslijmvlies groeien." },
+          { q: "Wat maakt het gele lichaam?", options: ["FSH", "LH", "Progesteron", "Insuline"], answer: 2, explain: "Het gele lichaam maakt progesteron (en oestrogeen) en houdt het slijmvlies op peil." },
+          { q: "Wat gebeurt er als de eicel niet bevrucht wordt?", options: ["Progesteron stijgt", "Het gele lichaam blijft actief", "Het slijmvlies wordt afgestoten (menstruatie)", "Er komt geen FSH meer"], answer: 2, explain: "Progesteron daalt, het slijmvlies wordt afgestoten (menstruatie) en een nieuwe cyclus begint." },
+          { q: "Welk hormoon laat een follikel rijpen?", options: ["LH", "FSH", "Progesteron", "hCG"], answer: 1, explain: "FSH uit de hypofyse laat een follikel rijpen." }
+        ],
+        sequences: [
+          { title: "Volgorde in de menstruatiecyclus", steps: ["FSH laat een follikel rijpen", "Follikel maakt oestrogeen, slijmvlies groeit", "LH-piek → ovulatie", "Gele lichaam maakt progesteron", "Geen bevruchting: progesteron daalt", "Menstruatie: slijmvlies wordt afgestoten"] }
+        ]
+      },
+      {
+        id: "3",
+        title: "Bevruchting, zwangerschap en anticonceptie",
+        summary: "De bevruchting vindt plaats in de eileider. De zygote deelt zich onderweg (klieving) en nestelt zich als een bolletje cellen in in het baarmoederslijmvlies (innesteling). Daarna vormt zich de placenta, waar stoffen tussen het bloed van moeder en embryo/foetus worden uitgewisseld (O2 en voeding naartoe, CO2 en afvalstoffen terug), zonder dat de bloedsystemen mengen. De placenta maakt hCG, dat het gele lichaam in stand houdt; zwangerschapstesten meten hCG in de urine.\n\nAnticonceptie voorkomt zwangerschap. De anticonceptiepil bevat stoffen die lijken op oestrogeen/progesteron; via negatieve terugkoppeling remmen ze FSH en LH, zodat er geen ovulatie plaatsvindt. Een condoom werkt als barrière en beschermt bovendien tegen soa's.",
+        goals: [
+          "Je beschrijft bevruchting, innesteling en de functie van de placenta.",
+          "Je legt uit hoe de anticonceptiepil en het condoom werken."
+        ],
+        cards: [
+          { term: "Bevruchting", def: "Versmelting van zaadcel en eicel; vindt plaats in de eileider." },
+          { term: "Innesteling", def: "Het vastgroeien van het jonge embryo in het baarmoederslijmvlies." },
+          { term: "Placenta (moederkoek)", def: "Orgaan waar stoffen tussen bloed van moeder en foetus worden uitgewisseld, zonder mengen." },
+          { term: "Navelstreng", def: "Verbinding met bloedvaten tussen foetus en placenta." },
+          { term: "hCG", def: "Hormoon van de placenta dat het gele lichaam in stand houdt; wordt gemeten in zwangerschapstesten." },
+          { term: "Foetus", def: "Ongeboren kind vanaf ongeveer de negende week." },
+          { term: "Anticonceptiepil", def: "Bevat oestrogeen/progesteron-achtige stoffen die via terugkoppeling de ovulatie remmen." },
+          { term: "Condoom", def: "Barrièremiddel dat bevruchting voorkomt en ook tegen soa's beschermt." }
+        ],
+        quiz: [
+          { q: "Waar vindt de bevruchting plaats?", options: ["In de baarmoeder", "In de eileider", "In de eierstok", "In de vagina"], answer: 1, explain: "De bevruchting vindt plaats in de eileider; daarna reist het embryo naar de baarmoeder." },
+          { q: "Wat is de functie van de placenta?", options: ["Bloed van moeder en kind mengen", "Uitwisseling van stoffen zonder bloedmenging", "Hormonen afbreken", "Zaadcellen maken"], answer: 1, explain: "In de placenta worden stoffen uitgewisseld tussen het bloed van moeder en foetus, zonder dat het bloed mengt." },
+          { q: "Welk hormoon meet een zwangerschapstest?", options: ["FSH", "hCG", "Insuline", "LH"], answer: 1, explain: "De placenta maakt hCG; een zwangerschapstest meet dit hormoon in de urine." },
+          { q: "Hoe voorkomt de anticonceptiepil een zwangerschap?", options: ["Doodt zaadcellen", "Remt de ovulatie via terugkoppeling", "Breekt de placenta af", "Verwijdt de eileider"], answer: 1, explain: "De pil remt via negatieve terugkoppeling FSH/LH, zodat er geen eisprong plaatsvindt." },
+          { q: "Welk anticonceptiemiddel beschermt ook tegen soa's?", options: ["De pil", "Het spiraaltje", "Het condoom", "De prikpil"], answer: 2, explain: "Een condoom is een barrière die naast zwangerschap ook soa's helpt voorkomen." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "vp-ex1",
+        title: "Waarom stopt de menstruatie bij zwangerschap?",
+        context: "Als een vrouw zwanger is, blijft de menstruatie uit. De placenta die zich vormt, maakt het hormoon hCG.",
+        question: "Leg uit hoe hCG ervoor zorgt dat er tijdens de zwangerschap geen menstruatie optreedt. Gebruik in je antwoord het gele lichaam en progesteron.",
+        points: 3,
+        model: [
+          "hCG houdt het gele lichaam in stand (het verdwijnt niet zoals normaal na de cyclus) (1 p).",
+          "Het gele lichaam blijft daardoor progesteron maken (1 p).",
+          "Door het hoge progesteron blijft het baarmoederslijmvlies intact en wordt het niet afgestoten, dus geen menstruatie (1 p)."
+        ]
+      },
+      {
+        id: "vp-ex2",
+        title: "Werking van de pil",
+        context: "De anticonceptiepil bevat stoffen die lijken op de vrouwelijke geslachtshormonen. Bij correct gebruik vindt er geen eisprong plaats.",
+        question: "Leg uit hoe de hormonen in de pil via terugkoppeling voorkomen dat er een eisprong plaatsvindt.",
+        points: 2,
+        model: [
+          "De hormoonachtige stoffen in de pil zorgen voor een constant (hoog) hormoonniveau dat via negatieve terugkoppeling de hypofyse remt (1 p).",
+          "Daardoor komt er geen FSH-/LH-piek, zodat er geen follikel rijpt en geen ovulatie plaatsvindt (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== ERFELIJKHEID ===================== */
+  {
+    id: "erfelijkheid",
+    title: "Erfelijkheid",
+    icon: "👪",
+    theme: "t-indigo",
+    domain: "Erfelijkheid",
+    intro: "Waarom lijk je op je ouders? Je leert werken met genen en allelen, kruisingen voorspellen met kruisingsschema's, en overerving analyseren bij geslachtsgebonden eigenschappen en in stambomen.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Genen, allelen en fenotype",
+        summary: "Erfelijke eigenschappen liggen vast in genen op de chromosomen. Van elk gen heb je twee allelen (varianten): één van je moeder, één van je vader. Het genotype is de combinatie van allelen; het fenotype is de waarneembare eigenschap (mede door het milieu).\n\nEen dominant allel (hoofdletter) komt altijd tot uiting; een recessief allel (kleine letter) alleen in dubbele aanleg. Homozygoot = twee dezelfde allelen (AA of aa); heterozygoot = twee verschillende (Aa). Bij intermediaire overerving ontstaat een mengvorm (bv. rood × wit → roze); bij codominantie komen beide allelen naast elkaar tot uiting (bv. bloedgroep AB).",
+        goals: [
+          "Je gebruikt de begrippen gen, allel, genotype en fenotype correct.",
+          "Je legt dominant, recessief, homo- en heterozygoot uit."
+        ],
+        cards: [
+          { term: "Gen", def: "Stukje DNA op een chromosoom dat de code voor een erfelijke eigenschap bevat." },
+          { term: "Allel", def: "Een variant van een gen; je hebt er twee per gen (één per ouder)." },
+          { term: "Genotype", def: "De combinatie van allelen die een individu heeft." },
+          { term: "Fenotype", def: "De waarneembare eigenschap, bepaald door genotype én milieu." },
+          { term: "Dominant allel", def: "Allel dat altijd tot uiting komt; genoteerd met een hoofdletter." },
+          { term: "Recessief allel", def: "Allel dat alleen in dubbele aanleg tot uiting komt; kleine letter." },
+          { term: "Homozygoot", def: "Twee dezelfde allelen voor een gen (AA of aa)." },
+          { term: "Heterozygoot", def: "Twee verschillende allelen voor een gen (Aa)." },
+          { term: "Codominantie", def: "Beide allelen komen naast elkaar tot uiting (bv. bloedgroep AB)." },
+          { term: "Intermediair", def: "De heterozygoot vertoont een tussenvorm (bv. roze uit rood en wit)." }
+        ],
+        quiz: [
+          { q: "Wat is het genotype?", options: ["De waarneembare eigenschap", "De combinatie van allelen", "Een stukje eiwit", "Een chromosoom"], answer: 1, explain: "Het genotype is de combinatie van allelen; het fenotype is de waarneembare eigenschap." },
+          { q: "Een recessief allel komt tot uiting...", options: ["Altijd", "Alleen in dubbele aanleg (aa)", "Nooit", "Alleen bij mannen"], answer: 1, explain: "Een recessief allel komt alleen tot uiting als beide allelen recessief zijn (aa)." },
+          { q: "Wat betekent heterozygoot?", options: ["Twee dezelfde allelen", "Twee verschillende allelen", "Geen allelen", "Drie allelen"], answer: 1, explain: "Heterozygoot = twee verschillende allelen (bv. Aa)." },
+          { q: "Bloedgroep AB is een voorbeeld van...", options: ["Dominantie", "Codominantie", "Recessiviteit", "Intermediaire overerving"], answer: 1, explain: "Bij bloedgroep AB komen allel A en B naast elkaar tot uiting: codominantie." },
+          { q: "Het fenotype wordt bepaald door...", options: ["Alleen het genotype", "Genotype én milieu", "Alleen het milieu", "Alleen dominante allelen"], answer: 1, explain: "Het fenotype hangt af van het genotype én invloeden van het milieu." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Kruisingen voorspellen",
+        summary: "Met een kruisingsschema (kruistabel) voorspel je de nakomelingen. Bij een monohybride kruising kijk je naar één eigenschap. Kruis je twee heterozygoten (Aa × Aa), dan geeft de kruistabel genotypen 1 AA : 2 Aa : 1 aa, en fenotypisch 3 dominant : 1 recessief.\n\nBij een terugkruising (testkruising) kruis je een individu met het dominante fenotype met een homozygoot recessief individu (aa) om te achterhalen of het homo- of heterozygoot is. Bij een dihybride kruising (twee eigenschappen, AaBb × AaBb) ontstaat de verhouding 9 : 3 : 3 : 1, mits de genen op verschillende chromosomen liggen (vrije combinatie).",
+        goals: [
+          "Je maakt en interpreteert een kruisingsschema.",
+          "Je legt uit wat een terugkruising is en waarvoor je die gebruikt."
+        ],
+        cards: [
+          { term: "Kruisingsschema", def: "Schema/tabel waarmee je de genotypen van nakomelingen voorspelt." },
+          { term: "Monohybride kruising", def: "Kruising waarbij je naar één eigenschap kijkt." },
+          { term: "Dihybride kruising", def: "Kruising waarbij je naar twee eigenschappen tegelijk kijkt." },
+          { term: "Verhouding 3:1", def: "Fenotypische verhouding bij Aa × Aa (3 dominant : 1 recessief)." },
+          { term: "Verhouding 9:3:3:1", def: "Fenotypische verhouding bij een dihybride kruising AaBb × AaBb." },
+          { term: "Terugkruising (testkruising)", def: "Kruising met een homozygoot recessief individu om een onbekend genotype te bepalen." },
+          { term: "P, F1, F2", def: "Ouders (P), eerste nakomelingen (F1) en hun nakomelingen (F2)." }
+        ],
+        quiz: [
+          { q: "Welke fenotypische verhouding geeft Aa × Aa?", options: ["1:1", "3:1", "9:3:3:1", "2:1"], answer: 1, explain: "Aa × Aa geeft fenotypisch 3 dominant : 1 recessief." },
+          { q: "Waarvoor gebruik je een terugkruising?", options: ["Om het milieu te testen", "Om te bepalen of een individu homo- of heterozygoot is", "Om mutaties te maken", "Om chromosomen te tellen"], answer: 1, explain: "Kruisen met aa laat zien of het dominante individu AA of Aa is." },
+          { q: "Welke verhouding hoort bij een dihybride kruising AaBb × AaBb?", options: ["3:1", "1:1", "9:3:3:1", "1:2:1"], answer: 2, explain: "Twee eigenschappen die vrij combineren geven 9:3:3:1." },
+          { q: "Wat betekent F1?", options: ["De ouders", "De eerste generatie nakomelingen", "De tweede generatie", "Een fenotype"], answer: 1, explain: "F1 is de eerste generatie nakomelingen van de ouders (P)." },
+          { q: "Genotypische verhouding van Aa × Aa is...", options: ["1 AA : 2 Aa : 1 aa", "3 AA : 1 aa", "alle Aa", "1 AA : 1 aa"], answer: 0, explain: "Genotypisch: 1 AA : 2 Aa : 1 aa (fenotypisch 3:1)." }
+        ],
+        sequences: []
+      },
+      {
+        id: "3",
+        title: "Geslachtsgebonden overerving en stambomen",
+        summary: "Het geslacht wordt bepaald door de geslachtschromosomen: XX (vrouw) en XY (man). Sommige genen liggen op het X-chromosoom: geslachtsgebonden (X-gebonden) overerving. Omdat mannen maar één X hebben, komt een recessief X-gebonden allel bij hen sneller tot uiting (bv. rood-groenkleurenblindheid, hemofilie). Vrouwen zijn vaker draagster (heterozygoot) zonder de aandoening.\n\nIn een stamboom analyseer je hoe een eigenschap overerft. Aanwijzingen: verschijnt de aandoening bij kinderen van niet-aangedane ouders, dan is het allel recessief; treft het vooral mannen en 'slaat het een generatie over' via draagsters, dan wijst dat op X-gebonden recessieve overerving.",
+        goals: [
+          "Je legt geslachtsgebonden overerving uit.",
+          "Je leidt uit een stamboom af of een eigenschap dominant/recessief en/of X-gebonden is."
+        ],
+        cards: [
+          { term: "Geslachtschromosomen", def: "X en Y; XX = vrouw, XY = man." },
+          { term: "Autosoom", def: "Een 'gewoon' chromosoom dat niet het geslacht bepaalt." },
+          { term: "Geslachtsgebonden (X-gebonden)", def: "Overerving van een gen dat op het X-chromosoom ligt." },
+          { term: "Draagster", def: "Vrouw die heterozygoot is voor een recessief X-gebonden allel (XᴬXᵃ) zonder de aandoening." },
+          { term: "Kleurenblindheid / hemofilie", def: "Voorbeelden van X-gebonden recessieve aandoeningen, vaker bij mannen." },
+          { term: "Stamboom", def: "Schema van familierelaties waarmee je overerving analyseert." },
+          { term: "Recessieve aandoening", def: "Aandoening die tot uiting komt in dubbele aanleg; kan uit niet-aangedane ouders ontstaan." }
+        ],
+        quiz: [
+          { q: "Welke geslachtschromosomen heeft een man?", options: ["XX", "XY", "YY", "X"], answer: 1, explain: "Een man heeft XY, een vrouw XX." },
+          { q: "Waarom komt X-gebonden recessieve kleurenblindheid vaker bij mannen voor?", options: ["Mannen hebben twee X'en", "Mannen hebben maar één X", "Vrouwen hebben geen genen ervoor", "Het ligt op het Y-chromosoom"], answer: 1, explain: "Mannen hebben één X; één recessief allel komt dan meteen tot uiting." },
+          { q: "Wat is een draagster?", options: ["Een aangedane vrouw", "Een heterozygote vrouw zonder de aandoening", "Een man met de aandoening", "Iemand zonder het gen"], answer: 1, explain: "Een draagster is heterozygoot (XᴬXᵃ) en heeft de aandoening zelf niet." },
+          { q: "Aangedane kinderen uit twee niet-aangedane ouders wijzen op...", options: ["Een dominant allel", "Een recessief allel", "Codominantie", "Een Y-gebonden gen"], answer: 1, explain: "Als niet-aangedane ouders een aangedaan kind krijgen, is het allel recessief (beide ouders Aa)." },
+          { q: "Wat is een autosoom?", options: ["Een geslachtschromosoom", "Een gewoon (niet-geslachts)chromosoom", "Een allel", "Een gen op het X-chromosoom"], answer: 1, explain: "Autosomen zijn de chromosomen die niet het geslacht bepalen." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "erf-ex1",
+        title: "Kruising met een recessieve aandoening",
+        context: "Een erfelijke aandoening wordt veroorzaakt door een recessief allel (a) op een autosoom. Twee gezonde ouders krijgen een kind met de aandoening.",
+        question: "Bepaal de genotypen van de ouders en bereken de kans (in %) dat een volgend kind de aandoening heeft. Licht je antwoord toe met een kruisingsschema of redenering.",
+        points: 3,
+        model: [
+          "Beide ouders zijn gezond maar krijgen een aangedaan kind (aa), dus beide ouders zijn heterozygoot: Aa × Aa (1 p).",
+          "Kruisingsschema Aa × Aa geeft 1 AA : 2 Aa : 1 aa (1 p).",
+          "De kans op een aangedaan kind (aa) is 1 op 4 = 25% (1 p)."
+        ]
+      },
+      {
+        id: "erf-ex2",
+        title: "Kleurenblindheid in een gezin",
+        context: "Rood-groenkleurenblindheid is X-gebonden recessief. Een vrouw die draagster is (XᴬXᵃ) krijgt kinderen met een man die niet kleurenblind is (XᴬY).",
+        question: "Leg uit welke kinderen (jongens/meisjes) kleurenblind kunnen zijn en welke draagster kunnen worden. Gebruik de genotypen.",
+        points: 3,
+        model: [
+          "Kruising XᴬXᵃ × XᴬY geeft dochters XᴬXᴬ of XᴬXᵃ en zonen XᴬY of XᵃY (1 p).",
+          "Zonen met XᵃY zijn kleurenblind (kans 1 op 2 van de jongens); dochters zijn nooit kleurenblind hier, maar de helft is draagster (XᴬXᵃ) (1 p).",
+          "Conclusie: alleen jongens kunnen kleurenblind zijn; meisjes kunnen wél draagster worden (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== DNA & EIWITSYNTHESE ===================== */
+  {
+    id: "dna",
+    title: "DNA & eiwitsynthese",
+    icon: "🧬",
+    theme: "t-teal",
+    domain: "Zelforganisatie",
+    intro: "Hoe staat de informatie voor een organisme opgeslagen, en hoe wordt die 'gelezen'? Je leert de bouw en replicatie van DNA, de eiwitsynthese (transcriptie en translatie) en wat mutaties en genregulatie doen.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Bouw en replicatie van DNA",
+        summary: "DNA is een dubbele helix van twee nucleotideketens. Elk nucleotide bestaat uit een suiker (desoxyribose), een fosfaatgroep en een stikstofbase: A, T, C of G. De basen vormen paren volgens complementariteit: A–T en C–G. De volgorde van de basen (basenvolgorde) is de erfelijke code.\n\nBij de celdeling moet het DNA worden verdubbeld: replicatie. De twee ketens gaan uit elkaar; elke keten dient als mal (sjabloon) waarlangs een nieuwe complementaire keten wordt gebouwd. Zo ontstaan twee identieke DNA-moleculen, elk met één oude en één nieuwe keten (semiconservatief).",
+        goals: [
+          "Je beschrijft de bouw van DNA en de basenparing.",
+          "Je legt uit hoe DNA-replicatie verloopt."
+        ],
+        cards: [
+          { term: "DNA", def: "Molecuul met de erfelijke informatie; een dubbele helix van twee nucleotideketens." },
+          { term: "Nucleotide", def: "Bouwsteen van DNA: een suiker, een fosfaatgroep en een stikstofbase." },
+          { term: "Stikstofbasen (A, T, C, G)", def: "Adenine, thymine, cytosine en guanine; hun volgorde vormt de code." },
+          { term: "Complementariteit", def: "Basen paren vast: A met T en C met G." },
+          { term: "Dubbele helix", def: "De spiraalvorm van de twee tegenover elkaar liggende DNA-ketens." },
+          { term: "Replicatie", def: "Het verdubbelen van DNA vóór de celdeling." },
+          { term: "Semiconservatief", def: "Elk nieuw DNA-molecuul bevat één oude en één nieuwe keten." },
+          { term: "Chromosoom", def: "Sterk opgevouwen DNA met eiwitten; drager van vele genen." }
+        ],
+        quiz: [
+          { q: "Welke basen vormen een paar?", options: ["A–C en T–G", "A–T en C–G", "A–G en C–T", "A–A en C–C"], answer: 1, explain: "In DNA paren A met T en C met G (complementariteit)." },
+          { q: "Waaruit bestaat een nucleotide?", options: ["Alleen een base", "Suiker, fosfaat en een base", "Twee basen", "Een eiwit"], answer: 1, explain: "Een nucleotide bestaat uit een suiker, een fosfaatgroep en een stikstofbase." },
+          { q: "Wat gebeurt er bij replicatie?", options: ["Eiwitten maken", "DNA verdubbelen", "Basen afbreken", "Cellen versmelten"], answer: 1, explain: "Replicatie is het verdubbelen van het DNA vóór de celdeling." },
+          { q: "Wat betekent semiconservatief?", options: ["Alle ketens zijn nieuw", "Elk molecuul heeft één oude en één nieuwe keten", "Er ontstaat maar één molecuul", "De basen veranderen"], answer: 1, explain: "Elk nieuw DNA bevat één oorspronkelijke en één nieuwe keten." },
+          { q: "Als een keten de volgorde A-C-G heeft, is de complementaire keten...", options: ["T-G-C", "A-C-G", "U-G-C", "T-C-A"], answer: 0, explain: "A→T, C→G, G→C, dus de complementaire keten is T-G-C." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Eiwitsynthese: transcriptie en translatie",
+        summary: "Een gen bevat de code voor een eiwit. De eiwitsynthese verloopt in twee stappen. Bij de transcriptie (in de kern) wordt van een gen een mRNA gemaakt, complementair aan de DNA-keten (met U in plaats van T). Het mRNA verlaat de kern.\n\nBij de translatie (aan de ribosomen) wordt het mRNA gelezen per codon (drie basen). Elk codon codeert voor één aminozuur; tRNA-moleculen met een anticodon brengen de bijpassende aminozuren aan. De aminozuren worden aan elkaar geregen tot een eiwit. De basenvolgorde bepaalt zo de aminozuurvolgorde en daarmee de bouw en functie van het eiwit.",
+        goals: [
+          "Je beschrijft transcriptie en translatie.",
+          "Je legt uit hoe codons de aminozuurvolgorde bepalen."
+        ],
+        cards: [
+          { term: "Gen", def: "Stukje DNA met de code voor (meestal) één eiwit." },
+          { term: "Transcriptie", def: "Het overschrijven van een gen naar mRNA in de celkern." },
+          { term: "mRNA", def: "Boodschapper-RNA dat de code van het DNA naar de ribosomen brengt (met base U i.p.v. T)." },
+          { term: "Translatie", def: "Het vertalen van mRNA naar een aminozuurvolgorde aan het ribosoom." },
+          { term: "Codon", def: "Drietal basen op het mRNA dat codeert voor één aminozuur." },
+          { term: "tRNA / anticodon", def: "Transport-RNA met een anticodon dat het juiste aminozuur aanvoert." },
+          { term: "Ribosoom", def: "Celorgaan waar de translatie (eiwitsynthese) plaatsvindt." },
+          { term: "Aminozuur", def: "Bouwsteen van een eiwit; de volgorde bepaalt bouw en functie." }
+        ],
+        quiz: [
+          { q: "Waar vindt de transcriptie plaats?", options: ["In het ribosoom", "In de celkern", "In het mitochondrion", "In het bloed"], answer: 1, explain: "Transcriptie (DNA → mRNA) vindt plaats in de celkern." },
+          { q: "Wat is een codon?", options: ["Eén base", "Drie basen die één aminozuur coderen", "Een eiwit", "Een ribosoom"], answer: 1, explain: "Een codon is een drietal mRNA-basen dat codeert voor één aminozuur." },
+          { q: "Welke base staat in RNA in plaats van thymine?", options: ["Guanine", "Uracil", "Cytosine", "Adenine"], answer: 1, explain: "In RNA staat uracil (U) op de plaats van thymine (T)." },
+          { q: "Wat doet tRNA?", options: ["mRNA maken", "Het juiste aminozuur aanvoeren", "DNA kopiëren", "Basen afbreken"], answer: 1, explain: "tRNA voert met zijn anticodon het passende aminozuur aan tijdens de translatie." },
+          { q: "Waar gebeurt de translatie?", options: ["Aan het ribosoom", "In de kern", "In de celwand", "In het bloedplasma"], answer: 0, explain: "De translatie (mRNA → eiwit) vindt plaats aan de ribosomen." }
+        ],
+        sequences: [
+          { title: "Van gen naar eiwit", steps: ["Gen in het DNA (kern)", "Transcriptie: mRNA wordt gemaakt", "mRNA verlaat de kern", "mRNA bindt aan een ribosoom", "tRNA brengt aminozuren aan (per codon)", "Aminozuren vormen een eiwit"] }
+        ]
+      },
+      {
+        id: "3",
+        title: "Mutaties en genregulatie",
+        summary: "Een mutatie is een verandering in het DNA. Een genmutatie betreft één of enkele basen (bv. een verkeerd basenpaar); een chromosoommutatie betreft grotere stukken of het aantal chromosomen. Mutaties in lichaamscellen (somatisch) worden niet doorgegeven; mutaties in geslachtscellen wél. Veel mutaties hebben geen effect, sommige zijn schadelijk (bv. kanker) en zeldzaam zijn ze gunstig (grondstof voor evolutie). Stoffen of straling die mutaties veroorzaken heten mutagenen.\n\nAlle cellen van een organisme hebben hetzelfde DNA, maar ze zijn verschillend door genregulatie: in elke cel staan andere genen 'aan' of 'uit'. Zo ontstaan gespecialiseerde cellen (differentiatie). Regeleiwitten kunnen genen aan- of uitzetten, afhankelijk van signalen.",
+        goals: [
+          "Je legt uit wat mutaties zijn en wat hun gevolgen kunnen zijn.",
+          "Je legt uit hoe genregulatie leidt tot verschillende celtypen."
+        ],
+        cards: [
+          { term: "Mutatie", def: "Een verandering in het DNA (basenvolgorde of chromosomen)." },
+          { term: "Genmutatie", def: "Verandering in één of enkele basen van een gen." },
+          { term: "Chromosoommutatie", def: "Verandering in stukken of het aantal chromosomen." },
+          { term: "Mutageen", def: "Stof of straling die de kans op mutaties vergroot (bv. uv, teer)." },
+          { term: "Somatische vs kiembaanmutatie", def: "In lichaamscellen (niet erfelijk) versus in geslachtscellen (wel erfelijk)." },
+          { term: "Genregulatie", def: "Het aan- en uitzetten van genen, zodat cellen verschillend worden." },
+          { term: "Differentiatie", def: "Het gespecialiseerd raken van cellen door genregulatie." }
+        ],
+        quiz: [
+          { q: "Wat is een mutatie?", options: ["Een nieuw eiwit", "Een verandering in het DNA", "Een celdeling", "Een hormoon"], answer: 1, explain: "Een mutatie is een verandering in het DNA." },
+          { q: "Welke mutatie is erfelijk?", options: ["In een huidcel", "In een geslachtscel", "In een spiercel", "In een rode bloedcel"], answer: 1, explain: "Alleen mutaties in geslachtscellen (kiembaan) worden doorgegeven aan nakomelingen." },
+          { q: "Waarom verschillen cellen met hetzelfde DNA toch?", options: ["Ander DNA", "Genregulatie: andere genen aan/uit", "Meer chromosomen", "Ander aantal ribosomen alleen"], answer: 1, explain: "Door genregulatie staan in verschillende cellen andere genen aan of uit." },
+          { q: "Wat is een mutageen?", options: ["Een gen", "Een stof/straling die mutaties veroorzaakt", "Een eiwit", "Een enzym dat DNA maakt"], answer: 1, explain: "Mutagenen (bv. uv-straling) vergroten de kans op mutaties." },
+          { q: "Mutaties zijn voor de evolutie belangrijk omdat ze...", options: ["Altijd schadelijk zijn", "Voor variatie zorgen", "Cellen laten delen", "Genen uitzetten"], answer: 1, explain: "Mutaties leveren nieuwe varianten (variatie), de grondstof voor natuurlijke selectie." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "dna-ex1",
+        title: "Van mutatie naar eiwit",
+        context: "In een gen verandert door een mutatie één base. Het eiwit dat met dit gen wordt gemaakt, werkt daardoor niet meer goed.",
+        question: "Leg uit hoe de verandering van één base in het DNA ertoe kan leiden dat het eiwit niet goed werkt. Gebruik in je antwoord de begrippen codon en aminozuur.",
+        points: 3,
+        model: [
+          "Door de mutatie verandert een base in het DNA en daardoor (na transcriptie) een codon in het mRNA (1 p).",
+          "Een ander codon kan voor een ander aminozuur coderen, waardoor de aminozuurvolgorde van het eiwit verandert (1 p).",
+          "Een andere aminozuurvolgorde geeft een andere vorm/bouw van het eiwit, zodat het zijn functie niet goed meer kan uitvoeren (1 p)."
+        ]
+      },
+      {
+        id: "dna-ex2",
+        title: "Complementaire streng en mRNA",
+        context: "Een stukje van de af te lezen DNA-keten (matrijs) heeft de basenvolgorde: T–A–C–G–G–A.",
+        question: "Geef de basenvolgorde van het mRNA dat bij transcriptie van deze DNA-keten ontstaat, en leg uit welke basenparingsregel je gebruikt.",
+        points: 2,
+        model: [
+          "Bij transcriptie paren de RNA-basen complementair aan de DNA-keten, met U in plaats van T: A–U–G–C–C–U (1 p).",
+          "Toegepaste regel: A↔U (RNA), T↔A, C↔G, G↔C (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== EVOLUTIE ===================== */
+  {
+    id: "evolutie",
+    title: "Evolutie",
+    icon: "🦕",
+    theme: "t-amber",
+    domain: "Evolutie",
+    intro: "Hoe zijn de miljoenen soorten op aarde ontstaan? Je leert hoe variatie en natuurlijke selectie leiden tot aanpassing, hoe nieuwe soorten ontstaan en welk bewijs er is voor evolutie.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Variatie en natuurlijke selectie",
+        summary: "Binnen een populatie bestaat er genetische variatie: individuen verschillen in erfelijke eigenschappen. Deze variatie ontstaat door mutaties en (bij seksuele voortplanting) door recombinatie van genen. \n\nEr worden meer nakomelingen geboren dan er kunnen overleven; er is een 'strijd om het bestaan'. Individuen met eigenschappen die beter passen bij het milieu (beter aangepast) hebben een grotere overlevings- en voortplantingskans: natuurlijke selectie. Zij geven hun gunstige allelen vaker door, zodat die allelen in de volgende generaties in frequentie toenemen. Zo verandert een populatie in de loop van generaties: evolutie. Selectie werkt op het fenotype; erfelijk is alleen wat in het DNA ligt.",
+        goals: [
+          "Je legt uit hoe variatie ontstaat.",
+          "Je legt uit hoe natuurlijke selectie leidt tot aanpassing en evolutie."
+        ],
+        cards: [
+          { term: "Genetische variatie", def: "Erfelijke verschillen tussen individuen in een populatie." },
+          { term: "Mutatie en recombinatie", def: "Bronnen van variatie: nieuwe allelen (mutatie) en nieuwe combinaties (recombinatie)." },
+          { term: "Natuurlijke selectie", def: "Best aangepaste individuen overleven en planten zich vaker voort." },
+          { term: "Aanpassing (adaptatie)", def: "Erfelijke eigenschap die de overlevings-/voortplantingskans vergroot." },
+          { term: "Fitness", def: "Mate waarin een individu overleeft en zich succesvol voortplant." },
+          { term: "Selectiedruk", def: "Milieufactor die bepaalt welke eigenschappen voordeel geven." },
+          { term: "Allelfrequentie", def: "Hoe vaak een allel in een populatie voorkomt; verandert door selectie." }
+        ],
+        quiz: [
+          { q: "Waardoor ontstaat genetische variatie?", options: ["Alleen door het milieu", "Door mutaties en recombinatie", "Door natuurlijke selectie", "Door gewenning"], answer: 1, explain: "Variatie ontstaat door mutaties en (bij seksuele voortplanting) recombinatie." },
+          { q: "Wat houdt natuurlijke selectie in?", options: ["Alle individuen overleven", "Best aangepaste individuen planten zich vaker voort", "Dieren kiezen hun eigenschappen", "Het milieu verandert het DNA direct"], answer: 1, explain: "Beter aangepaste individuen hebben een grotere overlevings- en voortplantingskans." },
+          { q: "Waar grijpt selectie op aan?", options: ["Op het genotype rechtstreeks", "Op het fenotype", "Op mutagenen", "Op ribosomen"], answer: 1, explain: "Selectie werkt op het fenotype; het erfelijke deel ligt in het DNA." },
+          { q: "Wat gebeurt met gunstige allelen door selectie?", options: ["Ze nemen af", "Ze nemen in frequentie toe", "Ze verdwijnen meteen", "Ze veranderen in eiwit"], answer: 1, explain: "Gunstige allelen worden vaker doorgegeven en nemen in frequentie toe." },
+          { q: "Wat is 'fitness' in de evolutie?", options: ["Spierkracht", "Overlevings- en voortplantingssucces", "Snelheid", "Grootte"], answer: 1, explain: "Fitness is de mate van overleven én succesvol voortplanten." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Het ontstaan van soorten",
+        summary: "Een soort is een groep organismen die zich onderling kan voortplanten met vruchtbare nakomelingen. Nieuwe soorten ontstaan vaak door isolatie. Bij geografische isolatie raakt een populatie ruimtelijk gescheiden (bv. door een rivier of gebergte). De gescheiden populaties ondergaan verschillende mutaties en selectie en groeien uit elkaar.\n\nOntstaat er daarna voortplantingsisolatie (ze kunnen zich niet meer met elkaar voortplanten of krijgen geen vruchtbare nakomelingen), dan zijn het aparte soorten geworden. Voorbeelden van voortplantingsisolatie: verschillende paartijd of -gedrag, onverenigbare voortplantingsorganen, of onvruchtbare hybriden (zoals de muildier).",
+        goals: [
+          "Je legt uit wat een soort is.",
+          "Je legt uit hoe isolatie tot nieuwe soorten leidt."
+        ],
+        cards: [
+          { term: "Soort", def: "Groep die onderling vruchtbare nakomelingen kan krijgen." },
+          { term: "Populatie", def: "Alle individuen van één soort in een bepaald gebied." },
+          { term: "Geografische isolatie", def: "Ruimtelijke scheiding van populaties (bv. door een barrière)." },
+          { term: "Voortplantingsisolatie", def: "Populaties kunnen zich niet meer met elkaar voortplanten (met vruchtbare nakomelingen)." },
+          { term: "Soortvorming", def: "Het ontstaan van een nieuwe soort, vaak na isolatie." },
+          { term: "Hybride", def: "Nakomeling van twee soorten; vaak onvruchtbaar (bv. muildier)." },
+          { term: "Genenpool", def: "Alle allelen in een populatie samen." }
+        ],
+        quiz: [
+          { q: "Wat is de biologische definitie van een soort?", options: ["Dieren die op elkaar lijken", "Groep die onderling vruchtbare nakomelingen krijgt", "Alle dieren in een gebied", "Organismen met hetzelfde aantal chromosomen"], answer: 1, explain: "Een soort kan onderling vruchtbare nakomelingen krijgen." },
+          { q: "Wat is geografische isolatie?", options: ["Verschil in paargedrag", "Ruimtelijke scheiding van populaties", "Onvruchtbare nakomelingen", "Een mutatie"], answer: 1, explain: "Bij geografische isolatie zijn populaties ruimtelijk gescheiden." },
+          { q: "Wanneer zijn twee populaties aparte soorten geworden?", options: ["Als ze er anders uitzien", "Als er voortplantingsisolatie is", "Als ze ver uit elkaar wonen", "Als ze verschillend eten"], answer: 1, explain: "Pas bij voortplantingsisolatie (geen vruchtbare nakomelingen samen) zijn het aparte soorten." },
+          { q: "Een muildier is een voorbeeld van...", options: ["Een nieuwe soort", "Een onvruchtbare hybride", "Geografische isolatie", "Een mutatie"], answer: 1, explain: "Een muildier is een (meestal onvruchtbare) hybride van paard en ezel." },
+          { q: "Wat is een genenpool?", options: ["Alle eiwitten van een cel", "Alle allelen in een populatie", "Een groep ribosomen", "Het DNA van één individu"], answer: 1, explain: "De genenpool is het geheel van alle allelen in een populatie." }
+        ],
+        sequences: [
+          { title: "Soortvorming door isolatie", steps: ["Eén populatie", "Geografische isolatie splitst de populatie", "Verschillende mutaties en selectie in beide delen", "Populaties groeien genetisch uit elkaar", "Voortplantingsisolatie ontstaat", "Twee aparte soorten"] }
+        ]
+      },
+      {
+        id: "3",
+        title: "Aanwijzingen voor evolutie",
+        summary: "Er zijn veel aanwijzingen dat soorten zijn geëvolueerd en gemeenschappelijke voorouders hebben. Fossielen laten uitgestorven soorten en overgangsvormen zien; met bijvoorbeeld radioactieve datering bepaal je hun ouderdom. Homologe organen hebben dezelfde bouw (en voorouder) maar een andere functie (bv. de voorpoot van mens, walvis en vleermuis) en wijzen op verwantschap. Analoge organen hebben dezelfde functie maar een andere bouw/oorsprong (bv. vleugel van insect en vogel) en wijzen niet op nauwe verwantschap.\n\nOok overeenkomsten in DNA en eiwitten laten verwantschap zien: hoe meer overeenkomst in het DNA, hoe nauwer verwant. Deze moleculaire gegevens gebruik je om evolutionaire stambomen op te stellen.",
+        goals: [
+          "Je noemt aanwijzingen voor evolutie.",
+          "Je legt het verschil uit tussen homologe en analoge organen."
+        ],
+        cards: [
+          { term: "Fossiel", def: "Overblijfsel of afdruk van een organisme uit het verleden." },
+          { term: "Overgangsvorm", def: "Fossiel met kenmerken van twee groepen; wijst op evolutie." },
+          { term: "Homoloog orgaan", def: "Zelfde bouw/oorsprong, andere functie; wijst op gemeenschappelijke voorouder." },
+          { term: "Analoog orgaan", def: "Zelfde functie, andere bouw/oorsprong; geen nauwe verwantschap." },
+          { term: "Moleculaire aanwijzingen", def: "Overeenkomsten in DNA/eiwitten die verwantschap aantonen." },
+          { term: "Radioactieve datering", def: "Methode om de ouderdom van fossielen/gesteente te bepalen." },
+          { term: "Evolutionaire stamboom", def: "Schema van de verwantschap en afstamming van soorten." }
+        ],
+        quiz: [
+          { q: "Wat zijn homologe organen?", options: ["Zelfde functie, andere bouw", "Zelfde bouw/oorsprong, andere functie", "Altijd identiek", "Organen zonder functie"], answer: 1, explain: "Homologe organen hebben dezelfde bouw/oorsprong maar een andere functie; ze wijzen op verwantschap." },
+          { q: "De vleugel van een insect en die van een vogel zijn...", options: ["Homoloog", "Analoog", "Identiek", "Fossielen"], answer: 1, explain: "Zelfde functie (vliegen), andere bouw/oorsprong: analoge organen." },
+          { q: "Wat laten fossielen zien?", options: ["Alleen levende soorten", "Uitgestorven soorten en overgangsvormen", "Het DNA van cellen", "Genregulatie"], answer: 1, explain: "Fossielen tonen uitgestorven soorten en overgangsvormen uit het verleden." },
+          { q: "Hoe meer overeenkomst in DNA tussen twee soorten,...", options: ["Hoe minder verwant", "Hoe nauwer verwant", "Geen verband", "Hoe ouder de fossielen"], answer: 1, explain: "Meer DNA-overeenkomst wijst op nauwere verwantschap." },
+          { q: "Waarmee bepaal je de ouderdom van een fossiel?", options: ["Met een microscoop", "Met radioactieve datering", "Met een kruistabel", "Met een stamboom"], answer: 1, explain: "Met radioactieve datering bepaal je de ouderdom van fossielen/gesteente." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "ev-ex1",
+        title: "Resistente bacteriën",
+        context: "In een ziekenhuis worden bacteriën bestreden met een antibioticum. Na verloop van tijd blijkt een groot deel van de bacteriën ongevoelig (resistent) voor het middel.",
+        question: "Leg met natuurlijke selectie uit hoe een populatie resistente bacteriën ontstaat. Gebruik de begrippen variatie en selectie.",
+        points: 3,
+        model: [
+          "In de bacteriepopulatie bestaat variatie: door mutatie zijn enkele bacteriën (toevallig) resistent (1 p).",
+          "Het antibioticum doodt de gevoelige bacteriën; de resistente bacteriën overleven en planten zich voort (selectie) (1 p).",
+          "De resistente bacteriën geven het resistentie-allel door, zodat het aandeel resistente bacteriën in de populatie toeneemt (1 p)."
+        ]
+      },
+      {
+        id: "ev-ex2",
+        title: "Overeenkomst in bouw",
+        context: "De voorpoot van een mol, de vin van een walvis en de arm van een mens hebben allemaal dezelfde botopbouw, maar een verschillende functie (graven, zwemmen, grijpen).",
+        question: "Leg uit of dit homologe of analoge organen zijn en welke conclusie je hieruit over hun verwantschap kunt trekken.",
+        points: 2,
+        model: [
+          "Het zijn homologe organen: dezelfde bouw/oorsprong, maar een verschillende functie (1 p).",
+          "Dit wijst op een gemeenschappelijke voorouder, dus op verwantschap tussen deze soorten (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== ECOLOGIE ===================== */
+  {
+    id: "ecologie",
+    title: "Ecologie",
+    icon: "🌍",
+    theme: "t-lime",
+    domain: "Ecologie",
+    intro: "Hoe hangen organismen samen met elkaar en met hun omgeving? Je leert de organisatieniveaus, voedselrelaties, de stroom van energie en stof, en hoe ecosystemen veranderen door natuur en mens.",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Organisatieniveaus en factoren",
+        summary: "In de ecologie kijk je naar verschillende niveaus: een individu, een populatie (alle individuen van één soort in een gebied), een levensgemeenschap (alle populaties samen) en een ecosysteem (levensgemeenschap + het abiotische milieu). Alle ecosystemen samen vormen de biosfeer.\n\nOrganismen worden beïnvloed door abiotische factoren (niet-levend: temperatuur, licht, water, pH, wind) en biotische factoren (levend: voedsel, vijanden, concurrentie, ziekten). De plek waar een organisme leeft is zijn biotoop/habitat; de rol/functie die het daarin vervult is zijn niche. Twee soorten met dezelfde niche concurreren sterk (concurrentie-uitsluiting).",
+        goals: [
+          "Je benoemt de ecologische organisatieniveaus.",
+          "Je legt het verschil uit tussen abiotische en biotische factoren, en tussen biotoop en niche."
+        ],
+        cards: [
+          { term: "Populatie", def: "Alle individuen van één soort in een bepaald gebied." },
+          { term: "Levensgemeenschap", def: "Alle populaties (soorten) samen in een gebied." },
+          { term: "Ecosysteem", def: "Levensgemeenschap samen met het abiotische milieu." },
+          { term: "Biosfeer", def: "Alle ecosystemen op aarde samen." },
+          { term: "Abiotische factor", def: "Niet-levende milieufactor (temperatuur, licht, water, pH)." },
+          { term: "Biotische factor", def: "Levende milieufactor (voedsel, vijanden, concurrentie)." },
+          { term: "Biotoop / habitat", def: "De plek/leefomgeving waar een organisme leeft." },
+          { term: "Niche", def: "De functie/rol van een soort in het ecosysteem (o.a. voedsel, plaats, tijd)." }
+        ],
+        quiz: [
+          { q: "Wat is een populatie?", options: ["Alle soorten in een gebied", "Alle individuen van één soort in een gebied", "Een ecosysteem", "Een levensgemeenschap"], answer: 1, explain: "Een populatie = alle individuen van één soort in een bepaald gebied." },
+          { q: "Wat hoort bij een ecosysteem dat niet bij een levensgemeenschap hoort?", options: ["De planten", "De dieren", "Het abiotische milieu", "De bacteriën"], answer: 2, explain: "Een ecosysteem = levensgemeenschap + het abiotische (niet-levende) milieu." },
+          { q: "Welke factor is abiotisch?", options: ["Concurrentie", "Temperatuur", "Vijanden", "Ziekten"], answer: 1, explain: "Temperatuur is een abiotische (niet-levende) factor." },
+          { q: "Wat is de niche van een soort?", options: ["De plek waar hij leeft", "Zijn functie/rol in het ecosysteem", "Zijn aantal", "Zijn grootte"], answer: 1, explain: "De niche is de rol/functie van een soort; de biotoop is de plek waar hij leeft." },
+          { q: "Twee soorten met dezelfde niche...", options: ["Leven vreedzaam samen", "Concurreren sterk", "Vormen één soort", "Eten elkaar op"], answer: 1, explain: "Gelijke niche → sterke concurrentie (concurrentie-uitsluiting)." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Voedselrelaties en kringlopen",
+        summary: "Producenten (planten) leggen met fotosynthese zonne-energie vast in organische stof. Consumenten (planteneters, vleeseters) eten andere organismen; reducenten (bacteriën, schimmels) breken dode resten af tot anorganische stoffen. In een voedselketen geef je de eetrelaties weer; meerdere ketens samen vormen een voedselweb.\n\nEnergie stroomt éénrichting door het systeem: bij elke stap gaat veel energie verloren als warmte, dus per trofisch niveau blijft er minder over (piramide van biomassa/energie). Stoffen daarentegen gaan in kringlopen rond, zoals de koolstofkringloop: CO2 wordt door fotosynthese vastgelegd en door verbranding/verbranding (dissimilatie) en afbraak weer vrijgemaakt.",
+        goals: [
+          "Je beschrijft producenten, consumenten en reducenten in voedselrelaties.",
+          "Je legt de energiestroom en de koolstofkringloop uit."
+        ],
+        cards: [
+          { term: "Producent", def: "Organisme (plant) dat met fotosynthese organische stof maakt." },
+          { term: "Consument", def: "Organisme dat andere organismen eet (planten- of vleeseter)." },
+          { term: "Reducent", def: "Bacterie of schimmel die dode resten afbreekt tot anorganische stoffen." },
+          { term: "Voedselketen", def: "Reeks organismen die elkaar opeten (energie/stofoverdracht)." },
+          { term: "Voedselweb", def: "Netwerk van met elkaar verbonden voedselketens." },
+          { term: "Trofisch niveau", def: "Stap in de voedselketen (producent, 1e consument, enz.)." },
+          { term: "Energiestroom", def: "Energie stroomt één kant op; per niveau gaat veel verloren als warmte." },
+          { term: "Koolstofkringloop", def: "CO2 wordt vastgelegd (fotosynthese) en weer vrijgemaakt (dissimilatie/afbraak/verbranding)." }
+        ],
+        quiz: [
+          { q: "Wat is een producent?", options: ["Een planteneter", "Een plant die fotosynthese doet", "Een schimmel", "Een vleeseter"], answer: 1, explain: "Producenten (planten) maken met fotosynthese organische stof." },
+          { q: "Wat doen reducenten?", options: ["Fotosynthese", "Dode resten afbreken tot anorganische stoffen", "Andere dieren eten", "Energie vastleggen"], answer: 1, explain: "Reducenten (bacteriën/schimmels) breken dood materiaal af." },
+          { q: "Waarom neemt de biomassa per trofisch niveau af?", options: ["Er zijn minder soorten", "Bij elke stap gaat veel energie verloren als warmte", "Producenten eten consumenten", "Door de koolstofkringloop"], answer: 1, explain: "Energie gaat één kant op en per niveau gaat veel verloren als warmte." },
+          { q: "Wat legt CO2 vast in de koolstofkringloop?", options: ["Verbranding", "Fotosynthese", "Dissimilatie", "Afbraak door reducenten"], answer: 1, explain: "Fotosynthese legt CO2 vast in organische stof." },
+          { q: "Meerdere gekoppelde voedselketens vormen samen een...", options: ["Populatie", "Voedselweb", "Ecosysteem", "Niche"], answer: 1, explain: "Verbonden voedselketens vormen een voedselweb." }
+        ],
+        sequences: []
+      },
+      {
+        id: "3",
+        title: "Populaties en veranderende ecosystemen",
+        summary: "De grootte van een populatie hangt af van geboorte, sterfte en migratie. Bij weinig concurrentie groeit een populatie eerst snel (bijna exponentieel), maar door beperkte voedsel/ruimte en toenemende vijanden vlakt de groei af rond de draagkracht van het milieu (S-vormige/logistische groei).\n\nEcosystemen veranderen door successie: een reeks levensgemeenschappen volgt elkaar op tot een relatief stabiel climaxstadium. De mens beïnvloedt ecosystemen sterk (vermesting/eutrofiëring, verzuring, versnippering, klimaatverandering), wat de biodiversiteit kan verlagen. Duurzaam beheer en natuurbescherming proberen ecosystemen en biodiversiteit in stand te houden.",
+        goals: [
+          "Je legt uit wat de groei van een populatie bepaalt en wat draagkracht is.",
+          "Je beschrijft successie en menselijke invloed op ecosystemen."
+        ],
+        cards: [
+          { term: "Draagkracht", def: "Het maximale aantal individuen dat een milieu langdurig kan onderhouden." },
+          { term: "Logistische (S-)groei", def: "Snelle groei die afvlakt naar de draagkracht." },
+          { term: "Geboorte/sterfte/migratie", def: "Factoren die de grootte van een populatie bepalen." },
+          { term: "Successie", def: "Opvolging van levensgemeenschappen tot een stabiel climaxstadium." },
+          { term: "Climaxstadium", def: "Het relatief stabiele eindstadium van successie." },
+          { term: "Eutrofiëring (vermesting)", def: "Overmaat aan voedingsstoffen (bv. mest) verstoort het ecosysteem." },
+          { term: "Biodiversiteit", def: "De verscheidenheid aan soorten (en genen/ecosystemen)." },
+          { term: "Duurzaamheid", def: "Gebruik van de natuur zonder haar voor de toekomst uit te putten." }
+        ],
+        quiz: [
+          { q: "Wat is de draagkracht van een milieu?", options: ["Het aantal soorten", "Het maximale aantal individuen dat het milieu aankan", "De hoeveelheid CO2", "De grootte van het gebied"], answer: 1, explain: "De draagkracht is het maximale aantal individuen dat een milieu langdurig kan onderhouden." },
+          { q: "Wat is successie?", options: ["Groei van één individu", "Opvolging van levensgemeenschappen", "Afbraak door reducenten", "Een voedselketen"], answer: 1, explain: "Successie is de opeenvolging van levensgemeenschappen richting een climaxstadium." },
+          { q: "Wat bepaalt de grootte van een populatie?", options: ["Alleen geboorte", "Geboorte, sterfte en migratie", "Alleen het weer", "Alleen voedsel"], answer: 1, explain: "Geboorte, sterfte en migratie (in/uit) bepalen samen de populatiegrootte." },
+          { q: "Wat is eutrofiëring?", options: ["Tekort aan voedingsstoffen", "Overmaat aan voedingsstoffen die het ecosysteem verstoort", "Verzuring van de bodem", "Uitsterven van soorten"], answer: 1, explain: "Eutrofiëring (vermesting) is een overmaat aan voedingsstoffen, bv. door mest." },
+          { q: "Wat betekent duurzaamheid?", options: ["Zo veel mogelijk oogsten", "De natuur gebruiken zonder haar voor de toekomst uit te putten", "Alle natuur beschermen tegen gebruik", "Meer soorten introduceren"], answer: 1, explain: "Duurzaam gebruik put de natuur niet uit, zodat toekomstige generaties er ook van kunnen leven." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "ec-ex1",
+        title: "Energie in een voedselketen",
+        context: "In een voedselketen gras → konijn → vos is de totale biomassa van het gras veel groter dan die van de konijnen, en die van de konijnen weer groter dan die van de vossen.",
+        question: "Verklaar waarom de biomassa afneemt naarmate je hoger in de voedselketen komt. Gebruik in je antwoord de energiestroom.",
+        points: 2,
+        model: [
+          "Bij de overgang naar een volgend trofisch niveau wordt maar een deel van de energie/biomassa opgenomen; veel energie gaat verloren (o.a. als warmte door dissimilatie en in niet-opgegeten/onverteerde delen) (1 p).",
+          "Daardoor blijft er op elk hoger niveau minder energie en dus minder biomassa over (1 p)."
+        ]
+      },
+      {
+        id: "ec-ex2",
+        title: "Eutrofiëring van een sloot",
+        context: "In een sloot naast een akker komt veel mest terecht. Er groeit eerst enorm veel algen (algenbloei). Later sterven veel vissen door zuurstofgebrek.",
+        question: "Leg uit hoe de mest uiteindelijk leidt tot zuurstofgebrek en vissterfte in de sloot.",
+        points: 3,
+        model: [
+          "De mest (voedingsstoffen) veroorzaakt sterke groei van algen/waterplanten (algenbloei) (1 p).",
+          "Als de algen afsterven, worden ze door reducenten (bacteriën) afgebroken; die verbruiken bij die afbraak veel zuurstof (1 p).",
+          "Het zuurstofgehalte in het water daalt sterk, waardoor de vissen door zuurstofgebrek sterven (1 p)."
+        ]
+      }
+    ]
+  },
+
+  /* ===================== STOFWISSELING IN DE CEL ===================== */
+  {
+    id: "stofwisseling",
+    title: "Stofwisseling in de cel",
+    icon: "🔬",
+    theme: "t-red",
+    domain: "Stofwisseling",
+    intro: "Alle processen in een cel draaien op stofwisseling: opbouw en afbraak van stoffen, gestuurd door enzymen. Je leert hoe enzymen werken, hoe cellen energie vrijmaken (dissimilatie) en hoe planten energie vastleggen (fotosynthese).",
+    paragraphs: [
+      {
+        id: "1",
+        title: "Enzymen",
+        summary: "Stofwisseling is het geheel van chemische reacties in een cel: opbouw (assimilatie) en afbraak (dissimilatie). Bijna alle reacties worden versneld door enzymen: biokatalysatoren (eiwitten) die zelf niet verbruikt worden. Elk enzym past maar op één type substraat: het substraat past als een sleutel in het actieve centrum (slot); dit heet substraatspecificiteit.\n\nDe werking hangt af van omstandigheden. Er is een optimumtemperatuur en een optimum-pH waarbij het enzym het snelst werkt. Bij te hoge temperatuur of verkeerde pH verandert de vorm van het enzym onherstelbaar (denaturatie), waardoor het niet meer werkt. Ook de substraat- en enzymconcentratie beïnvloeden de reactiesnelheid.",
+        goals: [
+          "Je legt uit wat enzymen zijn en hoe substraatspecificiteit werkt.",
+          "Je beschrijft de invloed van temperatuur en pH op enzymwerking."
+        ],
+        cards: [
+          { term: "Stofwisseling (metabolisme)", def: "Alle chemische reacties in een cel: opbouw en afbraak." },
+          { term: "Assimilatie / dissimilatie", def: "Opbouw van stoffen (assimilatie) versus afbraak met energie vrij (dissimilatie)." },
+          { term: "Enzym", def: "Biokatalysator (eiwit) die een reactie versnelt en zelf niet verbruikt wordt." },
+          { term: "Substraat", def: "De stof waarop een enzym inwerkt." },
+          { term: "Actief centrum", def: "Plek op het enzym waar het substraat precies past ('slot')." },
+          { term: "Substraatspecificiteit", def: "Elk enzym werkt maar op één (type) substraat, als sleutel-slot." },
+          { term: "Optimumtemperatuur / -pH", def: "De temperatuur/pH waarbij een enzym het snelst werkt." },
+          { term: "Denaturatie", def: "Onherstelbare vormverandering van een enzym (bv. door hitte), waardoor het niet meer werkt." }
+        ],
+        quiz: [
+          { q: "Wat is een enzym?", options: ["Een suiker", "Een biokatalysator (eiwit)", "Een hormoon", "Een vetzuur"], answer: 1, explain: "Een enzym is een biokatalysator (eiwit) die reacties versnelt zonder verbruikt te worden." },
+          { q: "Wat betekent substraatspecificiteit?", options: ["Enzym werkt op alles", "Enzym werkt maar op één type substraat", "Enzym wordt verbruikt", "Enzym maakt energie"], answer: 1, explain: "Een enzym past maar op één substraat (sleutel-slot)." },
+          { q: "Wat gebeurt er met een enzym bij te hoge temperatuur?", options: ["Het werkt sneller", "Het denatureert en werkt niet meer", "Het verandert in substraat", "Er gebeurt niets"], answer: 1, explain: "Te hoge temperatuur veroorzaakt denaturatie: de vorm verandert onherstelbaar." },
+          { q: "Waar bindt het substraat aan het enzym?", options: ["Aan de celkern", "Aan het actieve centrum", "Aan het ribosoom", "Aan het membraan"], answer: 1, explain: "Het substraat past in het actieve centrum van het enzym." },
+          { q: "Wat is dissimilatie?", options: ["Opbouw van stoffen", "Afbraak van stoffen met energie vrij", "DNA kopiëren", "Enzymen maken"], answer: 1, explain: "Dissimilatie is de afbraak van stoffen waarbij energie vrijkomt." }
+        ],
+        sequences: []
+      },
+      {
+        id: "2",
+        title: "Dissimilatie: energie vrijmaken",
+        summary: "Cellen halen energie uit organische stoffen (vooral glucose) door dissimilatie. Bij de aerobe verbranding (met zuurstof) wordt glucose volledig afgebroken: C6H12O6 + 6 O2 → 6 CO2 + 6 H2O + energie. Dit gebeurt grotendeels in de mitochondriën en levert veel energie (ATP), de energiedrager van de cel.\n\nZonder voldoende zuurstof gebruikt de cel anaerobe dissimilatie (gisting). Bij melkzuurgisting in spiercellen ontstaat melkzuur (weinig energie); bij gisten en sommige micro-organismen ontstaan alcohol en CO2 (alcoholische gisting). Anaerobe dissimilatie levert veel minder energie op dan aerobe, omdat glucose niet volledig wordt afgebroken.",
+        goals: [
+          "Je beschrijft aerobe dissimilatie en de rol van mitochondriën en ATP.",
+          "Je legt het verschil uit tussen aerobe en anaerobe dissimilatie."
+        ],
+        cards: [
+          { term: "Dissimilatie", def: "Afbraak van organische stof waarbij energie vrijkomt." },
+          { term: "Aerobe dissimilatie", def: "Verbranding met zuurstof; glucose volledig afgebroken tot CO2 en H2O; veel energie." },
+          { term: "Anaerobe dissimilatie (gisting)", def: "Afbraak zonder zuurstof; glucose niet volledig afgebroken; weinig energie." },
+          { term: "Mitochondrion", def: "Celorgaan waarin de aerobe dissimilatie grotendeels plaatsvindt." },
+          { term: "ATP", def: "Energiedrager (energierijke stof) die de cel gebruikt voor processen." },
+          { term: "Melkzuurgisting", def: "Anaerobe dissimilatie in spiercellen; er ontstaat melkzuur." },
+          { term: "Alcoholische gisting", def: "Anaerobe dissimilatie (o.a. gisten); er ontstaan alcohol en CO2." },
+          { term: "Reactie aerobe dissimilatie", def: "C6H12O6 + 6 O2 → 6 CO2 + 6 H2O + energie." }
+        ],
+        quiz: [
+          { q: "Waar vindt de aerobe dissimilatie vooral plaats?", options: ["In de kern", "In de mitochondriën", "In de ribosomen", "In de celwand"], answer: 1, explain: "De aerobe dissimilatie vindt grotendeels plaats in de mitochondriën." },
+          { q: "Wat is ATP?", options: ["Een enzym", "De energiedrager van de cel", "Een suiker", "Een afvalstof"], answer: 1, explain: "ATP is de energierijke stof waarmee de cel processen aandrijft." },
+          { q: "Welke stoffen ontstaan bij volledige aerobe verbranding van glucose?", options: ["Alcohol en CO2", "Melkzuur", "CO2 en water", "Alleen zuurstof"], answer: 2, explain: "C6H12O6 + 6 O2 → 6 CO2 + 6 H2O + energie." },
+          { q: "Wat ontstaat bij melkzuurgisting in spiercellen?", options: ["Alcohol", "Melkzuur", "Zuurstof", "Glucose"], answer: 1, explain: "Bij anaerobe dissimilatie in spiercellen ontstaat melkzuur." },
+          { q: "Waarom levert anaerobe dissimilatie minder energie op?", options: ["Er is meer zuurstof", "Glucose wordt niet volledig afgebroken", "Er is geen glucose", "Enzymen ontbreken"], answer: 1, explain: "Zonder zuurstof wordt glucose niet volledig afgebroken, dus komt er minder energie vrij." }
+        ],
+        sequences: []
+      },
+      {
+        id: "3",
+        title: "Fotosynthese",
+        summary: "Planten (en algen) leggen met fotosynthese lichtenergie vast in glucose. In de bladgroenkorrels (chloroplasten) zit bladgroen (chlorofyl), dat licht opvangt. De reactie: 6 CO2 + 6 H2O → (licht + chlorofyl) → C6H12O6 + 6 O2. De plant gebruikt de glucose voor opbouw (assimilatie) van o.a. zetmeel en cellulose, en voor haar eigen dissimilatie.\n\nDe snelheid van de fotosynthese hangt af van beperkende factoren: lichtsterkte, CO2-concentratie en temperatuur. De factor die het meest tekortschiet, bepaalt de snelheid (de wet van de beperkende factor). Fotosynthese is de basis van bijna alle voedselketens en levert de zuurstof in de atmosfeer.",
+        goals: [
+          "Je beschrijft de fotosynthese met de reactievergelijking.",
+          "Je legt uit welke beperkende factoren de snelheid bepalen."
+        ],
+        cards: [
+          { term: "Fotosynthese", def: "Vastleggen van lichtenergie in glucose: 6 CO2 + 6 H2O → C6H12O6 + 6 O2." },
+          { term: "Bladgroenkorrel (chloroplast)", def: "Celorgaan waarin de fotosynthese plaatsvindt." },
+          { term: "Bladgroen (chlorofyl)", def: "Groene kleurstof die lichtenergie opvangt." },
+          { term: "Koolstofassimilatie", def: "Opbouw van organische stof (glucose) uit CO2 en water." },
+          { term: "Beperkende factor", def: "De factor die het meest tekortschiet en zo de snelheid bepaalt." },
+          { term: "Beperkende factoren fotosynthese", def: "Lichtsterkte, CO2-concentratie en temperatuur." },
+          { term: "Zetmeel", def: "Opslagstof die de plant uit glucose maakt (assimilatieproduct)." }
+        ],
+        quiz: [
+          { q: "Wat legt de fotosynthese vast?", options: ["Warmte in water", "Lichtenergie in glucose", "CO2 in zuurstof", "Zuurstof in glucose"], answer: 1, explain: "Fotosynthese legt lichtenergie vast in glucose." },
+          { q: "Waar vindt de fotosynthese plaats?", options: ["In de mitochondriën", "In de bladgroenkorrels", "In de kern", "In de vacuole"], answer: 1, explain: "De fotosynthese vindt plaats in de bladgroenkorrels (chloroplasten)." },
+          { q: "Welke stoffen ontstaan bij de fotosynthese?", options: ["CO2 en water", "Glucose en zuurstof", "Melkzuur", "Alcohol en CO2"], answer: 1, explain: "6 CO2 + 6 H2O → C6H12O6 (glucose) + 6 O2." },
+          { q: "Wat is een beperkende factor?", options: ["De factor die het meest tekortschiet en de snelheid bepaalt", "De factor met de meeste voorraad", "Altijd de temperatuur", "Het bladgroen"], answer: 0, explain: "De beperkende factor is degene die het meest tekortschiet en zo de snelheid bepaalt." },
+          { q: "Welke kleurstof vangt het licht op?", options: ["Melanine", "Chlorofyl (bladgroen)", "Rodopsine", "Hemoglobine"], answer: 1, explain: "Bladgroen (chlorofyl) vangt de lichtenergie op." }
+        ],
+        sequences: []
+      }
+    ],
+    exams: [
+      {
+        id: "sw-ex1",
+        title: "Koorts en enzymen",
+        context: "Bij hoge koorts (boven ±42 °C) kunnen lichaamsprocessen ernstig ontregeld raken. Veel enzymen werken dan niet meer goed.",
+        question: "Leg uit waarom een zeer hoge lichaamstemperatuur de werking van enzymen verstoort. Gebruik in je antwoord het begrip denaturatie.",
+        points: 2,
+        model: [
+          "Enzymen hebben een optimumtemperatuur; ver daarboven verandert door de hitte de ruimtelijke vorm van het enzym onherstelbaar (denaturatie) (1 p).",
+          "Het substraat past dan niet meer in het actieve centrum, waardoor het enzym de reactie niet meer kan versnellen (1 p)."
+        ]
+      },
+      {
+        id: "sw-ex2",
+        title: "Fotosynthese in een kas",
+        context: "Een tuinder wil de fotosynthese in zijn kas verhogen. Bij voldoende licht en een goede temperatuur blijkt extra CO2 toevoegen de groei sterk te verbeteren.",
+        question: "Leg met het begrip beperkende factor uit waarom juist het toevoegen van CO2 hier de fotosynthese versnelt.",
+        points: 2,
+        model: [
+          "De snelheid van de fotosynthese wordt bepaald door de factor die het meest tekortschiet (de beperkende factor) (1 p).",
+          "Omdat licht en temperatuur al voldoende zijn, was CO2 hier de beperkende factor; meer CO2 heft die beperking op en versnelt de fotosynthese (1 p)."
+        ]
+      }
+    ]
   }
 ];
 
 /* ============================================================
-   CURRICULUM — per niveau de hoofdstukindeling.
-   Elk hoofdstuk verwijst naar een topic (of null = in ontwikkeling).
-   'names' geeft de hoofdstuknaam per methode, zodat het overzicht
-   klopt met de gekozen methode (Biologie voor Jou / Nectar).
+   CURRICULUM — de échte hoofdstukindeling per niveau én methode,
+   met de juiste hoofdstuknummers en -titels (bovenbouw):
+     • Biologie voor Jou (7e editie) — thema-nummering
+     • Nectar (editie 4.1) — doorlopende hoofdstuknummering
+   Elk hoofdstuk verwijst met 'topic' naar de uitgewerkte leerstof
+   (of null als de inhoud nog in ontwikkeling is).
+   Bron: officiële inhoudsopgaven/thema-overzichten van de methodes.
    ============================================================ */
 const CURRICULUM = {
   havo: {
     id: "havo",
     name: "HAVO",
-    tagline: "Bovenbouw · schoolexamen & centraal examen",
-    chapters: [
-      { code: "Regeling", topic: "zenuwstelsel", names: { bvj: "Zenuwstelsel", nectar: "Regeling: zenuwstelsel" } },
-      { code: "Waarneming", topic: "waarnemen", names: { bvj: "Zintuigen & waarneming", nectar: "Waarnemen" } },
-      { code: "Afweer", topic: "afweer", names: { bvj: "Afweer", nectar: "Bescherming & afweer" } },
-      { code: "Voortplanting", topic: null, names: { bvj: "Voortplanting & seksualiteit", nectar: "Voortplanting" } },
-      { code: "Erfelijkheid", topic: null, names: { bvj: "Erfelijkheid", nectar: "DNA & erfelijkheid" } },
-      { code: "Evolutie", topic: null, names: { bvj: "Evolutie", nectar: "Evolutie" } },
-      { code: "Ecologie", topic: null, names: { bvj: "Ecologie", nectar: "Ecosystemen" } },
-      { code: "Stofwisseling", topic: null, names: { bvj: "Stofwisseling & energie", nectar: "Stofwisseling" } }
-    ]
+    tagline: "Bovenbouw (4–5 havo) · schoolexamen & centraal examen",
+    methodes: {
+      bvj: {
+        editie: "7e editie",
+        chapters: [
+          { num: "1", title: "Inleiding in de biologie", topic: null },
+          { num: "2", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
+          { num: "3", title: "Genetica", topic: "erfelijkheid" },
+          { num: "4", title: "Evolutie", topic: "evolutie" },
+          { num: "5", title: "Regeling", topic: "zenuwstelsel" },
+          { num: "6", title: "Waarneming en gedrag", topic: "waarnemen" },
+          { num: "7", title: "Ecologie en milieu", topic: "ecologie" },
+          { num: "8", title: "Stofwisseling in de cel", topic: "stofwisseling" },
+          { num: "9", title: "DNA", topic: "dna" },
+          { num: "10", title: "Voeding en vertering", topic: null },
+          { num: "11", title: "Transport", topic: null },
+          { num: "12", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "13", title: "Afweer", topic: "afweer" },
+          { num: "14", title: "Samenhang in de biologie", topic: null }
+        ]
+      },
+      nectar: {
+        editie: "editie 4.1",
+        chapters: [
+          { num: "1", title: "Gedrag", topic: null },
+          { num: "2", title: "Cellen", topic: null },
+          { num: "3", title: "Onderzoek doen", topic: null },
+          { num: "4", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
+          { num: "5", title: "Voeding en energie", topic: "stofwisseling" },
+          { num: "6", title: "Voeding, vertering en gezondheid", topic: null },
+          { num: "7", title: "Soorten en relaties", topic: null },
+          { num: "8", title: "Ecosystemen en evenwicht", topic: "ecologie" },
+          { num: "9", title: "Erfelijkheid", topic: "erfelijkheid" },
+          { num: "10", title: "Evolutie", topic: "evolutie" },
+          { num: "11", title: "Transport", topic: null },
+          { num: "12", title: "Gezondheid", topic: "afweer" },
+          { num: "13", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "14", title: "Reageren", topic: "zenuwstelsel" },
+          { num: "15", title: "Op weg naar het examen", topic: null }
+        ]
+      }
+    }
   },
   vwo: {
     id: "vwo",
     name: "VWO",
-    tagline: "Bovenbouw · schoolexamen & centraal examen",
-    chapters: [
-      { code: "Regeling", topic: "zenuwstelsel", names: { bvj: "Zenuwstelsel", nectar: "Regeling: zenuwstelsel" } },
-      { code: "Waarneming", topic: "waarnemen", names: { bvj: "Zintuigen & waarneming", nectar: "Waarnemen" } },
-      { code: "Afweer", topic: "afweer", names: { bvj: "Afweer", nectar: "Bescherming & afweer" } },
-      { code: "Hormonen", topic: null, names: { bvj: "Hormonale regeling", nectar: "Hormonen & homeostase" } },
-      { code: "Voortplanting", topic: null, names: { bvj: "Voortplanting & ontwikkeling", nectar: "Voortplanting" } },
-      { code: "Genregulatie", topic: null, names: { bvj: "DNA, eiwitsynthese & genregulatie", nectar: "Moleculaire genetica" } },
-      { code: "Erfelijkheid", topic: null, names: { bvj: "Erfelijkheid", nectar: "Erfelijkheid" } },
-      { code: "Evolutie", topic: null, names: { bvj: "Evolutie", nectar: "Evolutie & biodiversiteit" } },
-      { code: "Ecologie", topic: null, names: { bvj: "Ecologie", nectar: "Ecosystemen & duurzaamheid" } },
-      { code: "Stofwisseling", topic: null, names: { bvj: "Cel & stofwisseling", nectar: "Stofwisseling van de cel" } }
-    ]
+    tagline: "Bovenbouw (4–6 vwo) · schoolexamen & centraal examen",
+    methodes: {
+      bvj: {
+        editie: "7e editie",
+        chapters: [
+          { num: "1", title: "Inleiding in de biologie", topic: null },
+          { num: "2", title: "Voortplanting en seksualiteit", topic: "voortplanting" },
+          { num: "3", title: "Genetica", topic: "erfelijkheid" },
+          { num: "4", title: "Evolutie", topic: "evolutie" },
+          { num: "5", title: "Ecologie", topic: "ecologie" },
+          { num: "6", title: "Mens en milieu", topic: null },
+          { num: "7", title: "Regeling", topic: "hormonen" },
+          { num: "8", title: "Waarneming en gedrag", topic: "waarnemen" },
+          { num: "9", title: "Stofwisseling in de cel", topic: "stofwisseling" },
+          { num: "10", title: "DNA", topic: "dna" },
+          { num: "11", title: "Planten", topic: null },
+          { num: "12", title: "Voeding en vertering", topic: null },
+          { num: "13", title: "Transport", topic: null },
+          { num: "14", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "15", title: "Afweer", topic: "afweer" },
+          { num: "16", title: "Samenhang in de biologie", topic: null }
+        ]
+      },
+      nectar: {
+        editie: "editie 4.1",
+        chapters: [
+          { num: "1", title: "Gedrag", topic: null },
+          { num: "2", title: "Cel en leven", topic: null },
+          { num: "3", title: "Wetenschappelijk onderzoek", topic: null },
+          { num: "4", title: "Voortplanting", topic: "voortplanting" },
+          { num: "5", title: "Erfelijkheid", topic: "erfelijkheid" },
+          { num: "6", title: "Soorten en populaties", topic: null },
+          { num: "7", title: "Evolutie", topic: "evolutie" },
+          { num: "8", title: "Kenmerken van ecosystemen", topic: "ecologie" },
+          { num: "9", title: "Systeem Aarde en de mens", topic: null },
+          { num: "10", title: "Bloedsomloop", topic: null },
+          { num: "11", title: "Voeding en vertering", topic: null },
+          { num: "12", title: "Gaswisseling en uitscheiding", topic: null },
+          { num: "13", title: "Hormonen", topic: "hormonen" },
+          { num: "14", title: "Zenuwstelsel", topic: "zenuwstelsel" },
+          { num: "15", title: "Waarnemen", topic: "waarnemen" },
+          { num: "16", title: "Afweer", topic: "afweer" },
+          { num: "17", title: "DNA", topic: "dna" },
+          { num: "18", title: "Eiwitten", topic: "stofwisseling" },
+          { num: "19", title: "Sport", topic: null },
+          { num: "20", title: "Planten", topic: null }
+        ]
+      }
+    }
   }
 };
 

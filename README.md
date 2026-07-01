@@ -20,9 +20,25 @@ hoofdstukken**. Elk volledig uitgewerkt hoofdstuk biedt vier tabbladen:
 - ⚡ **Oefenvragen** — meerkeuzevragen met directe feedback en combo-bonus.
 - 📝 **Examenopgaven** — examenopgaven in examenstijl **mét een puntenantwoordmodel**, zodat je precies ziet hoe je scoort.
 
-Nu volledig uitgewerkt: **Zenuwstelsel**, **Waarnemen** en **Afweer** (de
-kern van het domein Regeling). De overige hoofdstukken staan als
-"binnenkort" in het overzicht en worden later gevuld.
+De hoofdstukken krijgen automatisch het **juiste hoofdstuknummer en de juiste
+titel** voor de gekozen methode en niveau, op basis van de officiële
+inhoudsopgaven (Biologie voor Jou 7e editie met thema-nummering; Nectar editie
+4.1 met doorlopende hoofdstuknummering).
+
+Nu volledig uitgewerkt zijn **10 onderwerpen** die het grootste deel van het
+examenprogramma dekken:
+
+- **Zenuwstelsel**, **Waarnemen**, **Hormonen & homeostase** (domein Regeling)
+- **Afweer** (immuunsysteem, bloedgroepen)
+- **Voortplanting & seksualiteit**
+- **Erfelijkheid** en **DNA & eiwitsynthese**
+- **Evolutie**
+- **Ecologie**
+- **Stofwisseling in de cel** (enzymen, dissimilatie, fotosynthese)
+
+Deze onderwerpen worden gedeeld tussen de methodes en niveaus en gekoppeld aan
+het juiste hoofdstuk. De overige hoofdstukken staan als "binnenkort" in het
+overzicht en zijn eenvoudig uit te breiden via `content.js`.
 
 Daarnaast: 🔥 **XP, levels en een dagelijkse streak**, een **slimme sessie**
 (adaptieve mix die op je zwakke plekken focust) en een **examentraining**
