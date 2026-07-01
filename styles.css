@@ -143,6 +143,8 @@ main { max-width: 680px; margin: 0 auto; padding: 22px clamp(14px, 3vw, 20px) 12
 .backbtn { background: #fff; border: 2px solid var(--line); padding: 9px 16px; border-radius: var(--r); font-weight: 800; font-size: 14px;
   color: var(--muted-2); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 0 var(--line); transition: transform .1s; }
 .backbtn:active { transform: translateY(3px); box-shadow: 0 0 0 var(--line); }
+/* nette tussenruimte tussen de terugknop en het volgende paneel (lees, quiz, flashcards, proces, open, tutor) */
+.backbtn + .panel { margin-top: 16px; }
 .world-banner { border-radius: var(--r-lg); padding: 22px clamp(18px, 3vw, 26px); margin: 14px 0 8px; color: #fff; }
 .world-banner.world-brain { background: var(--green); box-shadow: 0 5px 0 var(--green-d); }
 .world-banner.world-senses { background: var(--blue); box-shadow: 0 5px 0 var(--blue-d); }
