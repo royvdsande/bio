@@ -10,18 +10,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g fill='none' stroke-width='2' stroke-linecap='round'><path d='M7 3c0 5 10 5 10 10s-10 5-10 10' stroke='%2358cc02'/><path d='M17 3c0 5-10 5-10 10s10 5 10 10' stroke='%231cb0f6'/><path d='M8.4 6h7.2M8.4 18h7.2M6.6 9.5h10.8M6.6 14.5h10.8' stroke='%23ce82ff' stroke-width='1.6'/></g></svg>">
 </head>
 <body>
   <header class="topbar">
-    <div class="brand" id="brand">
-      <span class="logo">🧬</span>
+    <div class="brand" id="brand" role="button" tabindex="0" aria-label="Naar startscherm">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <g fill="none" stroke-width="2" stroke-linecap="round">
+            <path d="M7 3c0 5 10 5 10 10s-10 5-10 10" stroke="#58cc02"/>
+            <path d="M17 3c0 5-10 5-10 10s10 5 10 10" stroke="#1cb0f6"/>
+            <path d="M8.4 6h7.2M8.4 18h7.2M6.6 9.5h10.8M6.6 14.5h10.8" stroke="#ce82ff" stroke-width="1.6"/>
+          </g>
+        </svg>
+      </span>
       <span class="brand-txt">BioQuest</span>
     </div>
     <div class="spacer"></div>
     <div class="hud">
-      <div class="chip-stat streak" id="streakChip" title="Dagelijkse streak">
-        <span class="ic">🔥</span><b id="streakVal">0</b>
+      <div class="chip-stat streak" id="streakChip" title="Dagelijkse streak" aria-label="Dagelijkse streak">
+        <svg class="ic ic-flame" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path class="flame-out" d="M12 23c4.4 0 7.5-3 7.5-7.2 0-2.9-1.6-5.2-3.1-7-.5 1.1-1.3 1.8-2.2 1.9.8-2.3.3-4.8-2.1-7.4-.3 2.3-1.6 3.7-3 5.2C7.2 10.1 6 12.3 6 15.8 6 20 7.6 23 12 23z"/>
+          <path class="flame-in" d="M12 22c2.4 0 4-1.7 4-3.9 0-1.8-1.1-3-2.2-4.2-.4 1.4-1.2 1.8-1.9 1.9.5-1.6-.4-3-1.6-4-.2 1.6-1 2.3-1.6 3.2-.5.8-1 1.7-1 3 0 2.3 1.9 4 4.3 4z"/>
+        </svg><b id="streakVal">0</b>
       </div>
       <div class="chip-stat xp" id="xpChip" title="Level & XP">
         <span class="lvlring" id="lvlRing"><i id="lvlBadge">1</i></span>
@@ -30,7 +41,11 @@
           <span class="xpbar"><span id="xpFill"></span></span>
         </span>
       </div>
-      <button class="icon-btn" id="settingsBtn" title="Instellingen">⚙️</button>
+      <button class="icon-btn" id="settingsBtn" title="Instellingen" aria-label="Instellingen">
+        <svg class="ic ic-gear" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1l-.4-2.6H10.9l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4.2l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
+        </svg>
+      </button>
     </div>
   </header>
 
