@@ -10,6 +10,7 @@
   const SAVE_KEY = "bioquest_v3";
   const AIKEY_KEY = "bioquest_openai_key";
   const DAILY_GOAL = 60;
+  const STATE_SCHEMA_VERSION = 3;
 
   const $ = (s, r = document) => r.querySelector(s);
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -38,16 +39,107 @@
   const defaultState = () => ({
     xp: 0, streakDays: 0, lastDay: null, day: { d: null, xp: 0 },
     cards: {}, paras: {}, videos: {},
-    settings: { sound: true, model: "gpt-4o-mini", niveau: null, methode: null }
+    settings: { sound: true, model: "gpt-4o-mini", niveau: null, methode: null },
+    meta: { schemaVersion: STATE_SCHEMA_VERSION, updatedAt: 0 }
   });
   let state = load();
+  let accountState = { ready: false, user: null, sync: "idle", error: "" };
   function load() { try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); return s ? deepMerge(defaultState(), s) : defaultState(); } catch (e) { return defaultState(); } }
-  function deepMerge(base, add) { const out = Object.assign({}, base, add); out.settings = Object.assign({}, base.settings, add.settings || {}); return out; }
-  function save() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+  function deepMerge(base, add) {
+    add = add || {};
+    const out = Object.assign({}, base, add);
+    const safeObj = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+    out.cards = Object.assign({}, base.cards, safeObj(add.cards));
+    out.paras = Object.assign({}, base.paras, safeObj(add.paras));
+    out.videos = Object.assign({}, base.videos, safeObj(add.videos));
+    out.settings = Object.assign({}, base.settings, safeObj(add.settings));
+    out.meta = Object.assign({}, base.meta, safeObj(add.meta));
+    out.meta.schemaVersion = STATE_SCHEMA_VERSION;
+    return out;
+  }
+  function persistLocalState() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+  function save(opts = {}) {
+    state.meta = Object.assign({}, state.meta || {}, { schemaVersion: STATE_SCHEMA_VERSION, updatedAt: Date.now() });
+    persistLocalState();
+    if (!opts.localOnly) queueCloudSave();
+  }
+  function queueCloudSave(immediate = false) {
+    const api = window.BioQuestAccount;
+    if (api && typeof api.saveState === "function") api.saveState(state, { immediate });
+  }
   const getKey = () => localStorage.getItem(AIKEY_KEY) || "";
   const setKey = (k) => { if (k) localStorage.setItem(AIKEY_KEY, k); else localStorage.removeItem(AIKEY_KEY); };
   const method = () => METHODS[state.settings.methode] || METHODS.bvj;
   const niveau = () => CURRICULUM[state.settings.niveau] || null;
+
+  function latestDay(a, b) {
+    if (!a) return b || null;
+    if (!b) return a || null;
+    return a >= b ? a : b;
+  }
+  function mergeDay(a, b) {
+    a = a || { d: null, xp: 0 };
+    b = b || { d: null, xp: 0 };
+    if (a.d && b.d && a.d === b.d) return { d: a.d, xp: Math.max(a.xp || 0, b.xp || 0) };
+    return (a.d || "") >= (b.d || "") ? { d: a.d, xp: a.xp || 0 } : { d: b.d, xp: b.xp || 0 };
+  }
+  function mergeCardRecord(a, b) {
+    if (!a) return Object.assign({}, b || {});
+    if (!b) return Object.assign({}, a || {});
+    const box = Math.max(a.box || 0, b.box || 0);
+    const due = Math.max(a.due || 0, b.due || 0);
+    return Object.assign({}, a, b, { box, due });
+  }
+  function mergeProgressRecord(a, b) {
+    if (!a) return Object.assign({}, b || {});
+    if (!b) return Object.assign({}, a || {});
+    const out = Object.assign({}, a, b);
+    if ("learnDone" in a || "learnDone" in b) out.learnDone = !!(a.learnDone || b.learnDone);
+    if ("done" in a || "done" in b) out.done = !!(a.done || b.done);
+    if ("quizBest" in a || "quizBest" in b) out.quizBest = Math.max(a.quizBest || 0, b.quizBest || 0);
+    if (typeof a.answer === "string" || typeof b.answer === "string") {
+      const aa = typeof a.answer === "string" ? a.answer : "";
+      const bb = typeof b.answer === "string" ? b.answer : "";
+      out.answer = aa.length >= bb.length ? aa : bb;
+    }
+    return out;
+  }
+  function mergeVideoRecord(a, b) {
+    if (!a) return Object.assign({}, b || {});
+    if (!b) return Object.assign({}, a || {});
+    return (a.at || 0) >= (b.at || 0) ? Object.assign({}, b, a) : Object.assign({}, a, b);
+  }
+  function mergeMap(localMap, cloudMap, mergeFn) {
+    const out = {};
+    new Set(Object.keys(localMap || {}).concat(Object.keys(cloudMap || {}))).forEach(k => {
+      out[k] = mergeFn(localMap && localMap[k], cloudMap && cloudMap[k]);
+    });
+    return out;
+  }
+  function mergeBioStates(localState, cloudState) {
+    const local = deepMerge(defaultState(), localState || {});
+    if (!cloudState) return local;
+    const cloud = deepMerge(defaultState(), cloudState || {});
+    const localUpdated = local.meta.updatedAt || 0;
+    const cloudUpdated = cloud.meta.updatedAt || cloud.meta.updatedAtMs || 0;
+    const preferLocalSettings = localUpdated >= cloudUpdated;
+    const out = deepMerge(defaultState(), preferLocalSettings ? cloud : local);
+
+    out.xp = Math.max(local.xp || 0, cloud.xp || 0);
+    out.streakDays = Math.max(local.streakDays || 0, cloud.streakDays || 0);
+    out.lastDay = latestDay(local.lastDay, cloud.lastDay);
+    out.day = mergeDay(local.day, cloud.day);
+    out.cards = mergeMap(local.cards, cloud.cards, mergeCardRecord);
+    out.paras = mergeMap(local.paras, cloud.paras, mergeProgressRecord);
+    out.videos = mergeMap(local.videos, cloud.videos, mergeVideoRecord);
+    out.settings = preferLocalSettings
+      ? Object.assign({}, cloud.settings, local.settings)
+      : Object.assign({}, local.settings, cloud.settings);
+    out.settings.niveau = out.settings.niveau || local.settings.niveau || cloud.settings.niveau || null;
+    out.settings.methode = out.settings.methode || local.settings.methode || cloud.settings.methode || null;
+    out.meta = { schemaVersion: STATE_SCHEMA_VERSION, updatedAt: Math.max(localUpdated, cloudUpdated, Date.now()) };
+    return out;
+  }
 
   /* ---------- leveling & xp ---------- */
   function levelInfo(xp) {
@@ -55,7 +147,7 @@
     while (xp >= acc + need) { acc += need; lvl++; need = Math.round(need * 1.3); }
     return { level: lvl, into: xp - acc, need, pct: clamp(((xp - acc) / need) * 100, 0, 100) };
   }
-  function dailyXP() { if (state.day.d !== todayStr()) state.day = { d: todayStr(), xp: 0 }; return state.day.xp; }
+  function dailyXP() { if (state.day.d !== todayStr()) { state.day = { d: todayStr(), xp: 0 }; save(); } return state.day.xp; }
   function addXP(n) {
     const before = levelInfo(state.xp).level;
     state.xp += n; dailyXP(); state.day.xp += n; save();
@@ -144,12 +236,12 @@
   function refreshTopbar() {
     const li = levelInfo(state.xp);
     const setup = !!(state.settings.niveau && state.settings.methode);
-    const hud = $("#hud"); if (hud) hud.style.visibility = setup ? "visible" : "hidden";
-    $("#xpFill").style.width = li.pct + "%";
-    $("#lvlBadge").textContent = li.level;
-    $("#lvlRing").style.setProperty("--p", li.pct);
-    $("#xpText").textContent = state.xp + " XP";
-    $("#streakVal").textContent = state.streakDays;
+    ["streakChip", "xpChip"].forEach(id => { const node = $("#" + id); if (node) node.style.display = setup ? "flex" : "none"; });
+    if ($("#xpFill")) $("#xpFill").style.width = li.pct + "%";
+    if ($("#lvlBadge")) $("#lvlBadge").textContent = li.level;
+    if ($("#lvlRing")) $("#lvlRing").style.setProperty("--p", li.pct);
+    if ($("#xpText")) $("#xpText").textContent = state.xp + " XP";
+    if ($("#streakVal")) $("#streakVal").textContent = state.streakDays;
   }
 
   /* ---------- nav helpers ---------- */
@@ -565,6 +657,13 @@
         ${ex.context ? `<div class="exam-context">${esc(ex.context)}</div>` : ""}
         <div class="exam-q">${esc(ex.question)}</div>`;
       const ta = el("textarea", "open-input"); ta.placeholder = "Schrijf hier je antwoord in volledige zinnen…"; ta.rows = 5;
+      ta.value = rec.answer || "";
+      ta.addEventListener("input", () => {
+        const r = state.paras["exam:" + ex.id] || {};
+        r.answer = ta.value;
+        state.paras["exam:" + ex.id] = r;
+        save();
+      });
       item.appendChild(ta);
 
       const foot = el("div", "open-foot");
@@ -915,38 +1014,338 @@
   function pickHomeTip() { const t = ["Begin met de Theorie, oefen dan met de flitskaarten en vragen. 📖", "De examenopgaven hebben échte antwoordmodellen — vergelijk je antwoord goed. 📝", "Twijfel je bij een flitskaart? Markeer 'm 'Nog niet', hij komt vanzelf terug. 🃏", "Combo's in de quiz geven bonus-XP. Hou een reeks goed! ⚡", "AI is optioneel: laat je antwoord op inhoud én formulering nakijken. 🤖", "Elke dag een beetje oefenen houdt je streak in leven. 🔥"]; return t[(Math.random() * t.length) | 0]; }
 
   /* ===================================================================
+     ACCOUNT / FIRESTORE SYNC
+     =================================================================== */
+  let accountBridgeStarted = false;
+  const googleIcon = '<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
+
+  function accountApi() { return window.BioQuestAccount || null; }
+  function accountLabel(user = accountState.user) { return user && (user.displayName || user.email || "Account") || "Account"; }
+  function accountInitials(user = accountState.user) {
+    const base = accountLabel(user).trim();
+    return (base.charAt(0) || "B").toUpperCase();
+  }
+  function syncText() {
+    if (!accountState.user) return "Niet ingelogd";
+    if (accountState.sync === "loading") return "Cloudvoortgang laden...";
+    if (accountState.sync === "saving") return "Opslaan...";
+    if (accountState.sync === "saved") return "Opgeslagen in Firestore";
+    if (accountState.sync === "error") return "Syncfout";
+    return "Cloudsync klaar";
+  }
+  function accountErrorMessage(error) {
+    const code = error && error.code;
+    const messages = {
+      "auth/email-already-in-use": "Dit e-mailadres heeft al een account. Log in of gebruik een ander adres.",
+      "auth/invalid-email": "Controleer je e-mailadres.",
+      "auth/weak-password": "Gebruik een wachtwoord van minimaal 6 tekens.",
+      "auth/user-not-found": "Geen account gevonden met dit e-mailadres.",
+      "auth/wrong-password": "Dat wachtwoord klopt niet.",
+      "auth/invalid-credential": "E-mail of wachtwoord klopt niet.",
+      "auth/too-many-requests": "Te veel pogingen. Wacht even en probeer opnieuw.",
+      "auth/network-request-failed": "Netwerkfout. Controleer je verbinding.",
+      "auth/popup-blocked": "De Google-popup is geblokkeerd. Sta popups toe voor deze site.",
+      "auth/requires-recent-login": "Log opnieuw in om dit te wijzigen.",
+    };
+    if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "";
+    return messages[code] || (error && error.message) || "Er ging iets mis met je account.";
+  }
+  function setBusy(btn, busy, label) {
+    if (!btn) return;
+    if (busy) {
+      if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner tiny"></span><span>${esc(label || "Bezig...")}</span>`;
+    } else {
+      btn.disabled = false;
+      if (btn.dataset.originalHtml) {
+        btn.innerHTML = btn.dataset.originalHtml;
+        delete btn.dataset.originalHtml;
+      }
+    }
+  }
+  function setInlineStatus(node, msg, variant = "info") {
+    if (!node) return;
+    node.hidden = !msg;
+    node.textContent = msg || "";
+    node.dataset.variant = variant;
+  }
+  function refreshAuthUI() {
+    const signedIn = !!accountState.user;
+    const signInBtn = $("#signInBtn"), signUpBtn = $("#signUpBtn"), accountBtn = $("#accountBtn");
+    if (signInBtn) signInBtn.classList.toggle("hidden", signedIn);
+    if (signUpBtn) signUpBtn.classList.toggle("hidden", signedIn);
+    if (accountBtn) accountBtn.classList.toggle("hidden", !signedIn);
+
+    const nameNode = $("#accountName");
+    if (nameNode) nameNode.textContent = signedIn ? accountLabel() : "Account";
+    const avatar = $("#accountAvatar");
+    if (avatar) {
+      avatar.replaceChildren();
+      if (signedIn && accountState.user.photoURL) {
+        const img = document.createElement("img");
+        img.src = accountState.user.photoURL;
+        img.alt = "";
+        img.referrerPolicy = "no-referrer";
+        avatar.appendChild(img);
+      } else {
+        avatar.textContent = accountInitials();
+      }
+    }
+
+    const syncNode = $("#settingsSyncLabel");
+    if (syncNode) {
+      syncNode.textContent = syncText();
+      syncNode.dataset.sync = accountState.sync;
+    }
+    const settingsName = $("#settingsAccountName");
+    if (settingsName) settingsName.textContent = signedIn ? accountLabel() : "Geen account";
+    const settingsEmail = $("#settingsAccountEmail");
+    if (settingsEmail) settingsEmail.textContent = signedIn ? (accountState.user.email || "Google-account") : "Log in om voortgang op te slaan.";
+  }
+  function applyAccountCloudState(cloudState) {
+    state = mergeBioStates(state, cloudState);
+    persistLocalState();
+    refreshTopbar();
+    refreshAuthUI();
+    if (state.settings.niveau && state.settings.methode && !$(".overlay")) go(renderHome);
+    return state;
+  }
+  function initAccountBridge() {
+    const start = () => {
+      const api = accountApi();
+      if (!api || accountBridgeStarted) return;
+      accountBridgeStarted = true;
+      document.documentElement.dataset.bioQuestAccountBridge = "connected";
+      api.init({
+        getState: () => state,
+        onCloudState: (cloudState) => applyAccountCloudState(cloudState),
+        onAuthChange: ({ ready, user }) => {
+          accountState.ready = !!ready;
+          accountState.user = user || null;
+          refreshAuthUI();
+        },
+        onSyncChange: ({ status, error }) => {
+          accountState.sync = status || "idle";
+          accountState.error = error || "";
+          refreshAuthUI();
+        },
+      });
+    };
+    if (accountApi()) start();
+    else window.addEventListener("bioquest-account-ready", start, { once: true });
+  }
+  function openAuthModal(mode = "signin") {
+    if (accountState.user) return openSettings();
+    const ov = el("div", "overlay");
+    const m = el("div", "modal auth-modal");
+    ov.appendChild(m);
+    document.body.appendChild(ov);
+    ov.onclick = (e) => { if (e.target === ov) ov.remove(); };
+
+    const draw = () => {
+      const signup = mode === "signup";
+      m.innerHTML = `
+        <button class="modal-x" id="authClose" type="button" aria-label="Sluiten">×</button>
+        <div class="auth-brand">
+          <span class="auth-dna" aria-hidden="true">${icon("spark")}</span>
+          <span>BioQuest account</span>
+        </div>
+        <h3>${signup ? "Account maken" : "Inloggen"}</h3>
+        <p class="sub">${signup ? "Bewaar XP, streaks, flitskaarten en antwoorden veilig in je account." : "Haal je BioQuest-voortgang op en ga verder waar je was."}</p>
+        <button class="auth-google" id="authGoogle" type="button">${googleIcon}<span>Verder met Google</span></button>
+        <div class="auth-divider"><span>of met e-mail</span></div>
+        <form id="authForm">
+          ${signup ? `<div class="field"><label>Naam</label><div class="field-wrap"><input id="authName" type="text" autocomplete="name" placeholder="Je naam"></div></div>` : ""}
+          <div class="field"><label>E-mail</label><div class="field-wrap"><input id="authEmail" type="email" autocomplete="email" placeholder="jij@example.com"></div></div>
+          <div class="field"><label>Wachtwoord</label><div class="field-wrap"><input id="authPassword" type="password" autocomplete="${signup ? "new-password" : "current-password"}" placeholder="${signup ? "Minimaal 6 tekens" : "Je wachtwoord"}"><button class="auth-eye" id="authEye" type="button" aria-label="Wachtwoord tonen">👁</button></div></div>
+          <button class="btn auth-submit" id="authSubmit" type="submit">${signup ? "Account maken" : "Inloggen"}</button>
+        </form>
+        <div class="auth-status" id="authStatus" hidden></div>
+        <p class="auth-switch-line">${signup ? "Heb je al een account?" : "Nog geen account?"} <button id="authSwitch" type="button">${signup ? "Log in" : "Maak er een"}</button></p>`;
+
+      $("#authClose", m).onclick = () => ov.remove();
+      $("#authSwitch", m).onclick = () => { mode = signup ? "signin" : "signup"; draw(); };
+      $("#authEye", m).onclick = () => {
+        const input = $("#authPassword", m);
+        input.type = input.type === "password" ? "text" : "password";
+      };
+      $("#authGoogle", m).onclick = async () => {
+        const api = accountApi(), btn = $("#authGoogle", m), status = $("#authStatus", m);
+        if (!api) return setInlineStatus(status, "Accountmodule wordt nog geladen. Probeer zo opnieuw.", "info");
+        setBusy(btn, true, "Google openen...");
+        setInlineStatus(status, "", "info");
+        try {
+          await api.signInWithGoogle();
+          ov.remove();
+          mascotSay("Je account is gekoppeld. Voortgang wordt gesynchroniseerd. ☁️");
+        } catch (error) {
+          const msg = accountErrorMessage(error);
+          if (msg) setInlineStatus(status, msg, "error");
+        } finally {
+          setBusy(btn, false);
+        }
+      };
+      $("#authForm", m).onsubmit = async (event) => {
+        event.preventDefault();
+        const api = accountApi(), status = $("#authStatus", m), submit = $("#authSubmit", m);
+        if (!api) return setInlineStatus(status, "Accountmodule wordt nog geladen. Probeer zo opnieuw.", "info");
+        const email = $("#authEmail", m).value.trim();
+        const password = $("#authPassword", m).value;
+        const name = signup ? $("#authName", m).value.trim() : "";
+        if (signup && !name) return setInlineStatus(status, "Vul je naam in.", "error");
+        if (!email) return setInlineStatus(status, "Vul je e-mailadres in.", "error");
+        if (!password || password.length < 6) return setInlineStatus(status, "Gebruik minimaal 6 tekens voor je wachtwoord.", "error");
+
+        setBusy(submit, true, signup ? "Aanmaken..." : "Inloggen...");
+        setInlineStatus(status, "", "info");
+        try {
+          if (signup) await api.createAccount(name, email, password);
+          else await api.signInWithEmail(email, password);
+          ov.remove();
+          mascotSay(signup ? "Account gemaakt! Je voortgang gaat nu mee. ✅" : "Welkom terug! Je voortgang wordt geladen. ✅");
+        } catch (error) {
+          setInlineStatus(status, accountErrorMessage(error), "error");
+        } finally {
+          setBusy(submit, false);
+        }
+      };
+      setTimeout(() => (signup ? $("#authName", m) : $("#authEmail", m))?.focus(), 0);
+    };
+    draw();
+  }
+
+  /* ===================================================================
      SETTINGS
      =================================================================== */
   function openSettings() {
-    const ov = el("div", "overlay"); const m = el("div", "modal"); const keySet = !!getKey();
-    const cur = niveau(), me = method();
+    const ov = el("div", "overlay"); const m = el("div", "modal settings-modal"); const keySet = !!getKey();
+    const user = accountState.user;
+    const avatarMarkup = user && user.photoURL
+      ? `<img src="${esc(user.photoURL)}" alt="" referrerpolicy="no-referrer">`
+      : esc(accountInitials(user));
+    const accountHtml = user ? `
+      <div class="settings-section account-section">
+        <div class="account-settings-head">
+          <span class="account-avatar large">${avatarMarkup}</span>
+          <div class="account-id">
+            <b id="settingsAccountName">${esc(accountLabel(user))}</b>
+            <span id="settingsAccountEmail">${esc(user.email || "Google-account")}</span>
+          </div>
+          <span class="sync-pill" id="settingsSyncLabel" data-sync="${esc(accountState.sync)}">${esc(syncText())}</span>
+        </div>
+        <div class="field"><label>Naam</label><input id="settingsNameInput" type="text" autocomplete="name" value="${esc(accountLabel(user))}"></div>
+        <div class="field"><label>Nieuw wachtwoord <span class="badge-warn">optioneel</span></label><input id="settingsPasswordInput" type="password" autocomplete="new-password" placeholder="Minimaal 6 tekens"></div>
+        <div class="settings-actions">
+          <button class="btn small" id="saveAccountName" type="button">Naam opslaan</button>
+          <button class="btn ghost small" id="setAccountPassword" type="button">Wachtwoord instellen</button>
+          <button class="btn ghost small danger" id="logoutAccount" type="button">Uitloggen</button>
+        </div>
+        <div class="auth-status compact" id="settingsAccountStatus" hidden></div>
+      </div>` : `
+      <div class="settings-section account-section signed-out">
+        <div class="account-settings-head">
+          <span class="account-avatar large">B</span>
+          <div class="account-id">
+            <b id="settingsAccountName">Geen account</b>
+            <span id="settingsAccountEmail">Log in om XP, streaks, kaarten en antwoorden in Firestore op te slaan.</span>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button class="btn small" id="settingsSignIn" type="button">Inloggen</button>
+          <button class="btn ghost small" id="settingsSignUp" type="button">Account maken</button>
+        </div>
+      </div>`;
     m.innerHTML = `
-      <h3><span class="h3-ic">${icon("gear")}</span> Instellingen</h3>
-      <p class="sub">Kies je niveau en methode. De AI-tutor is optioneel en draait op OpenAI.</p>
-      <div class="field"><label>Niveau</label>
-        <select id="setNiveau"><option value="havo">HAVO</option><option value="vwo">VWO</option></select></div>
-      <div class="field"><label>Methode</label>
-        <select id="setMethode"><option value="bvj">Biologie voor Jou</option><option value="nectar">Nectar</option></select></div>
-      <div class="ai-optin-note" style="margin:2px 0 14px">🤖 AI-functies (uitleg, feedback op je antwoord & formulering) worden alléén uitgevoerd als jij er zelf op klikt.</div>
-      <div class="note">💡 <b>Op Vercel?</b> Zet een environment variable <code>OPENAI_API_KEY</code> in je project. Dan werkt de AI automatisch via <code>/api/ai</code> en blijft je sleutel server-side.</div>
-      <div class="field">
-        <label>OpenAI API-key <span class="${keySet ? "badge-ok" : "badge-warn"}">${keySet ? "✓ opgeslagen" : "niet ingesteld (optioneel)"}</span></label>
-        <input id="apiKey" type="password" placeholder="sk-..." value="${keySet ? "••••••••••••" : ""}">
-        <div class="help">Wordt alleen in je browser (localStorage) bewaard en komt nooit in de code/repo.</div>
+      <button class="modal-x" id="cancel" type="button" aria-label="Sluiten">×</button>
+      <div class="settings-head">
+        <span class="settings-orb">${icon("gear")}</span>
+        <div><h3>Instellingen</h3><p class="sub">Je account, leerroute en AI-opties.</p></div>
       </div>
-      <div class="field"><label>AI-model</label>
-        <select id="model"><option value="gpt-4o-mini">gpt-4o-mini (snel & goedkoop)</option><option value="gpt-4o">gpt-4o (slimmer)</option><option value="gpt-4.1-mini">gpt-4.1-mini</option></select>
+      ${accountHtml}
+      <div class="settings-section">
+        <div class="settings-section-title">Leerroute</div>
+        <div class="field"><label>Niveau</label>
+          <select id="setNiveau"><option value="havo">HAVO</option><option value="vwo">VWO</option></select></div>
+        <div class="field"><label>Methode</label>
+          <select id="setMethode"><option value="bvj">Biologie voor Jou</option><option value="nectar">Nectar</option></select></div>
+        <div class="toggle"><span>🔊 Geluidseffecten</span><input id="sound" class="switch" type="checkbox" ${state.settings.sound ? "checked" : ""}></div>
       </div>
-      <div class="toggle"><span>🔊 Geluidseffecten</span><input id="sound" class="switch" type="checkbox" ${state.settings.sound ? "checked" : ""}></div>
-      <div class="toggle"><span style="color:var(--red)">🗑️ Alle voortgang wissen</span><button id="reset" class="btn ghost" style="padding:7px 15px">Reset</button></div>
-      <div class="row"><button class="btn ghost" id="cancel">Sluiten</button><button class="btn" id="saveS">Opslaan</button></div>`;
+      <div class="settings-section">
+        <div class="settings-section-title">AI-tutor</div>
+        <div class="ai-optin-note" style="margin:2px 0 14px">🤖 AI-functies worden alléén uitgevoerd als jij erop klikt.</div>
+        <div class="note">💡 <b>Op Vercel?</b> Zet <code>OPENAI_API_KEY</code> als environment variable. Dan werkt de AI via <code>/api/ai</code> en blijft je sleutel server-side.</div>
+        <div class="field">
+          <label>OpenAI API-key <span class="${keySet ? "badge-ok" : "badge-warn"}">${keySet ? "✓ opgeslagen" : "niet ingesteld (optioneel)"}</span></label>
+          <input id="apiKey" type="password" placeholder="sk-..." value="${keySet ? "••••••••••••" : ""}">
+          <div class="help">Deze sleutel blijft alleen op dit apparaat bewaard.</div>
+        </div>
+        <div class="field"><label>AI-model</label>
+          <select id="model"><option value="gpt-4o-mini">gpt-4o-mini (snel & goedkoop)</option><option value="gpt-4o">gpt-4o (slimmer)</option><option value="gpt-4.1-mini">gpt-4.1-mini</option></select>
+        </div>
+      </div>
+      <div class="settings-section danger-zone">
+        <div class="toggle"><span style="color:var(--red)">🗑️ Alle voortgang wissen</span><button id="reset" class="btn ghost small danger" type="button">Reset</button></div>
+      </div>
+      <div class="row"><button class="btn ghost" id="closeSettings" type="button">Sluiten</button><button class="btn" id="saveS" type="button">Opslaan</button></div>`;
     ov.appendChild(m); document.body.appendChild(ov);
     $("#setNiveau", m).value = state.settings.niveau || "havo";
     $("#setMethode", m).value = state.settings.methode || "bvj";
     $("#model", m).value = state.settings.model;
     ov.onclick = (e) => { if (e.target === ov) ov.remove(); };
     $("#cancel", m).onclick = () => ov.remove();
-    $("#reset", m).onclick = () => { if (confirm("Weet je zeker dat je alle voortgang (XP, streak, kaarten) wist?")) { state = defaultState(); save(); refreshTopbar(); ov.remove(); go(renderSetup, false); } };
+    $("#closeSettings", m).onclick = () => ov.remove();
+    if (user) {
+      const status = $("#settingsAccountStatus", m);
+      $("#saveAccountName", m).onclick = async () => {
+        const api = accountApi(), btn = $("#saveAccountName", m), name = $("#settingsNameInput", m).value.trim();
+        if (!api) return setInlineStatus(status, "Accountmodule wordt nog geladen.", "info");
+        if (!name) return setInlineStatus(status, "Vul een naam in.", "error");
+        setBusy(btn, true, "Opslaan...");
+        try {
+          await api.updateDisplayName(name);
+          accountState.user = Object.assign({}, accountState.user, { displayName: name });
+          refreshAuthUI();
+          setInlineStatus(status, "Naam opgeslagen.", "success");
+        } catch (error) {
+          setInlineStatus(status, accountErrorMessage(error), "error");
+        } finally {
+          setBusy(btn, false);
+        }
+      };
+      $("#setAccountPassword", m).onclick = async () => {
+        const api = accountApi(), btn = $("#setAccountPassword", m), password = $("#settingsPasswordInput", m).value;
+        if (!api) return setInlineStatus(status, "Accountmodule wordt nog geladen.", "info");
+        if (!password || password.length < 6) return setInlineStatus(status, "Gebruik minimaal 6 tekens.", "error");
+        setBusy(btn, true, "Instellen...");
+        try {
+          await api.setPassword(password);
+          $("#settingsPasswordInput", m).value = "";
+          setInlineStatus(status, "Wachtwoord ingesteld.", "success");
+        } catch (error) {
+          setInlineStatus(status, accountErrorMessage(error), "error");
+        } finally {
+          setBusy(btn, false);
+        }
+      };
+      $("#logoutAccount", m).onclick = async () => {
+        const api = accountApi(), btn = $("#logoutAccount", m);
+        if (!api) return;
+        setBusy(btn, true, "Uitloggen...");
+        try {
+          await api.signOutUser();
+          ov.remove();
+          mascotSay("Je bent uitgelogd. Lokale voortgang blijft op dit apparaat staan.");
+        } catch (error) {
+          setInlineStatus(status, accountErrorMessage(error), "error");
+          setBusy(btn, false);
+        }
+      };
+    } else {
+      $("#settingsSignIn", m).onclick = () => { ov.remove(); openAuthModal("signin"); };
+      $("#settingsSignUp", m).onclick = () => { ov.remove(); openAuthModal("signup"); };
+    }
+    $("#reset", m).onclick = () => { if (confirm("Weet je zeker dat je alle voortgang (XP, streak, kaarten en antwoorden) wist?")) { state = defaultState(); save(); refreshTopbar(); ov.remove(); go(renderSetup, false); } };
     $("#saveS", m).onclick = () => {
       const kv = $("#apiKey", m).value.trim(); if (kv && !/^•+$/.test(kv)) setKey(kv);
       state.settings.niveau = $("#setNiveau", m).value;
@@ -959,7 +1358,12 @@
   /* ---------- init ---------- */
   $("#brand").onclick = () => go(renderHome);
   $("#brand").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(renderHome); } });
+  $("#signInBtn").onclick = () => openAuthModal("signin");
+  $("#signUpBtn").onclick = () => openAuthModal("signup");
+  $("#accountBtn").onclick = openSettings;
   $("#settingsBtn").onclick = openSettings;
+  initAccountBridge();
+  refreshAuthUI();
   refreshTopbar();
   go(renderHome);
 })();

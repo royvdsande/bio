@@ -41,6 +41,14 @@
           <span class="xpbar"><span id="xpFill"></span></span>
         </span>
       </div>
+      <div class="auth-actions" id="authActions" aria-live="polite">
+        <button class="top-auth-btn" id="signInBtn" type="button">Inloggen</button>
+        <button class="top-auth-btn primary" id="signUpBtn" type="button">Account maken</button>
+        <button class="account-pill hidden" id="accountBtn" type="button" title="Accountinstellingen" aria-label="Accountinstellingen">
+          <span class="account-avatar" id="accountAvatar">B</span>
+          <span class="account-name" id="accountName">Account</span>
+        </button>
+      </div>
       <button class="icon-btn" id="settingsBtn" title="Instellingen" aria-label="Instellingen">
         <svg class="ic ic-gear" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
           <path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1l-.4-2.6H10.9l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4.2l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
@@ -90,6 +98,7 @@
   <script src="content.js"></script>
   <script src="remaining-content.js"></script>
   <script src="nectar-videos.js"></script>
+  <script type="module" src="bio-account.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
