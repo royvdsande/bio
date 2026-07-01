@@ -10,6 +10,18 @@
 
   const $ = (s, r = document) => r.querySelector(s);
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+
+  /* ---------- inline vector-iconen (crisp, ipv emoji-chrome) ---------- */
+  const ICONS = {
+    flame: '<svg class="ic ic-flame" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path class="flame-out" d="M12 23c4.4 0 7.5-3 7.5-7.2 0-2.9-1.6-5.2-3.1-7-.5 1.1-1.3 1.8-2.2 1.9.8-2.3.3-4.8-2.1-7.4-.3 2.3-1.6 3.7-3 5.2C7.2 10.1 6 12.3 6 15.8 6 20 7.6 23 12 23z"/><path class="flame-in" d="M12 22c2.4 0 4-1.7 4-3.9 0-1.8-1.1-3-2.2-4.2-.4 1.4-1.2 1.8-1.9 1.9.5-1.6-.4-3-1.6-4-.2 1.6-1 2.3-1.6 3.2-.5.8-1 1.7-1 3 0 2.3 1.9 4 4.3 4z"/></svg>',
+    target: '<svg class="ic ic-target" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--red)" stroke-width="2.4"/><circle cx="12" cy="12" r="5" fill="none" stroke="var(--red)" stroke-width="2.4"/><circle cx="12" cy="12" r="1.6" fill="var(--red)"/></svg>',
+    check: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M5 13l4 4 10-11" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    heart: '<svg class="ic ic-heart" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 21C5.5 16.7 3 13.3 3 9.5 3 6.9 5 5 7.4 5c1.6 0 3 .8 3.9 2 .9-1.2 2.3-2 3.9-2C18.6 5 20.6 6.9 20.6 9.5c0 3.8-2.6 7.2-8.6 11.5z" fill="var(--red)"/></svg>',
+    trophy: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M6 4h12v3a6 6 0 0 1-12 0V4z" fill="var(--gold)"/><path d="M6 5H3.5v1.5A3.5 3.5 0 0 0 7 10M18 5h2.5v1.5A3.5 3.5 0 0 1 17 10" fill="none" stroke="var(--gold-d)" stroke-width="2"/><path d="M10 12h4v3h-4z" fill="var(--gold-d)"/><path d="M8 20h8M12 15v5" stroke="var(--gold-d)" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    bolt: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="var(--gold)" stroke="var(--gold-d)" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+    gear: '<svg class="ic ic-gear" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1l-.4-2.6H10.9l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4.2l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>',
+  };
+  const icon = (name) => ICONS[name] || "";
   const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0;[a[i], a[j]] = [a[j], a[i]]; } return a; };
   const todayStr = () => new Date().toISOString().slice(0, 10);
@@ -74,7 +86,7 @@
   const WORLD_COLORS = { h14: ["#58cc02", "#46a302"], h15: ["#1cb0f6", "#1899d6"], h16: ["#ce82ff", "#a568cc"] };
   function worldOf(para) { return COURSE.worlds.find(w => w.paragraphs.some(p => p.id === para.id)); }
   const app = $("#app");
-  function go(view, ...args) { window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" }); view(...args); }
+  function go(view, ...args) { try { window.scrollTo({ top: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); } view(...args); }
   function animateNumber(node, to, suffix) {
     const from = 0, dur = 700, t0 = performance.now();
     (function step(t) { const k = clamp((t - t0) / dur, 0, 1); const e = 1 - Math.pow(1 - k, 3); node.textContent = Math.round(from + (to - from) * e) + (suffix || ""); if (k < 1) requestAnimationFrame(step); })(t0);
@@ -98,9 +110,9 @@
       <p>Leer de stof spelend: volg het levelpad, verdien XP en hou je streak vast. Elke dag een beetje = onthouden zonder stress. 🔥</p>
       <div class="dash">
         <div class="tile"><div class="lab">Level</div><div class="val" id="dLvl">${li.level}</div></div>
-        <div class="tile"><div class="lab">🔥 Streak</div><div class="val" id="dStreak">${state.streakDays} dag</div></div>
+        <div class="tile"><div class="lab"><span class="lab-ic">${icon("flame")}</span> Streak</div><div class="val" id="dStreak">${state.streakDays} dag</div></div>
         <div class="tile"><div class="lab">Dagdoel</div>
-          <div class="goalring"><span class="ring" style="--p:${dGoalPct}"><i>${dGoalPct >= 100 ? "✅" : "🎯"}</i></span>
+          <div class="goalring"><span class="ring" style="--p:${dGoalPct}"><i>${dGoalPct >= 100 ? icon("check") : icon("target")}</i></span>
           <div><div class="val" style="font-size:18px">${dailyXP()}/${DAILY_GOAL}</div><div class="lab" style="text-transform:none">XP vandaag</div></div></div>
         </div>
       </div>`;
@@ -111,8 +123,7 @@
     COURSE.worlds.forEach(w => {
       const pct = worldProgress(w);
       const c = el("div", "world " + w.theme);
-      c.innerHTML = `<div class="glow"></div>
-        <div class="wicon">${w.icon}</div>
+      c.innerHTML = `<div class="wicon">${w.icon}</div>
         <h3>${esc(w.title)}</h3>
         <div class="wmeta">${w.paragraphs.length} levels · ${w.paragraphs.reduce((s, p) => s + p.cards.length, 0)} begrippen</div>
         <div class="wbar"><span style="width:0%"></span></div>
@@ -206,6 +217,7 @@
     for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], my = (a.y + b.y) / 2; d += ` C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`; }
     const svgNS = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNS, "svg"); svg.setAttribute("class", "trail"); svg.setAttribute("width", W); svg.setAttribute("height", height); svg.setAttribute("viewBox", `0 0 ${W} ${height}`);
+    svg.style.position = "absolute"; svg.style.left = "0"; svg.style.top = "0"; svg.style.pointerEvents = "none";
     const path = document.createElementNS(svgNS, "path"); path.setAttribute("d", d); path.setAttribute("fill", "none");
     path.setAttribute("stroke", "rgba(255,255,255,.12)"); path.setAttribute("stroke-width", "10"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-dasharray", "2 20");
     svg.appendChild(path); map.appendChild(svg);
@@ -440,7 +452,7 @@
       const top = el("div", "topline");
       const pct = (i / qs.length) * 100;
       top.innerHTML = `<span class="pbar"><span style="width:${pct}%"></span></span>` +
-        (lives ? `<span class="hearts">${Array.from({ length: lives }, (_, h) => `<span class="h ${h >= hp ? "lost" : ""}">❤️</span>`).join("")}</span>` : `<span class="combo" id="combo">${combo > 1 ? "🔥 " + combo : ""}</span>`);
+        (lives ? `<span class="hearts">${Array.from({ length: lives }, (_, h) => `<span class="h ${h >= hp ? "lost" : ""}">${icon("heart")}</span>`).join("")}</span>` : `<span class="combo" id="combo">${combo > 1 ? icon("flame") + " " + combo : ""}</span>`);
       panel.appendChild(top);
       panel.appendChild(el("div", "qtext", esc(q.q)));
       const options = el("div", "options");
@@ -453,7 +465,7 @@
       if (ok) {
         combo++; best = Math.max(best, combo); score++;
         const gain = 8 + Math.min(combo, 6) * 2; xpEarned += gain; addXP(gain); sound("correct");
-        const cb = $("#combo"); if (cb) { cb.textContent = combo > 1 ? "🔥x" + combo : ""; cb.classList.add("bump"); setTimeout(() => cb.classList.remove("bump"), 200); }
+        const cb = $("#combo"); if (cb) { cb.innerHTML = combo > 1 ? icon("flame") + " x" + combo : ""; cb.classList.add("bump"); setTimeout(() => cb.classList.remove("bump"), 200); }
         if (combo >= 3) confettiBurst(.35);
       } else { combo = 0; sound("wrong"); if (lives) { hp--; } }
       const exBox = el("div", "explain " + (ok ? "good" : "bad"), `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`);
@@ -734,7 +746,7 @@
 
   /* ---------- mascot ---------- */
   const mascotEl = $("#mascot"); let bubbleTimer = null;
-  function mascotSay(text) { const old = $("#bubble"); if (old) old.remove(); const b = el("div", "bubble"); b.id = "bubble"; b.textContent = text; document.body.appendChild(b); clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => b.remove(), 6000); }
+  function mascotSay(text) { const old = $("#bubble"); if (old) old.remove(); const b = el("div", "bubble"); b.id = "bubble"; b.textContent = text; b.title = "Tik om te sluiten"; b.onclick = () => b.remove(); document.body.appendChild(b); clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => b.remove(), 6000); }
   function mascotCheer() { mascotEl.classList.add("cheer"); setTimeout(() => mascotEl.classList.remove("cheer"), 700); }
   mascotEl.onclick = () => { mascotCheer(); sound("correct"); mascotSay(pickHomeTip()); };
   function pickHomeTip() { const t = ["Doe elke dag één level — je streak dankt je! 🔥", "Begin met 'Leer', daarna de quiz. Blijft beter hangen! 📖", "Twijfel je? Markeer 'm 'Nog niet' en hij komt vanzelf terug. 🃏", "Combo's geven bonus-XP. Hou een reeks goed! ⚡", "Vastgelopen? De AI-tutor legt 't je rustig uit. 🤖", "Processen onthou je het best via de proces-puzzels. 🔢"]; return t[(Math.random() * t.length) | 0]; }
@@ -745,7 +757,7 @@
   function openSettings() {
     const ov = el("div", "overlay"); const m = el("div", "modal"); const keySet = !!getKey();
     m.innerHTML = `
-      <h3>⚙️ Instellingen</h3>
+      <h3><span class="h3-ic">${icon("gear")}</span> Instellingen</h3>
       <p class="sub">De AI-tutor draait op OpenAI. Stel je sleutel één keer in — daarna onthoudt de app 'm.</p>
       <div class="note">💡 <b>Op Vercel?</b> Zet een environment variable <code>OPENAI_API_KEY</code> in je project. Dan werkt de AI automatisch via <code>/api/ai</code> en blijft je sleutel server-side. Hieronder hoef je dan niets in te vullen.</div>
       <div class="field">
@@ -757,7 +769,7 @@
         <select id="model"><option value="gpt-4o-mini">gpt-4o-mini (snel & goedkoop)</option><option value="gpt-4o">gpt-4o (slimmer)</option><option value="gpt-4.1-mini">gpt-4.1-mini</option></select>
       </div>
       <div class="toggle"><span>🔊 Geluidseffecten</span><input id="sound" class="switch" type="checkbox" ${state.settings.sound ? "checked" : ""}></div>
-      <div class="toggle"><span style="color:var(--bad)">🗑️ Alle voortgang wissen</span><button id="reset" class="btn ghost" style="padding:7px 15px">Reset</button></div>
+      <div class="toggle"><span style="color:var(--red)">🗑️ Alle voortgang wissen</span><button id="reset" class="btn ghost" style="padding:7px 15px">Reset</button></div>
       <div class="row"><button class="btn ghost" id="cancel">Sluiten</button><button class="btn" id="saveS">Opslaan</button></div>`;
     ov.appendChild(m); document.body.appendChild(ov);
     $("#model", m).value = state.settings.model;
@@ -769,6 +781,7 @@
 
   /* ---------- init ---------- */
   $("#brand").onclick = () => go(renderHome);
+  $("#brand").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(renderHome); } });
   $("#settingsBtn").onclick = openSettings;
   refreshTopbar();
   go(renderHome);
