@@ -55,6 +55,7 @@
     const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
     state.streakDays = (state.lastDay === y) ? state.streakDays + 1 : 1;
     state.lastDay = t; save(); refreshTopbar();
+    const sc = $("#streakChip"); if (sc) { sc.classList.remove("pulse"); void sc.offsetWidth; sc.classList.add("pulse"); }
     mascotSay("🔥 Streak: " + state.streakDays + " dag(en)! Top bezig.");
   }
 
@@ -465,8 +466,9 @@
       if (ok) {
         combo++; best = Math.max(best, combo); score++;
         const gain = 8 + Math.min(combo, 6) * 2; xpEarned += gain; addXP(gain); sound("correct");
+        const correctBtn = options.children[q.ans]; floatXP(gain, correctBtn);
         const cb = $("#combo"); if (cb) { cb.innerHTML = combo > 1 ? icon("flame") + " x" + combo : ""; cb.classList.add("bump"); setTimeout(() => cb.classList.remove("bump"), 200); }
-        if (combo >= 3) confettiBurst(.35);
+        if (combo >= 3) confettiBurst(.4, centerOf(correctBtn));
       } else { combo = 0; sound("wrong"); if (lives) { hp--; } }
       const exBox = el("div", "explain " + (ok ? "good" : "bad"), `<b class="${ok ? "ok" : "no"}">${ok ? "Goed! ✅" : "Helaas ❌"}</b> ${esc(q.explain)}`);
       panel.appendChild(exBox);
@@ -727,20 +729,58 @@
   }
 
   const confCanvas = $("#confetti"), cctx = confCanvas.getContext("2d");
-  let confetti = [], confAnim = null;
-  function sizeCanvas() { confCanvas.width = innerWidth; confCanvas.height = innerHeight; }
+  let confetti = [], confAnim = null, confDpr = 1;
+  const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function sizeCanvas() {
+    confDpr = Math.min(2, window.devicePixelRatio || 1);
+    confCanvas.width = innerWidth * confDpr; confCanvas.height = innerHeight * confDpr;
+    confCanvas.style.width = innerWidth + "px"; confCanvas.style.height = innerHeight + "px";
+    cctx.setTransform(confDpr, 0, 0, confDpr, 0, 0);
+  }
   addEventListener("resize", sizeCanvas); sizeCanvas();
-  function confettiBurst(scale = 1) {
-    const colors = ["#58cc02", "#1cb0f6", "#ffc800", "#ce82ff", "#ff4b4b", "#ff9600"];
+  const CONF_COLORS = ["#58cc02", "#1cb0f6", "#ffc800", "#ce82ff", "#ff4b4b", "#ff9600"];
+  const SHAPES = ["rect", "circle", "ribbon"];
+  // origin optioneel: {x, y}; anders vanuit het midden-boven
+  function confettiBurst(scale = 1, origin) {
+    if (reduceMotion()) return;
+    const ox = origin ? origin.x : innerWidth / 2;
+    const oy = origin ? origin.y : innerHeight / 3;
+    const spread = origin ? 90 : 220;
     const n = Math.round(95 * scale);
-    for (let k = 0; k < n; k++) confetti.push({ x: innerWidth / 2 + (Math.random() - .5) * 220, y: innerHeight / 3, vx: (Math.random() - .5) * 13, vy: Math.random() * -13 - 4, g: .4 + Math.random() * .3, r: 4 + Math.random() * 7, rot: Math.random() * 6, vr: (Math.random() - .5) * .45, c: colors[(Math.random() * colors.length) | 0], life: 95 });
+    for (let k = 0; k < n; k++) {
+      confetti.push({
+        x: ox + (Math.random() - .5) * spread, y: oy + (Math.random() - .5) * 24,
+        vx: (Math.random() - .5) * 13, vy: Math.random() * -13 - 4,
+        g: .34 + Math.random() * .28, drag: .985 + Math.random() * .01,
+        r: 4 + Math.random() * 7, rot: Math.random() * 6, vr: (Math.random() - .5) * .45,
+        c: CONF_COLORS[(Math.random() * CONF_COLORS.length) | 0], shape: SHAPES[(Math.random() * SHAPES.length) | 0],
+        life: 90 + (Math.random() * 40) | 0, max: 130
+      });
+    }
     if (!confAnim) confLoop();
   }
   function confLoop() {
-    cctx.clearRect(0, 0, confCanvas.width, confCanvas.height);
-    confetti.forEach(p => { p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--; cctx.save(); cctx.translate(p.x, p.y); cctx.rotate(p.rot); cctx.fillStyle = p.c; cctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * .6); cctx.restore(); });
-    confetti = confetti.filter(p => p.life > 0 && p.y < confCanvas.height + 40);
-    if (confetti.length) confAnim = requestAnimationFrame(confLoop); else { confAnim = null; cctx.clearRect(0, 0, confCanvas.width, confCanvas.height); }
+    cctx.clearRect(0, 0, innerWidth, innerHeight);
+    confetti.forEach(p => {
+      p.vy += p.g; p.vx *= p.drag; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
+      cctx.save(); cctx.globalAlpha = clamp(p.life / 28, 0, 1); cctx.translate(p.x, p.y); cctx.rotate(p.rot); cctx.fillStyle = p.c;
+      if (p.shape === "circle") { cctx.beginPath(); cctx.arc(0, 0, p.r * .5, 0, 6.283); cctx.fill(); }
+      else if (p.shape === "ribbon") { cctx.fillRect(-p.r * .28, -p.r * .9, p.r * .56, p.r * 1.8); }
+      else { cctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * .6); }
+      cctx.restore();
+    });
+    confetti = confetti.filter(p => p.life > 0 && p.y < innerHeight + 40);
+    if (confetti.length) confAnim = requestAnimationFrame(confLoop); else { confAnim = null; cctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  function centerOf(node) { if (!node) return null; const r = node.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+  // zwevend "+N XP" bij een goede beurt
+  function floatXP(amount, node) {
+    if (reduceMotion() || !amount) return;
+    const c = centerOf(node) || { x: innerWidth / 2, y: innerHeight / 2 };
+    const f = el("div", "xp-float", "+" + amount + " XP");
+    f.style.left = c.x + "px"; f.style.top = c.y + "px";
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 1000);
   }
   function levelUpToast(lvl) { const t = $("#toast"); t.textContent = "🎉 Level " + lvl + "! Lekker bezig!"; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2600); }
 
