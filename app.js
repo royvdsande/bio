@@ -1,24 +1,30 @@
 /* ===================================================================
-   BioQuest — engine
+   BioQuest — engine (herontworpen overzicht)
+   Overzicht → niveau + methode → hoofdstukken → hoofdstuk met tabbladen
+   (Theorie · Flitskaarten · Oefenvragen · Examenopgaven)
+   AI is overal strikt opt-in: gebeurt alleen als de gebruiker erop klikt.
    =================================================================== */
 (function () {
   "use strict";
 
-  const SAVE_KEY = "bioquest_v2";
+  const SAVE_KEY = "bioquest_v3";
   const AIKEY_KEY = "bioquest_openai_key";
   const DAILY_GOAL = 60;
 
   const $ = (s, r = document) => r.querySelector(s);
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 
-  /* ---------- inline vector-iconen (crisp, ipv emoji-chrome) ---------- */
+  /* ---------- inline vector-iconen ---------- */
   const ICONS = {
     flame: '<svg class="ic ic-flame" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path class="flame-out" d="M12 23c4.4 0 7.5-3 7.5-7.2 0-2.9-1.6-5.2-3.1-7-.5 1.1-1.3 1.8-2.2 1.9.8-2.3.3-4.8-2.1-7.4-.3 2.3-1.6 3.7-3 5.2C7.2 10.1 6 12.3 6 15.8 6 20 7.6 23 12 23z"/><path class="flame-in" d="M12 22c2.4 0 4-1.7 4-3.9 0-1.8-1.1-3-2.2-4.2-.4 1.4-1.2 1.8-1.9 1.9.5-1.6-.4-3-1.6-4-.2 1.6-1 2.3-1.6 3.2-.5.8-1 1.7-1 3 0 2.3 1.9 4 4.3 4z"/></svg>',
     target: '<svg class="ic ic-target" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--red)" stroke-width="2.4"/><circle cx="12" cy="12" r="5" fill="none" stroke="var(--red)" stroke-width="2.4"/><circle cx="12" cy="12" r="1.6" fill="var(--red)"/></svg>',
     check: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M5 13l4 4 10-11" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     heart: '<svg class="ic ic-heart" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 21C5.5 16.7 3 13.3 3 9.5 3 6.9 5 5 7.4 5c1.6 0 3 .8 3.9 2 .9-1.2 2.3-2 3.9-2C18.6 5 20.6 6.9 20.6 9.5c0 3.8-2.6 7.2-8.6 11.5z" fill="var(--red)"/></svg>',
-    trophy: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M6 4h12v3a6 6 0 0 1-12 0V4z" fill="var(--gold)"/><path d="M6 5H3.5v1.5A3.5 3.5 0 0 0 7 10M18 5h2.5v1.5A3.5 3.5 0 0 1 17 10" fill="none" stroke="var(--gold-d)" stroke-width="2"/><path d="M10 12h4v3h-4z" fill="var(--gold-d)"/><path d="M8 20h8M12 15v5" stroke="var(--gold-d)" stroke-width="2.2" stroke-linecap="round"/></svg>',
-    bolt: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="var(--gold)" stroke="var(--gold-d)" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+    book: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 18v3H6.5A2.5 2.5 0 0 1 4 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    cards: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><rect x="3" y="6" width="13" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3h9a2 2 0 0 1 2 2v11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    quiz: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 1-1 1.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    exam: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    spark: '<svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/></svg>',
     gear: '<svg class="ic ic-gear" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1l-.4-2.6H10.9l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4.2l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>',
   };
   const icon = (name) => ICONS[name] || "";
@@ -28,12 +34,19 @@
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
   /* ---------- state ---------- */
-  const defaultState = () => ({ xp: 0, streakDays: 0, lastDay: null, day: { d: null, xp: 0 }, cards: {}, paras: {}, settings: { sound: true, model: "gpt-4o-mini" } });
+  const defaultState = () => ({
+    xp: 0, streakDays: 0, lastDay: null, day: { d: null, xp: 0 },
+    cards: {}, paras: {},
+    settings: { sound: true, model: "gpt-4o-mini", niveau: null, methode: null }
+  });
   let state = load();
-  function load() { try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); return s ? Object.assign(defaultState(), s) : defaultState(); } catch (e) { return defaultState(); } }
+  function load() { try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); return s ? deepMerge(defaultState(), s) : defaultState(); } catch (e) { return defaultState(); } }
+  function deepMerge(base, add) { const out = Object.assign({}, base, add); out.settings = Object.assign({}, base.settings, add.settings || {}); return out; }
   function save() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
   const getKey = () => localStorage.getItem(AIKEY_KEY) || "";
   const setKey = (k) => { if (k) localStorage.setItem(AIKEY_KEY, k); else localStorage.removeItem(AIKEY_KEY); };
+  const method = () => METHODS[state.settings.methode] || METHODS.bvj;
+  const niveau = () => CURRICULUM[state.settings.niveau] || null;
 
   /* ---------- leveling & xp ---------- */
   function levelInfo(xp) {
@@ -60,22 +73,23 @@
   }
 
   /* ---------- progress ---------- */
-  const cardKey = (paraId, term) => paraId + "::" + term;
-  function paraProgress(p) {
-    const rec = state.paras[p.id] || {};
+  const pkey = (topic, para) => topic.id + ":" + para.id;
+  const cardKey = (topic, para, term) => pkey(topic, para) + "::" + term;
+  function paraProgress(topic, p) {
+    const rec = state.paras[pkey(topic, p)] || {};
     const quiz = rec.quizBest || 0;
-    let known = 0; p.cards.forEach(c => { const cc = state.cards[cardKey(p.id, c.term)]; if (cc && cc.box >= 3) known++; });
+    let known = 0; p.cards.forEach(c => { const cc = state.cards[cardKey(topic, p, c.term)]; if (cc && cc.box >= 3) known++; });
     const cardPct = p.cards.length ? known / p.cards.length : 0;
     const parts = [quiz, cardPct, rec.learnDone ? 1 : 0];
-    if (p.sequences.length) parts.push(rec.seqDone ? 1 : 0);
     return Math.round((parts.reduce((a, b) => a + b, 0) / parts.length) * 100);
   }
-  function worldProgress(w) { const v = w.paragraphs.map(paraProgress); return Math.round(v.reduce((a, b) => a + b, 0) / v.length); }
-  function starsFor(pct) { return pct >= 80 ? 3 : pct >= 50 ? 2 : pct >= 20 ? 1 : 0; }
+  function topicProgress(topic) { const v = topic.paragraphs.map(p => paraProgress(topic, p)); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : 0; }
 
   /* ---------- topbar ---------- */
   function refreshTopbar() {
     const li = levelInfo(state.xp);
+    const setup = !!(state.settings.niveau && state.settings.methode);
+    const hud = $("#hud"); if (hud) hud.style.visibility = setup ? "visible" : "hidden";
     $("#xpFill").style.width = li.pct + "%";
     $("#lvlBadge").textContent = li.level;
     $("#lvlRing").style.setProperty("--p", li.pct);
@@ -83,35 +97,88 @@
     $("#streakVal").textContent = state.streakDays;
   }
 
-  /* ---------- helpers ---------- */
-  const WORLD_COLORS = { h14: ["#58cc02", "#46a302"], h15: ["#1cb0f6", "#1899d6"], h16: ["#ce82ff", "#a568cc"] };
-  function worldOf(para) { return COURSE.worlds.find(w => w.paragraphs.some(p => p.id === para.id)); }
+  /* ---------- nav helpers ---------- */
   const app = $("#app");
   function go(view, ...args) { try { window.scrollTo({ top: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); } view(...args); }
-  function animateNumber(node, to, suffix) {
-    const from = 0, dur = 700, t0 = performance.now();
-    (function step(t) { const k = clamp((t - t0) / dur, 0, 1); const e = 1 - Math.pow(1 - k, 3); node.textContent = Math.round(from + (to - from) * e) + (suffix || ""); if (k < 1) requestAnimationFrame(step); })(t0);
+
+  /* ===================================================================
+     ONBOARDING — kies niveau + methode
+     =================================================================== */
+  function renderSetup(fromSettings) {
+    const v = el("div", "view setup");
+    let pickNiveau = state.settings.niveau, pickMethode = state.settings.methode;
+
+    const hero = el("div", "setup-hero");
+    hero.innerHTML = `
+      <span class="kicker">Biologie · HAVO & VWO</span>
+      <h1>Welkom bij <span class="grad">BioQuest</span> 🧬</h1>
+      <p>Alles voor je biologie in één overzicht: samengevatte theorie, flitskaarten, oefenvragen en échte examenopgaven met antwoordmodel. Kies je niveau en methode om te beginnen.</p>`;
+    v.appendChild(hero);
+
+    v.appendChild(el("div", "section-title", "1 · Kies je niveau"));
+    const nivRow = el("div", "pick-row");
+    ["havo", "vwo"].forEach(id => {
+      const c = CURRICULUM[id];
+      const b = el("button", "pick-card", `<div class="pick-emoji">${id === "havo" ? "🎓" : "🏛️"}</div><h3>${esc(c.name)}</h3><p>${esc(c.tagline)}</p>`);
+      b.dataset.id = id;
+      if (pickNiveau === id) b.classList.add("sel");
+      b.onclick = () => { pickNiveau = id; [...nivRow.children].forEach(x => x.classList.toggle("sel", x.dataset.id === id)); refreshBtn(); };
+      nivRow.appendChild(b);
+    });
+    v.appendChild(nivRow);
+
+    v.appendChild(el("div", "section-title", "2 · Kies je methode"));
+    const metRow = el("div", "pick-row");
+    Object.values(METHODS).forEach(m => {
+      const b = el("button", "pick-card", `<div class="pick-emoji" style="color:${m.color}">${icon("book")}</div><h3>${esc(m.name)}</h3><p>${esc(m.tagline)}</p>`);
+      b.dataset.id = m.id;
+      if (pickMethode === m.id) b.classList.add("sel");
+      b.onclick = () => { pickMethode = m.id; [...metRow.children].forEach(x => x.classList.toggle("sel", x.dataset.id === m.id)); refreshBtn(); };
+      metRow.appendChild(b);
+    });
+    v.appendChild(metRow);
+
+    const foot = el("div", "setup-foot");
+    if (fromSettings) { const cancel = el("button", "btn ghost", "Annuleren"); cancel.onclick = () => go(renderHome); foot.appendChild(cancel); }
+    const start = el("button", "btn big", "Aan de slag →"); start.id = "setupGo";
+    start.onclick = () => {
+      if (!pickNiveau || !pickMethode) { mascotSay("Kies eerst een niveau én een methode 🙂"); return; }
+      state.settings.niveau = pickNiveau; state.settings.methode = pickMethode; save(); refreshTopbar();
+      confettiBurst(.5); go(renderHome);
+    };
+    foot.appendChild(start); v.appendChild(foot);
+    app.replaceChildren(v);
+    function refreshBtn() { start.disabled = !(pickNiveau && pickMethode); }
+    refreshBtn();
   }
 
   /* ===================================================================
-     HOME / DASHBOARD
+     HOME / OVERZICHT
      =================================================================== */
   function renderHome() {
+    if (!(state.settings.niveau && state.settings.methode)) return renderSetup(false);
+    refreshTopbar();
     const li = levelInfo(state.xp);
     const dGoalPct = clamp((dailyXP() / DAILY_GOAL) * 100, 0, 100);
-    const totalCards = COURSE.worlds.reduce((a, w) => a + w.paragraphs.reduce((s, p) => s + p.cards.length, 0), 0);
+    const cur = niveau(), m = method();
     const hour = new Date().getHours();
-    const greet = hour < 6 ? "Nog wakker?" : hour < 12 ? "Goedemorgen!" : hour < 18 ? "Goedemiddag!" : "Goedenavond!";
+    const greet = hour < 6 ? "Nog aan het leren?" : hour < 12 ? "Goedemorgen!" : hour < 18 ? "Goedemiddag!" : "Goedenavond!";
     const v = el("div", "view");
 
+    /* hero + context switcher */
     const hero = el("div", "hero");
     hero.innerHTML = `
-      <span class="kicker">Schoolexamen biologie</span>
-      <h1>${greet} Klaar voor je <span class="grad">BioQuest</span>?</h1>
-      <p>Leer de stof spelend: volg het levelpad, verdien XP en hou je streak vast. Elke dag een beetje = onthouden zonder stress. 🔥</p>
+      <div class="hero-top">
+        <span class="kicker">${greet}</span>
+        <button class="ctx-chip" id="ctxChip" title="Wissel niveau of methode">
+          <b>${esc(cur.name)}</b><span class="dot">·</span><span>${esc(m.name)}</span> <span class="ctx-edit">wijzig</span>
+        </button>
+      </div>
+      <h1>Jouw biologie-<span class="grad">overzicht</span></h1>
+      <p>Per hoofdstuk vind je de samengevatte theorie, flitskaarten, oefenvragen en échte examenopgaven met antwoordmodel. Kies een hoofdstuk om te starten. 🔥</p>
       <div class="dash">
-        <div class="tile"><div class="lab">Level</div><div class="val" id="dLvl">${li.level}</div></div>
-        <div class="tile"><div class="lab"><span class="lab-ic">${icon("flame")}</span> Streak</div><div class="val" id="dStreak">${state.streakDays} dag</div></div>
+        <div class="tile"><div class="lab">Level</div><div class="val">${li.level}</div></div>
+        <div class="tile"><div class="lab"><span class="lab-ic">${icon("flame")}</span> Streak</div><div class="val">${state.streakDays} dag</div></div>
         <div class="tile"><div class="lab">Dagdoel</div>
           <div class="goalring"><span class="ring" style="--p:${dGoalPct}"><i>${dGoalPct >= 100 ? icon("check") : icon("target")}</i></span>
           <div><div class="val" style="font-size:18px">${dailyXP()}/${DAILY_GOAL}</div><div class="lab" style="text-transform:none">XP vandaag</div></div></div>
@@ -119,332 +186,306 @@
       </div>`;
     v.appendChild(hero);
 
-    v.appendChild(el("div", "section-title", "Kies je wereld"));
-    const grid = el("div", "worlds stagger");
-    COURSE.worlds.forEach(w => {
-      const pct = worldProgress(w);
-      const c = el("div", "world " + w.theme);
-      c.innerHTML = `<div class="wicon">${w.icon}</div>
-        <h3>${esc(w.title)}</h3>
-        <div class="wmeta">${w.paragraphs.length} levels · ${w.paragraphs.reduce((s, p) => s + p.cards.length, 0)} begrippen</div>
-        <div class="wbar"><span style="width:0%"></span></div>
-        <div class="wpct">${pct}% beheerst</div>`;
-      c.onclick = () => go(renderWorld, w.id);
-      grid.appendChild(c);
-      requestAnimationFrame(() => { c.querySelector(".wbar > span").style.width = pct + "%"; });
+    /* chapters grid */
+    const chapters = cur.methodes[m.id].chapters;
+    const editie = cur.methodes[m.id].editie;
+    const ready = chapters.filter(ch => ch.topic && getTopic(ch.topic)).length;
+    const st = el("div", "section-title-row");
+    st.innerHTML = `<span class="section-title" style="margin:0">Hoofdstukken · ${esc(m.name)} (${esc(editie)})</span><span class="st-count">${ready}/${chapters.length} beschikbaar</span>`;
+    v.appendChild(st);
+    const grid = el("div", "chapters stagger");
+    chapters.forEach(ch => {
+      const topic = ch.topic ? getTopic(ch.topic) : null;
+      const card = el("div", "chapter" + (topic ? "" : " soon"));
+      if (topic) {
+        const pct = topicProgress(topic);
+        card.classList.add(topic.theme);
+        card.innerHTML = `
+          <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">${topic.icon}</span><span class="ch-domain">${esc(topic.domain)}</span></div>
+          <h3>${esc(ch.title)}</h3>
+          <div class="ch-meta">${topic.paragraphs.length} paragrafen · ${topic.exams.length} examenopgaven</div>
+          <div class="ch-bar"><span style="width:0%"></span></div>
+          <div class="ch-foot"><span class="ch-pct">${pct}% beheerst</span><span class="ch-go">Open →</span></div>`;
+        card.onclick = () => go(renderChapter, topic.id);
+        requestAnimationFrame(() => { const b = card.querySelector(".ch-bar > span"); if (b) b.style.width = pct + "%"; });
+      } else {
+        card.innerHTML = `
+          <div class="ch-top"><span class="ch-num">${esc(ch.num)}</span><span class="ch-emoji">📚</span></div>
+          <h3>${esc(ch.title)}</h3>
+          <div class="ch-meta">Inhoud in ontwikkeling</div>
+          <div class="ch-foot"><span class="soon-pill">Binnenkort</span></div>`;
+        card.onclick = () => mascotSay("Dit hoofdstuk wordt nog toegevoegd. Er zijn al veel hoofdstukken volledig uitgewerkt — kies er een met een gekleurde balk! ✨");
+      }
+      grid.appendChild(card);
     });
     v.appendChild(grid);
 
-    // adaptieve aanbeveling: jouw zwakke plek
+    /* recommendation */
     const weak = weakestParagraph();
     if (weak) {
       v.appendChild(el("div", "section-title", "Voor jou aanbevolen"));
-      const rec = el("div", "rec-banner stagger");
+      const rec = el("div", "rec-banner");
       rec.innerHTML = `<div class="rec-ic">🎯</div>
-        <div class="rec-txt"><h4>Pak je zwakke plek</h4><p>${esc(weak.w.icon + " " + weak.p.id + " " + weak.p.title)} · ${weak.pct}% beheerst</p></div>
+        <div class="rec-txt"><h4>Pak je zwakke plek</h4><p>${esc(weak.topic.icon + " " + weak.topic.title + " · " + weak.p.title)} · ${weak.pct}% beheerst</p></div>
         <span class="rec-go">Oefenen →</span>`;
-      rec.onclick = () => go(renderParagraph, weak.w.id, weak.p.id);
+      rec.onclick = () => go(renderChapter, weak.topic.id);
       v.appendChild(rec);
     }
 
+    /* quick practice */
     v.appendChild(el("div", "section-title", "Snel oefenen"));
     const quick = el("div", "quick stagger");
     const dueCount = countDueCards();
     const smart = el("div", "qcard");
-    smart.innerHTML = `<div class="qi">🧠</div><div><h4>Slimme sessie</h4><p>Adaptieve mix: focust op wat jij nog lastig vindt</p></div>`;
+    smart.innerHTML = `<div class="qi">🧠</div><div><h4>Slimme sessie</h4><p>Adaptieve mix van oefenvragen over alle hoofdstukken</p></div>`;
     smart.onclick = smartSession;
-    const exam = el("div", "qcard");
-    exam.innerHTML = `<div class="qi">⚔️</div><div><h4>Examen-battle</h4><p>15 gemixte vragen · 3 levens · haal een S-rang!</p></div>`;
-    exam.onclick = startExam;
-    const open = el("div", "qcard");
-    open.innerHTML = `<div class="qi">✍️</div><div><h4>Open SE-vraag <span class="tag" style="position:static">AI</span></h4><p>AI maakt een examenvraag & kijkt je antwoord na</p></div>`;
-    open.onclick = () => { const t = weak ? weak.p : COURSE.worlds[0].paragraphs[0]; startOpen(t); };
+    const examB = el("div", "qcard");
+    examB.innerHTML = `<div class="qi">⚔️</div><div><h4>Examentraining</h4><p>15 gemixte vragen · 3 levens · haal een S-rang</p></div>`;
+    examB.onclick = startExam;
     const due = el("div", "qcard");
-    due.innerHTML = `<div class="qi">🔁</div><div><h4>Herhaal-stapel</h4><p>${dueCount ? dueCount + " kaart(en) klaar om te herhalen" : "Niets te herhalen — speel een level!"}</p></div>`;
-    due.onclick = () => dueCount ? startReview() : go(renderWorld, "h14");
-    quick.appendChild(smart); quick.appendChild(exam); quick.appendChild(open); quick.appendChild(due);
+    due.innerHTML = `<div class="qi">🔁</div><div><h4>Herhaal-stapel</h4><p>${dueCount ? dueCount + " flitskaart(en) klaar om te herhalen" : "Niets te herhalen — leer een hoofdstuk!"}</p></div>`;
+    due.onclick = () => dueCount ? startReview() : go(renderChapter, TOPICS[0].id);
+    quick.appendChild(smart); quick.appendChild(examB); quick.appendChild(due);
     v.appendChild(quick);
 
     app.replaceChildren(v);
+    $("#ctxChip").onclick = () => go(renderSetup, true);
     mascotSay(pickHomeTip());
   }
 
-  // zwakste begonnen paragraaf (laagste voortgang > 0)
   function weakestParagraph() {
     let best = null;
-    COURSE.worlds.forEach(w => w.paragraphs.forEach(p => {
-      const pct = paraProgress(p);
-      if (pct > 0 && pct < 80 && (!best || pct < best.pct)) best = { w, p, pct };
+    TOPICS.forEach(topic => topic.paragraphs.forEach(p => {
+      const pct = paraProgress(topic, p);
+      if (pct > 0 && pct < 80 && (!best || pct < best.pct)) best = { topic, p, pct };
     }));
     return best;
   }
-
-  // adaptieve mix: vragen, zwaarder gewogen naar lage-voortgang paragrafen
   function smartSession() {
     const pool = [];
-    COURSE.worlds.forEach(w => w.paragraphs.forEach(p => {
-      const weight = Math.max(1, Math.round((100 - paraProgress(p)) / 22) + 1); // 1..6
-      p.quiz.forEach(q => { for (let k = 0; k < weight; k++) pool.push({ q, id: p.id + "|" + q.q }); });
+    TOPICS.forEach(topic => topic.paragraphs.forEach(p => {
+      const weight = Math.max(1, Math.round((100 - paraProgress(topic, p)) / 22) + 1);
+      p.quiz.forEach(q => { for (let k = 0; k < weight; k++) pool.push({ q, id: pkey(topic, p) + "|" + q.q }); });
     }));
-    const picked = [], seen = new Set();
-    let guard = 0;
-    while (picked.length < 12 && guard++ < 600) { const it = pool[(Math.random() * pool.length) | 0]; if (seen.has(it.id)) continue; seen.add(it.id); picked.push(it.q); }
+    const picked = [], seen = new Set(); let guard = 0;
+    while (picked.length < 12 && guard++ < 600) { const it = pool[(Math.random() * pool.length) | 0]; if (!it || seen.has(it.id)) continue; seen.add(it.id); picked.push(it.q); }
     startQuiz(null, picked, "🧠 Slimme sessie");
   }
 
   /* ===================================================================
-     WERELD = LEVELPAD
+     HOOFDSTUK — tabbladen
      =================================================================== */
-  function renderWorld(worldId) {
-    const w = COURSE.worlds.find(x => x.id === worldId);
-    const [c1, c2] = WORLD_COLORS[worldId];
+  function renderChapter(topicId, tab) {
+    const topic = getTopic(topicId);
+    if (!topic) return go(renderHome);
+    tab = tab || "theorie";
     const v = el("div", "view");
-    const back = el("button", "backbtn", "← Werelden"); back.onclick = () => go(renderHome); v.appendChild(back);
-    const banner = el("div", "world-banner " + w.theme);
-    banner.innerHTML = `<div class="big">${w.icon}</div><h2>${esc(w.title)}</h2><div class="wmeta">${worldProgress(w)}% beheerst · ${w.paragraphs.length} levels</div>`;
+    const back = el("button", "backbtn", "← Overzicht"); back.onclick = () => go(renderHome); v.appendChild(back);
+
+    const banner = el("div", "ch-banner " + topic.theme);
+    const pct = topicProgress(topic);
+    banner.innerHTML = `<div class="ch-banner-ic">${topic.icon}</div>
+      <div class="ch-banner-txt"><h2>${esc(topic.title)}</h2><p>${esc(topic.intro)}</p>
+      <div class="ch-banner-bar"><span style="width:${pct}%"></span></div>
+      <div class="ch-banner-meta">${pct}% beheerst · ${topic.paragraphs.length} paragrafen</div></div>`;
     v.appendChild(banner);
 
-    // bepaal node-states
-    const prog = w.paragraphs.map(paraProgress);
-    let currentIdx = prog.findIndex(p => p < 70); if (currentIdx === -1) currentIdx = w.paragraphs.length - 1;
-
-    const W = 320, spacing = 120, top = 56, pattern = [-58, 0, 58, 0];
-    const height = (w.paragraphs.length - 1) * spacing + top + 70;
-    const map = el("div", "map"); map.style.width = W + "px"; map.style.height = height + "px";
-
-    const pts = w.paragraphs.map((p, i) => ({ x: W / 2 + pattern[i % 4], y: top + i * spacing }));
-    // trail
-    let d = `M ${pts[0].x} ${pts[0].y}`;
-    for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], my = (a.y + b.y) / 2; d += ` C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`; }
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg"); svg.setAttribute("class", "trail"); svg.setAttribute("width", W); svg.setAttribute("height", height); svg.setAttribute("viewBox", `0 0 ${W} ${height}`);
-    svg.style.position = "absolute"; svg.style.left = "0"; svg.style.top = "0"; svg.style.pointerEvents = "none";
-    const path = document.createElementNS(svgNS, "path"); path.setAttribute("d", d); path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(255,255,255,.12)"); path.setAttribute("stroke-width", "10"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-dasharray", "2 20");
-    svg.appendChild(path); map.appendChild(svg);
-
-    w.paragraphs.forEach((p, i) => {
-      const pct = prog[i], st = starsFor(pct);
-      const done = pct >= 70, current = i === currentIdx && !done;
-      const node = el("div", "node " + (done ? "done" : current ? "current" : "todo"));
-      node.style.left = pts[i].x + "px"; node.style.top = pts[i].y + "px";
-      node.style.setProperty("--n1", c1); node.style.setProperty("--n2", c2);
-      const inner = done ? "⭐" : `<span class="ic">${w.icon}</span>`;
-      const starStr = "★★★".slice(0, st * 2) + "☆☆☆".slice(0, (3 - st) * 2);
-      node.innerHTML = `${st === 3 ? '<div class="crown">👑</div>' : ""}<div class="disc"><span class="disc-in">${inner}</span></div>
-        <div class="label">${esc(p.id)} ${esc(p.title)}</div>
-        <div class="stars${st ? " has" : ""}">${starStr}</div>`;
-      node.onclick = () => go(renderParagraph, w.id, p.id);
-      map.appendChild(node);
+    const tabs = el("div", "tabs");
+    const TAB_DEFS = [
+      ["theorie", icon("book"), "Theorie"],
+      ["flitskaarten", icon("cards"), "Flitskaarten"],
+      ["oefenvragen", icon("quiz"), "Oefenvragen"],
+      ["examen", icon("exam"), "Examenopgaven"]
+    ];
+    TAB_DEFS.forEach(([id, ic, label]) => {
+      const t = el("button", "tab" + (id === tab ? " on" : ""), `${ic}<span>${label}</span>`);
+      t.onclick = () => go(renderChapter, topicId, id);
+      tabs.appendChild(t);
     });
-    v.appendChild(map);
+    v.appendChild(tabs);
+
+    const body = el("div", "tab-body");
+    v.appendChild(body);
     app.replaceChildren(v);
+
+    if (tab === "theorie") tabTheorie(topic, body);
+    else if (tab === "flitskaarten") tabFlashcards(topic, body);
+    else if (tab === "oefenvragen") tabQuiz(topic, body);
+    else if (tab === "examen") tabExam(topic, body);
   }
 
-  /* ===================================================================
-     PARAGRAAF
-     =================================================================== */
-  function renderParagraph(worldId, paraId) {
-    const w = COURSE.worlds.find(x => x.id === worldId);
-    const p = w.paragraphs.find(x => x.id === paraId);
-    const rec = state.paras[p.id] || {};
-    const v = el("div", "view");
-    const back = el("button", "backbtn", "← " + w.title); back.onclick = () => go(renderWorld, w.id); v.appendChild(back);
-    v.appendChild(el("div", "para-head", `<div class="big">${w.icon}</div><div><h2>${esc(p.id)} ${esc(p.title)}</h2></div>`));
+  /* ---------- tab: theorie ---------- */
+  function tabTheorie(topic, body) {
+    body.appendChild(el("p", "tab-lead", "Lees per paragraaf de samengevatte theorie. Wil je meer? Vraag de AI-tutor gericht om uitleg — dat gebeurt alleen als jij erop klikt."));
+    topic.paragraphs.forEach(p => {
+      const rec = state.paras[pkey(topic, p)] || {};
+      const det = el("details", "para-acc" + (rec.learnDone ? " done" : ""));
+      const goalsHtml = `<div class="glass goalbox"><div class="gt">🎯 Wat je gaat leren</div><ul>${p.goals.map(g => `<li>${esc(g)}</li>`).join("")}</ul></div>`;
+      det.innerHTML = `<summary><span class="pa-id">${esc(p.id)}</span><span class="pa-title">${esc(p.title)}</span>${rec.learnDone ? '<span class="pa-done">✓ gelezen</span>' : ""}<span class="pa-chev">▾</span></summary>`;
+      const inner = el("div", "para-inner");
+      inner.innerHTML = goalsHtml + `<div class="summary">${formatSummary(p.summary)}</div>`;
 
-    const goals = el("div", "glass goalbox");
-    goals.innerHTML = `<div class="gt">🎯 Wat je gaat leren</div><ul>${p.goals.map(g => `<li>${esc(g)}</li>`).join("")}</ul>`;
-    v.appendChild(goals);
-
-    const known = p.cards.filter(c => { const cc = state.cards[cardKey(p.id, c.term)]; return cc && cc.box >= 3; }).length;
-    const modes = el("div", "modes stagger");
-    const mk = (icon, title, desc, fn, opts = {}) => {
-      const m = el("div", "mode");
-      m.innerHTML = `<div class="mi">${icon}</div><h4>${title}</h4><p>${desc}</p>
-        ${opts.tag ? `<span class="tag">${opts.tag}</span>` : ""}${opts.done ? `<span class="done-pill">✅</span>` : ""}`;
-      m.onclick = fn; return m;
-    };
-    modes.appendChild(mk("📖", "Lees", "Samenvatting + begrippen", () => startLesson(p), { done: rec.learnDone }));
-    modes.appendChild(mk("⚡", "Quiz", p.quiz.length + " vragen + combo's", () => startQuiz(p, p.quiz, "⚡ " + p.id), { done: (rec.quizBest || 0) >= 0.99 }));
-    modes.appendChild(mk("✍️", "Open oefenen", "AI maakt & nakijkt SE-vragen", () => startOpen(p), { tag: "AI", done: (rec.openBest || 0) >= 80 }));
-    modes.appendChild(mk("🃏", "Flashcards", known + "/" + p.cards.length + " gekend", () => startFlashcards(p)));
-    if (p.sequences.length) modes.appendChild(mk("🔢", "Proces", "Zet de stappen op volgorde", () => startSequence(p), { done: rec.seqDone }));
-    modes.appendChild(mk("🤖", "AI-tutor", "Laat je uitleggen & overhoren", () => startTutor(p), { tag: "AI" }));
-    v.appendChild(modes);
-    app.replaceChildren(v);
-  }
-
-  /* ===================================================================
-     LEER: samenvatting lezen (+ AI-verdieping) → begrippen
-     =================================================================== */
-  function startLesson(p) {
-    const emojis = ["💡", "🔬", "🧩", "✨", "📌", "🧠", "⭐", "🔎"];
-    let phase = "read", i = 0; const n = p.cards.length;
-    const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(p).id, p.id); v.appendChild(back);
-    const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
-
-    function drawRead() {
-      panel.replaceChildren();
-      const card = el("div", "summary");
-      card.innerHTML = `<div class="badge">📖 Samenvatting</div><h2 class="sum-title">${esc(p.id)} ${esc(p.title)}</h2>` + formatSummary(p.summary);
-      panel.appendChild(card);
       const aiRow = el("div", "chat-suggest");
       [["🤖 Geef een voorbeeld", "Geef één concreet, alledaags voorbeeld dat deze stof goed illustreert. Maximaal 3 zinnen."],
-      ["✨ Vereenvoudig dit", "Leg deze samenvatting nog eenvoudiger uit, in 3 korte zinnen, alsof ik 12 ben."],
+      ["✨ Leg simpeler uit", "Leg deze samenvatting nog eenvoudiger uit, in 3 korte zinnen, alsof ik 12 ben."],
       ["🧠 Ezelsbruggetje", "Geef een pakkend ezelsbruggetje om de belangrijkste begrippen te onthouden."]]
-        .forEach(([label, prompt]) => { const c = el("button", "chip", label); c.onclick = () => aiElaborate(card, prompt); aiRow.appendChild(c); });
-      panel.appendChild(aiRow);
-      const nav = el("div", "lesson-nav");
-      const b1 = el("button", "btn", "Begrippen oefenen →"); b1.onclick = () => { phase = "terms"; i = 0; drawTerm(); };
-      nav.appendChild(b1); panel.appendChild(nav);
-    }
-    async function aiElaborate(card, prompt) {
-      const old = card.querySelector(".ai-note"); if (old) old.remove();
-      const note = el("div", "ai-note"); note.appendChild(spinnerEl("AI denkt mee…")); card.appendChild(note);
+        .forEach(([label, prompt]) => { const c = el("button", "chip", label); c.onclick = () => aiElaborate(topic, p, inner, prompt); aiRow.appendChild(c); });
+      inner.appendChild(el("div", "ai-optin-note", "AI-uitleg is optioneel — klik hierboven als je het wilt."));
+      inner.appendChild(aiRow);
+
+      const nav = el("div", "para-actions");
+      const done = el("button", "btn ghost small", rec.learnDone ? "✓ Gemarkeerd als gelezen" : "Markeer als gelezen");
+      done.onclick = () => { const r = state.paras[pkey(topic, p)] || {}; if (!r.learnDone) addXP(10); r.learnDone = true; state.paras[pkey(topic, p)] = r; save(); markStudiedToday(); done.textContent = "✓ Gemarkeerd als gelezen"; det.classList.add("done"); };
+      const toCards = el("button", "btn small", "Flitskaarten van deze paragraaf →");
+      toCards.onclick = () => startFlashcards(topic, p);
+      nav.appendChild(done); nav.appendChild(toCards);
+      inner.appendChild(nav);
+      det.appendChild(inner);
+      body.appendChild(det);
+    });
+    async function aiElaborate(topic, p, container, prompt) {
+      const old = container.querySelector(".ai-note"); if (old) old.remove();
+      const note = el("div", "ai-note"); note.appendChild(spinnerEl("AI denkt mee…")); container.querySelector(".chat-suggest").after(note);
       try {
         const reply = await aiChat([
-          { role: "system", content: "Je bent een biologie-bijlesdocent (Nederlands, SE-niveau). Gebruik UITSLUITEND onderstaande leerstof en verzin niets bij.\n\n" + groundingText(p) },
+          { role: "system", content: "Je bent een biologie-bijlesdocent (Nederlands, HAVO/VWO). Gebruik UITSLUITEND onderstaande leerstof en verzin niets bij.\n\n" + groundingText(p) },
           { role: "user", content: prompt }
         ], { temperature: 0.5, max_tokens: 320 });
         note.replaceChildren(); note.innerHTML = `<div class="ai-tag">🤖 AI-tutor</div>${esc(reply)}`;
         addXP(2);
-      } catch (e) { note.remove(); const m = aiErr(e); if (m === "needkey") { mascotSay("Stel eerst je AI-sleutel in ⚙️"); openSettings(); } else mascotSay(m); }
+      } catch (e) { note.remove(); handleAiErr(e); }
     }
-    function drawTerm() {
-      const c = p.cards[i];
-      panel.replaceChildren();
-      const stage = el("div", "lesson");
-      stage.innerHTML = `<div class="emoji">${emojis[i % emojis.length]}</div>
-        <div class="badge">Begrip ${i + 1} / ${n}</div>
-        <div class="term">${esc(c.term)}</div>
-        <div class="def">${esc(c.def)}</div>`;
-      panel.appendChild(stage);
-      const dots = el("div", "dots");
-      p.cards.forEach((_, di) => dots.appendChild(el("span", "d" + (di === i ? " on" : ""))));
-      panel.appendChild(dots);
-      const nav = el("div", "lesson-nav");
-      const bp = el("button", "btn ghost", "← Terug"); bp.onclick = () => { if (i > 0) { i--; drawTerm(); } else drawRead(); };
-      nav.appendChild(bp);
-      const nx = el("button", "btn", i < n - 1 ? "Volgende →" : "Klaar! Naar de quiz 🚀");
-      nx.onclick = () => { if (i < n - 1) { i++; drawTerm(); } else finish(); };
-      nav.appendChild(nx); panel.appendChild(nav);
-    }
-    function finish() {
-      const rec = state.paras[p.id] || {}; if (!rec.learnDone) addXP(15); rec.learnDone = true; state.paras[p.id] = rec; save();
-      markStudiedToday(); mascotCheer(); confettiBurst(.5);
-      startQuiz(p, p.quiz, "⚡ " + p.id);
-    }
-    drawRead();
   }
 
-  /* ===================================================================
-     OPEN OEFENEN — AI-gegenereerde SE-vragen, AI nakijkt (active recall)
-     =================================================================== */
-  function startOpen(p) {
-    const asked = [];
-    const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(p).id, p.id); v.appendChild(back);
-    const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
+  /* ---------- tab: flitskaarten ---------- */
+  function tabFlashcards(topic, body) {
+    body.appendChild(el("p", "tab-lead", "Oefen de begrippen met flitskaarten. Je moeilijke kaarten komen via spaced repetition vaker terug."));
+    const all = el("div", "card-launch");
+    const allDeck = el("button", "launch-card");
+    const total = topic.paragraphs.reduce((s, p) => s + p.cards.length, 0);
+    const known = topic.paragraphs.reduce((s, p) => s + p.cards.filter(c => { const cc = state.cards[cardKey(topic, p, c.term)]; return cc && cc.box >= 3; }).length, 0);
+    allDeck.innerHTML = `<div class="lc-ic">🃏</div><div><h4>Alle begrippen</h4><p>${known}/${total} gekend · hele hoofdstuk</p></div>`;
+    allDeck.onclick = () => startFlashcards(topic, null);
+    all.appendChild(allDeck);
+    body.appendChild(all);
+    body.appendChild(el("div", "section-title", "Per paragraaf"));
+    const grid = el("div", "card-launch");
+    topic.paragraphs.forEach(p => {
+      const k = p.cards.filter(c => { const cc = state.cards[cardKey(topic, p, c.term)]; return cc && cc.box >= 3; }).length;
+      const b = el("button", "launch-card small");
+      b.innerHTML = `<div class="lc-ic">${p.id}</div><div><h4>${esc(p.title)}</h4><p>${k}/${p.cards.length} gekend</p></div>`;
+      b.onclick = () => startFlashcards(topic, p);
+      grid.appendChild(b);
+    });
+    body.appendChild(grid);
+  }
 
-    function fail(e, retry) {
-      panel.replaceChildren();
-      const m = aiErr(e);
-      if (m === "needkey") {
-        panel.innerHTML = `<div class="qtext">✍️ Open oefenen <span class="tag" style="position:static">AI</span></div>
-          <p style="color:var(--muted-2);font-weight:700">Deze modus laat de AI échte SE-vragen maken en jouw getypte antwoord nakijken. Stel daarvoor eenmalig je OpenAI-sleutel in.</p>`;
-        const b = el("button", "btn", "Sleutel instellen ⚙️"); b.onclick = openSettings; panel.appendChild(b);
-      } else {
-        panel.appendChild(el("div", "qtext", "Er ging iets mis 😕"));
-        panel.appendChild(el("div", "fc-meta", m));
-        const b = el("button", "btn", "Opnieuw"); b.style.marginTop = "16px"; b.onclick = retry; panel.appendChild(b);
-      }
-    }
-    async function nextQuestion() {
-      panel.replaceChildren(); panel.appendChild(spinnerEl("Nieuwe oefenvraag maken…"));
-      try {
-        const data = await aiJSON([
-          { role: "system", content: "Je bent een examenmaker biologie voor het Nederlandse schoolexamen (SE/vwo). Gebruik UITSLUITEND onderstaande leerstof als bron; verzin geen feiten die er niet in staan.\n\n" + groundingText(p) +
-            "\n\nMaak één open oefenvraag op SE-niveau (begin bijv. met 'Leg uit', 'Beschrijf', 'Verklaar' of 'Noem'). Antwoord UITSLUITEND met geldige JSON in dit formaat: {\"vraag\": \"...\", \"kernpunten\": [\"punt1\",\"punt2\",\"punt3\"], \"modelantwoord\": \"...\"}. De kernpunten zijn 2 tot 4 zaken die in een goed antwoord moeten staan." },
-          { role: "user", content: "Maak een nieuwe vraag. Vermijd vragen die hierop lijken: " + (asked.join(" | ") || "(nog geen)") }
-        ], { temperature: 0.7, max_tokens: 500 });
-        if (!data.vraag) throw new Error("Geen vraag ontvangen.");
-        asked.push(data.vraag);
-        renderQuestion(data);
-      } catch (e) { fail(e, nextQuestion); }
-    }
-    function renderQuestion(q) {
-      panel.replaceChildren();
-      panel.appendChild(el("div", "open-head", `<span class="tag" style="position:static">✍️ Open SE-vraag</span>`));
-      panel.appendChild(el("div", "qtext", esc(q.vraag)));
-      const ta = el("textarea", "open-input"); ta.placeholder = "Typ hier je antwoord in je eigen woorden…"; ta.rows = 5;
-      panel.appendChild(ta);
+  /* ---------- tab: oefenvragen ---------- */
+  function tabQuiz(topic, body) {
+    body.appendChild(el("p", "tab-lead", "Toets jezelf met meerkeuzevragen. Direct feedback, combo-bonus en — als je wilt — AI-uitleg bij een fout antwoord."));
+    const allQ = [];
+    const grid = el("div", "card-launch");
+    topic.paragraphs.forEach(p => {
+      p.quiz.forEach(q => allQ.push(q));
+      const rec = state.paras[pkey(topic, p)] || {};
+      const best = Math.round((rec.quizBest || 0) * 100);
+      const b = el("button", "launch-card small");
+      b.innerHTML = `<div class="lc-ic">${p.id}</div><div><h4>${esc(p.title)}</h4><p>${p.quiz.length} vragen · beste ${best}%</p></div>`;
+      b.onclick = () => startQuiz(p, p.quiz, "⚡ " + topic.title + " " + p.id, { topic });
+      grid.appendChild(b);
+    });
+    const allBtn = el("button", "launch-card");
+    allBtn.innerHTML = `<div class="lc-ic">⚡</div><div><h4>Alle oefenvragen</h4><p>${allQ.length} vragen uit het hele hoofdstuk</p></div>`;
+    allBtn.onclick = () => startQuiz(null, allQ, "⚡ " + topic.title, { topic });
+    body.appendChild(allBtn);
+    body.appendChild(el("div", "section-title", "Per paragraaf"));
+    body.appendChild(grid);
+  }
+
+  /* ---------- tab: examenopgaven ---------- */
+  function tabExam(topic, body) {
+    body.appendChild(el("p", "tab-lead", "Échte examenopgaven in examenstijl, mét puntenantwoordmodel. Schrijf je antwoord, vergelijk met het model — en laat de AI desgewenst je inhoud én formulering nakijken."));
+    topic.exams.forEach((ex, idx) => {
+      const rec = state.paras["exam:" + ex.id] || {};
+      const item = el("div", "exam-item");
+      item.innerHTML = `
+        <div class="exam-head"><span class="exam-badge">${icon("exam")} Examenopgave ${idx + 1}</span><span class="exam-pts">${ex.points} punten</span>${rec.done ? '<span class="pa-done">✓ gedaan</span>' : ""}</div>
+        <h4 class="exam-title">${esc(ex.title)}</h4>
+        ${ex.context ? `<div class="exam-context">${esc(ex.context)}</div>` : ""}
+        <div class="exam-q">${esc(ex.question)}</div>`;
+      const ta = el("textarea", "open-input"); ta.placeholder = "Schrijf hier je antwoord in volledige zinnen…"; ta.rows = 5;
+      item.appendChild(ta);
+
       const foot = el("div", "open-foot");
-      const hint = el("button", "btn ghost", "💡 Hint"); hint.onclick = () => showHint(q, hint);
-      const skip = el("button", "btn ghost", "Sla over"); skip.onclick = nextQuestion;
-      const check = el("button", "btn", "Nakijken ✓"); check.onclick = () => grade(q, ta.value);
-      foot.appendChild(hint); foot.appendChild(skip); foot.appendChild(check);
-      panel.appendChild(foot);
-      ta.focus();
-    }
-    async function showHint(q, btn) {
-      btn.disabled = true; btn.textContent = "…";
-      try {
-        const h = await aiChat([
-          { role: "system", content: "Geef een korte hint (max 1 zin), GEEN volledig antwoord. Bron:\n" + groundingText(p) },
-          { role: "user", content: "Vraag: " + q.vraag + "\nGeef een subtiele hint." }
-        ], { temperature: 0.4, max_tokens: 80 });
-        mascotSay("💡 " + h);
-      } catch (e) { const m = aiErr(e); if (m === "needkey") openSettings(); }
-      btn.disabled = false; btn.textContent = "💡 Hint";
-    }
-    async function grade(q, answer) {
-      if (!answer.trim()) { mascotSay("Typ eerst een antwoord ✍️"); return; }
-      panel.replaceChildren(); panel.appendChild(spinnerEl("Je antwoord wordt nagekeken…"));
+      const modelBtn = el("button", "btn ghost small", "📘 Toon antwoordmodel");
+      const aiBtn = el("button", "btn small", "🤖 Laat AI nakijken");
+      foot.appendChild(modelBtn); foot.appendChild(aiBtn);
+      item.appendChild(foot);
+      item.appendChild(el("div", "ai-optin-note", "AI-nakijken is optioneel: krijg feedback op je inhoud én je formulering, plus een geschatte score."));
+
+      const modelBox = el("div", "exam-model hidden");
+      modelBox.innerHTML = `<div class="fb-model-tag">📘 Antwoordmodel (${ex.points} p)</div><ol>${ex.model.map(x => `<li>${esc(x)}</li>`).join("")}</ol>`;
+      item.appendChild(modelBox);
+      const aiBox = el("div", "ai-fb-slot"); item.appendChild(aiBox);
+
+      modelBtn.onclick = () => {
+        const open = modelBox.classList.toggle("hidden") === false;
+        modelBtn.textContent = open ? "📘 Verberg antwoordmodel" : "📘 Toon antwoordmodel";
+        if (open) { const r = state.paras["exam:" + ex.id] || {}; if (!r.done) { addXP(5); r.done = true; state.paras["exam:" + ex.id] = r; save(); markStudiedToday(); } }
+      };
+      aiBtn.onclick = () => gradeExam(topic, ex, ta.value, aiBox, aiBtn);
+      body.appendChild(item);
+    });
+    async function gradeExam(topic, ex, answer, box, btn) {
+      if (!answer.trim()) { mascotSay("Schrijf eerst een antwoord ✍️"); return; }
+      box.replaceChildren(spinnerEl("Je antwoord wordt nagekeken op inhoud én formulering…"));
+      btn.disabled = true;
       try {
         const res = await aiJSON([
-          { role: "system", content: "Je bent een eerlijke maar bemoedigende SE-corrector biologie. Beoordeel het antwoord van de leerling t.o.v. de kernpunten en het modelantwoord, en UITSLUITEND op basis van deze leerstof.\n\n" + groundingText(p) +
-            "\n\nAntwoord UITSLUITEND met geldige JSON: {\"score\": <geheel getal 0-100>, \"oordeel\": \"korte samenvatting\", \"feedback\": \"1-3 zinnen opbouwende uitleg in het Nederlands\", \"goed\": [\"wat goed was\"], \"gemist\": [\"wat nog ontbrak\"]}." },
-          { role: "user", content: JSON.stringify({ vraag: q.vraag, kernpunten: q.kernpunten, modelantwoord: q.modelantwoord, antwoord_leerling: answer }) }
-        ], { temperature: 0.2, max_tokens: 500 });
-        renderFeedback(q, res, answer);
-      } catch (e) { fail(e, () => grade(q, answer)); }
+          { role: "system", content: "Je bent een ervaren, eerlijke maar bemoedigende examinator biologie (Nederlands, HAVO/VWO). Beoordeel het antwoord van de leerling t.o.v. het puntenantwoordmodel. Geef zowel feedback op de INHOUD (kloppen de biologiepunten?) als op de FORMULERING (helder, volledig, correct vakjargon, in hele zinnen). Baseer de inhoud UITSLUITEND op onderstaande leerstof en het antwoordmodel.\n\n" + groundingText2(topic) +
+            "\n\nAntwoord UITSLUITEND met geldige JSON: {\"score\": <geheel getal 0-" + ex.points + ">, \"maxscore\": " + ex.points + ", \"oordeel\": \"korte samenvatting\", \"inhoud\": \"1-3 zinnen feedback op de biologische inhoud\", \"formulering\": \"1-2 zinnen feedback op de manier van formuleren\", \"goed\": [\"wat goed was\"], \"gemist\": [\"welk scorepunt nog ontbrak\"]}." },
+          { role: "user", content: JSON.stringify({ vraag: ex.question, context: ex.context, antwoordmodel: ex.model, maxpunten: ex.points, antwoord_leerling: answer }) }
+        ], { temperature: 0.2, max_tokens: 550 });
+        renderExamFeedback(ex, res, box);
+        const r = state.paras["exam:" + ex.id] || {}; if (!r.done) { r.done = true; state.paras["exam:" + ex.id] = r; save(); }
+        markStudiedToday();
+      } catch (e) { box.replaceChildren(); handleAiErr(e); }
+      finally { btn.disabled = false; }
     }
-    function renderFeedback(q, res, answer) {
-      const score = clamp(Math.round(res.score || 0), 0, 100);
-      const col = score >= 70 ? "var(--green)" : score >= 40 ? "var(--gold)" : "var(--red)";
-      panel.replaceChildren();
+    function renderExamFeedback(ex, res, box) {
+      const max = res.maxscore || ex.points;
+      const score = clamp(Math.round(res.score || 0), 0, max);
+      const ratio = max ? score / max : 0;
+      const col = ratio >= 0.7 ? "var(--green)" : ratio >= 0.4 ? "var(--gold)" : "var(--red)";
+      box.replaceChildren();
       const head = el("div", "fb-head");
-      head.innerHTML = `<div class="score-ring" style="--p:${score};--col:${col}"><i>${score}<small>%</small></i></div>
-        <div><div class="fb-verdict">${esc(res.oordeel || (score >= 70 ? "Goed!" : score >= 40 ? "Bijna" : "Nog oefenen"))}</div>
-        <div class="fb-fb">${esc(res.feedback || "")}</div></div>`;
-      panel.appendChild(head);
+      head.innerHTML = `<div class="score-ring" style="--p:${ratio * 100};--col:${col}"><i>${score}<small>/${max}</small></i></div>
+        <div><div class="fb-verdict">${esc(res.oordeel || (ratio >= .7 ? "Goed!" : ratio >= .4 ? "Bijna" : "Nog oefenen"))}</div></div>`;
+      box.appendChild(head);
+      const detail = el("div", "fb-detail");
+      if (res.inhoud) detail.appendChild(el("div", "fb-block", `<b>🔬 Inhoud</b><p>${esc(res.inhoud)}</p>`));
+      if (res.formulering) detail.appendChild(el("div", "fb-block", `<b>✍️ Formulering</b><p>${esc(res.formulering)}</p>`));
+      box.appendChild(detail);
       const lists = el("div", "fb-lists");
       if (res.goed && res.goed.length) lists.appendChild(el("div", "fb-good", `<b>✅ Goed</b><ul>${res.goed.map(x => "<li>" + esc(x) + "</li>").join("")}</ul>`));
       if (res.gemist && res.gemist.length) lists.appendChild(el("div", "fb-miss", `<b>➕ Nog toevoegen</b><ul>${res.gemist.map(x => "<li>" + esc(x) + "</li>").join("")}</ul>`));
-      panel.appendChild(lists);
-      const model = el("details", "fb-model"); model.innerHTML = `<summary>📘 Bekijk modelantwoord</summary><p>${esc(q.modelantwoord || "")}</p>`;
-      panel.appendChild(model);
-      const foot = el("div", "qfoot"); const nx = el("button", "btn", "Volgende vraag →"); nx.onclick = nextQuestion;
-      const done = el("button", "btn ghost", "Klaar"); done.onclick = () => go(renderParagraph, worldOf(p).id, p.id);
-      foot.appendChild(done); foot.appendChild(nx); panel.appendChild(foot);
-      const gain = 3 + Math.round(score / 12); addXP(gain); markStudiedToday();
-      const rec = state.paras[p.id] || {}; rec.openBest = Math.max(rec.openBest || 0, score); state.paras[p.id] = rec; save();
-      if (score >= 70) { confettiBurst(.6); mascotCheer(); }
+      box.appendChild(lists);
+      const gain = 4 + Math.round(ratio * 10); addXP(gain);
+      if (ratio >= .7) { confettiBurst(.5); mascotCheer(); }
     }
-    nextQuestion();
   }
 
   /* ===================================================================
      QUIZ
      =================================================================== */
   function startQuiz(para, questions, label, opts = {}) {
+    const topic = opts.topic || null;
     const lives = opts.lives || 0;
     const qs = shuffle(questions).map(q => { const order = shuffle(q.options.map((_, i) => i)); return { q: q.q, opts: order.map(i => q.options[i]), ans: order.indexOf(q.answer), explain: q.explain }; });
     let i = 0, score = 0, combo = 0, best = 0, hp = lives, xpEarned = 0;
     const KEYS = ["A", "B", "C", "D", "E"];
     const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => para ? go(renderParagraph, worldOf(para).id, para.id) : go(renderHome); v.appendChild(back);
+    const back = el("button", "backbtn", "← Terug"); back.onclick = () => backToChapterOrHome(topic, "oefenvragen"); v.appendChild(back);
     const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
 
     function draw() {
@@ -488,59 +529,62 @@
       const ground = para ? groundingText(para) : ("Vraag-uitleg: " + q.explain);
       try {
         const reply = await aiChat([
-          { role: "system", content: "Je bent een biologiedocent (Nederlands, SE). Gebruik UITSLUITEND deze leerstof als bron en verzin niets.\n\n" + ground },
+          { role: "system", content: "Je bent een biologiedocent (Nederlands, HAVO/VWO). Gebruik UITSLUITEND deze leerstof als bron en verzin niets.\n\n" + ground },
           { role: "user", content: "Vraag: " + q.q + "\nIk koos: \"" + chosenText + "\"\nHet juiste antwoord is: \"" + q.opts[q.ans] + "\".\nLeg in maximaal 3 zinnen uit waarom mijn keuze fout is en waarom het juiste antwoord klopt." }
         ], { temperature: 0.3, max_tokens: 220 });
         const note = el("div", "ai-note"); note.innerHTML = `<div class="ai-tag">🤖 AI-tutor</div>${esc(reply)}`;
         const sp = box.querySelector(".ai-loading"); if (sp) sp.replaceWith(note); else box.appendChild(note);
         addXP(2);
       } catch (e) {
-        const sp = box.querySelector(".ai-loading"); if (sp) sp.remove();
-        const m = aiErr(e); if (m === "needkey") { mascotSay("Stel eerst je AI-sleutel in ⚙️"); openSettings(); } else mascotSay(m);
+        const sp = box.querySelector(".ai-loading"); if (sp) sp.remove(); handleAiErr(e);
       }
     }
     function finish() {
       markStudiedToday();
       const acc = score / qs.length;
-      if (para) { const rec = state.paras[para.id] || {}; rec.quizBest = Math.max(rec.quizBest || 0, acc); state.paras[para.id] = rec; save(); }
+      if (para && topic) { const k = pkey(topic, para); const rec = state.paras[k] || {}; rec.quizBest = Math.max(rec.quizBest || 0, acc); state.paras[k] = rec; save(); }
       const rank = lives ? (hp <= 0 ? "F" : acc >= 1 ? "S" : acc >= .85 ? "A" : acc >= .7 ? "B" : acc >= .5 ? "C" : "D") : null;
       const stars = acc >= .9 ? 3 : acc >= .6 ? 2 : acc > 0 ? 1 : 0;
       resultScreen({
         emoji: acc >= .9 ? "🏆" : acc >= .6 ? "🎉" : "💪",
-        title: lives ? "Battle voorbij!" : acc >= .9 ? "Briljant!" : acc >= .6 ? "Goed gedaan!" : "Blijf oefenen!",
+        title: lives ? "Training voorbij!" : acc >= .9 ? "Briljant!" : acc >= .6 ? "Goed gedaan!" : "Blijf oefenen!",
         rank, stars, xpEarned,
         score: `${score} / ${qs.length} goed · hoogste combo 🔥${best}`,
         onRetry: () => startQuiz(para, questions, label, opts),
-        onBack: () => para ? go(renderParagraph, worldOf(para).id, para.id) : go(renderHome)
+        onBack: () => backToChapterOrHome(topic, "oefenvragen")
       });
       if (acc >= .6 && !(lives && hp <= 0)) { confettiBurst(); mascotCheer(); }
     }
     draw();
   }
   function startExam() {
-    const all = []; COURSE.worlds.forEach(w => w.paragraphs.forEach(p => p.quiz.forEach(q => all.push(q))));
-    startQuiz(null, shuffle(all).slice(0, 15), "⚔️ Battle", { lives: 3 });
+    const all = []; TOPICS.forEach(topic => topic.paragraphs.forEach(p => p.quiz.forEach(q => all.push(q))));
+    startQuiz(null, shuffle(all).slice(0, 15), "⚔️ Examentraining", { lives: 3 });
   }
 
   /* ===================================================================
-     FLASHCARDS (spaced repetition)
+     FLITSKAARTEN (spaced repetition)
      =================================================================== */
   const BOX_INTERVAL = [0, 0, 1, 3, 7, 16];
   const dueTime = (box) => Date.now() + (BOX_INTERVAL[box] || 0) * 864e5;
-  function countDueCards() { let n = 0; const now = Date.now(); COURSE.worlds.forEach(w => w.paragraphs.forEach(p => p.cards.forEach(c => { const r = state.cards[cardKey(p.id, c.term)]; if (r && r.due <= now && r.box < 5) n++; }))); return n; }
+  function countDueCards() { let n = 0; const now = Date.now(); TOPICS.forEach(topic => topic.paragraphs.forEach(p => p.cards.forEach(c => { const r = state.cards[cardKey(topic, p, c.term)]; if (r && r.due <= now && r.box < 5) n++; }))); return n; }
   function startReview() {
     const now = Date.now(), deck = [];
-    COURSE.worlds.forEach(w => w.paragraphs.forEach(p => p.cards.forEach(c => { const r = state.cards[cardKey(p.id, c.term)]; if (r && r.due <= now && r.box < 5) deck.push({ paraId: p.id, card: c }); })));
-    if (!deck.length) { mascotSay("Niets te herhalen! Speel een level voor nieuwe kaarten. 🎉"); return go(renderHome); }
-    runFlashcards(shuffle(deck), null, "🧠 Herhaal-stapel");
+    TOPICS.forEach(topic => topic.paragraphs.forEach(p => p.cards.forEach(c => { const r = state.cards[cardKey(topic, p, c.term)]; if (r && r.due <= now && r.box < 5) deck.push({ topic, para: p, card: c }); })));
+    if (!deck.length) { mascotSay("Niets te herhalen! Leer een hoofdstuk voor nieuwe kaarten. 🎉"); return go(renderHome); }
+    runFlashcards(shuffle(deck), null, null);
   }
-  const boxOf = (d) => { const r = state.cards[cardKey(d.paraId, d.card.term)]; return r ? r.box : 0; };
-  function startFlashcards(para) { const deck = para.cards.map(c => ({ paraId: para.id, card: c })); deck.sort((a, b) => boxOf(a) - boxOf(b)); runFlashcards(deck, para, "🃏 " + para.id); }
-
-  function runFlashcards(deck, para, label) {
+  const boxOf = (d) => { const r = state.cards[cardKey(d.topic, d.para, d.card.term)]; return r ? r.box : 0; };
+  function startFlashcards(topic, para) {
+    const deck = [];
+    (para ? [para] : topic.paragraphs).forEach(p => p.cards.forEach(c => deck.push({ topic, para: p, card: c })));
+    deck.sort((a, b) => boxOf(a) - boxOf(b));
+    runFlashcards(deck, topic, para);
+  }
+  function runFlashcards(deck, topic, para) {
     let i = 0, learned = 0;
     const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => para ? go(renderParagraph, worldOf(para).id, para.id) : go(renderHome); v.appendChild(back);
+    const back = el("button", "backbtn", "← Terug"); back.onclick = () => topic ? go(renderChapter, topic.id, "flitskaarten") : go(renderHome); v.appendChild(back);
     const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
 
     function draw() {
@@ -548,7 +592,7 @@
       const d = deck[i], c = d.card, box = boxOf(d);
       panel.replaceChildren();
       const pct = (i / deck.length) * 100;
-      panel.appendChild(el("div", "topline", `<span class="pbar"><span style="width:${pct}%"></span></span><span class="fc-meta">box ${box}/5</span>`));
+      panel.appendChild(el("div", "topline", `<span class="pbar"><span style="width:${pct}%"></span></span><span class="fc-meta">box ${box}/5 · ${i + 1}/${deck.length}</span>`));
       const stage = el("div", "fc-stage");
       const fc = el("div", "flashcard");
       fc.innerHTML = `<div class="fc-inner">
@@ -565,98 +609,39 @@
       panel.appendChild(stage);
     }
     function rateCard(d, g) {
-      const k = cardKey(d.paraId, d.card.term), rec = state.cards[k] || { box: 1, due: 0 };
+      const k = cardKey(d.topic, d.para, d.card.term), rec = state.cards[k] || { box: 1, due: 0 };
       if (g === 0) rec.box = 1; else if (g === 1) rec.box = Math.max(1, rec.box); else { rec.box = Math.min(5, (rec.box || 1) + 1); learned++; addXP(6); sound("correct"); }
       rec.due = dueTime(rec.box); state.cards[k] = rec; save(); i++; draw();
     }
     function done() {
       markStudiedToday(); mascotCheer();
       resultScreen({ emoji: "🃏", title: "Stapel doorgewerkt!", score: `${learned} kaart(en) als gekend gemarkeerd`,
-        onRetry: () => para ? startFlashcards(para) : startReview(), onBack: () => para ? go(renderParagraph, worldOf(para).id, para.id) : go(renderHome) });
+        onRetry: () => topic ? startFlashcards(topic, para) : startReview(), onBack: () => topic ? go(renderChapter, topic.id, "flitskaarten") : go(renderHome) });
     }
     draw();
   }
 
   /* ===================================================================
-     SEQUENCE PUZZLE
+     RESULT
      =================================================================== */
-  function startSequence(para) {
-    const seq = para.sequences[0];
-    let order = shuffle(seq.steps.map((_, i) => i)); while (order.every((x, i) => x === i)) order = shuffle(order);
-    let solved = false, listEl = null;
-    const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(para).id, para.id); v.appendChild(back);
-    const panel = el("div", "panel"); v.appendChild(panel); app.replaceChildren(v);
-
-    function draw() {
-      panel.replaceChildren();
-      panel.appendChild(el("div", "qtext", "🔢 " + esc(seq.title)));
-      panel.appendChild(el("div", "fc-meta", "Sleep de stappen, of gebruik de pijltjes, naar de juiste volgorde."));
-      const list = el("div", "seq-list"); listEl = list;
-      order.forEach((stepIdx, pos) => {
-        const item = el("div", "seq-item"); item.draggable = true; item.dataset.pos = pos;
-        item.innerHTML = `<span class="grip">⠿</span><span class="idx">${pos + 1}</span><span class="txt">${esc(seq.steps[stepIdx])}</span>
-          <span class="seq-controls"><button data-up>▲</button><button data-down>▼</button></span>`;
-        item.querySelector("[data-up]").onclick = (e) => { e.stopPropagation(); if (pos > 0) { [order[pos - 1], order[pos]] = [order[pos], order[pos - 1]]; draw(); } };
-        item.querySelector("[data-down]").onclick = (e) => { e.stopPropagation(); if (pos < order.length - 1) { [order[pos + 1], order[pos]] = [order[pos], order[pos + 1]]; draw(); } };
-        item.addEventListener("dragstart", () => item.classList.add("dragging"));
-        item.addEventListener("dragend", () => item.classList.remove("dragging"));
-        item.addEventListener("dragover", (e) => { e.preventDefault(); item.classList.add("over"); });
-        item.addEventListener("dragleave", () => item.classList.remove("over"));
-        item.addEventListener("drop", (e) => { e.preventDefault(); item.classList.remove("over"); const drag = $(".dragging", list); if (!drag) return; const from = +drag.dataset.pos, to = pos; const m = order.splice(from, 1)[0]; order.splice(to, 0, m); draw(); });
-        list.appendChild(item);
-      });
-      panel.appendChild(list);
-      const foot = el("div", "qfoot"); const chk = el("button", "btn", "Controleer ✓"); chk.onclick = check; foot.appendChild(chk); panel.appendChild(foot);
-    }
-    function check() {
-      const items = listEl ? [...listEl.children] : []; if (!items.length) return; let allOk = true;
-      order.forEach((stepIdx, pos) => { const ok = stepIdx === pos; items[pos].classList.add(ok ? "ok" : "no"); if (!ok) allOk = false; });
-      if (allOk && !solved) {
-        solved = true; addXP(25); sound("levelup"); confettiBurst(); mascotCheer(); markStudiedToday();
-        const rec = state.paras[para.id] || {}; rec.seqDone = true; state.paras[para.id] = rec; save();
-        const foot = el("div", "qfoot"); const b = el("button", "btn", "Gelukt! Terug →"); b.onclick = () => go(renderParagraph, worldOf(para).id, para.id); panel.appendChild(foot); foot.appendChild(b);
-      } else if (!allOk) { sound("wrong"); setTimeout(draw, 850); }
-    }
-    draw();
+  function backToChapterOrHome(topic, tab) { topic ? go(renderChapter, topic.id, tab) : go(renderHome); }
+  function resultScreen({ emoji, title, rank, stars, score, xpEarned, onRetry, onBack }) {
+    const v = el("div", "view"); const panel = el("div", "panel result");
+    panel.innerHTML = `<div class="big">${emoji}</div>` + (rank ? `<div class="rank">${rank}</div>` : "") +
+      (stars != null && !rank ? `<div class="stars">${"★".repeat(stars)}<span class="dim">${"★".repeat(3 - stars)}</span></div>` : "") +
+      `<h2>${esc(title)}</h2><div class="score">${esc(score)}</div>` +
+      (xpEarned ? `<div class="xpgain" id="xpg">+0 XP</div>` : "");
+    const actions = el("div", "actions");
+    const r = el("button", "btn", "Opnieuw 🔁"); r.onclick = onRetry;
+    const b = el("button", "btn ghost", "Verder →"); b.onclick = onBack;
+    actions.appendChild(r); actions.appendChild(b); panel.appendChild(actions);
+    v.appendChild(panel); app.replaceChildren(v);
+    if (xpEarned) { const g = $("#xpg"); const t0 = performance.now(); (function st(t) { const k = clamp((t - t0) / 700, 0, 1); g.textContent = "+" + Math.round(xpEarned * (1 - Math.pow(1 - k, 3))) + " XP"; if (k < 1) requestAnimationFrame(st); })(t0); }
   }
 
   /* ===================================================================
-     AI TUTOR
+     AI helpers
      =================================================================== */
-  function startTutor(para) {
-    const v = el("div", "view");
-    const back = el("button", "backbtn", "← Terug"); back.onclick = () => go(renderParagraph, worldOf(para).id, para.id); v.appendChild(back);
-    const panel = el("div", "panel"); v.appendChild(panel);
-    panel.appendChild(el("div", "qtext", `🤖 AI-tutor · ${esc(para.id)} ${esc(para.title)}`));
-    const chat = el("div", "chat"); const log = el("div", "chat-log"); chat.appendChild(log);
-    const suggest = el("div", "chat-suggest");
-    ["Leg dit simpel uit", "Geef me een ezelsbruggetje", "Overhoor me met 3 vragen", "Wat zijn de valkuilen?"].forEach(s => { const c = el("button", "chip", s); c.onclick = () => sendMsg(s); suggest.appendChild(c); });
-    chat.appendChild(suggest);
-    const inWrap = el("div", "chat-input"); const ta = el("textarea"); ta.placeholder = "Stel je vraag over deze stof…";
-    ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(ta.value); } });
-    const sendBtn = el("button", "btn", "Stuur"); sendBtn.onclick = () => sendMsg(ta.value);
-    inWrap.appendChild(ta); inWrap.appendChild(sendBtn); chat.appendChild(inWrap);
-    panel.appendChild(chat); app.replaceChildren(v);
-
-    const sys = "Je bent een enthousiaste, geduldige biologie-bijlesdocent voor een Nederlandse middelbare scholier die zich voorbereidt op een schoolexamen (SE). " +
-      "Antwoord altijd in het Nederlands, kort en helder, met soms een emoji of ezelsbruggetje. Gebruik UITSLUITEND onderstaande leerstof als bron en verzin niets bij. " +
-      "Leerdoelen:\n- " + para.goals.join("\n- ") + "\n\n" + groundingText(para) +
-      "\n\nBlijf bij deze stof; breng afdwalingen vriendelijk terug naar de biologie.";
-    const history = [{ role: "system", content: sys }];
-    addMsg("ai", `Hoi! 👋 Ik help je met **${para.title}**. Stel een vraag of kies een knopje hierboven. Vraag me gerust om je te overhoren!`);
-
-    function addMsg(role, text) { const m = el("div", "msg " + role); m.textContent = text; log.appendChild(m); log.scrollTop = log.scrollHeight; return m; }
-    async function sendMsg(text) {
-      text = (text || "").trim(); if (!text) return;
-      ta.value = ""; addMsg("user", text); history.push({ role: "user", content: text });
-      const typing = el("div", "msg ai typing"); typing.innerHTML = "<span></span><span></span><span></span>"; log.appendChild(typing); log.scrollTop = log.scrollHeight; sendBtn.disabled = true;
-      try { const reply = await aiChat(history); typing.remove(); addMsg("ai", reply); history.push({ role: "assistant", content: reply }); addXP(3); }
-      catch (e) { typing.remove(); if (e.code === "NO_KEY") { addMsg("sys", "⚙️ Nog geen AI-sleutel ingesteld. Open instellingen (tandwiel) om je OpenAI-key toe te voegen — die wordt onthouden."); openSettings(); } else addMsg("sys", "⚠️ " + e.message); }
-      finally { sendBtn.disabled = false; }
-    }
-  }
-
   async function aiChat(messages, opts = {}) {
     const model = opts.model || state.settings.model || "gpt-4o-mini";
     const proxyBody = { messages, model };
@@ -679,40 +664,29 @@
     try { return JSON.parse(raw); }
     catch (e) { const m = raw.match(/\{[\s\S]*\}/); if (m) { try { return JSON.parse(m[0]); } catch (_) { } } throw new Error("Kon het AI-antwoord niet lezen, probeer opnieuw."); }
   }
-  // grounding-tekst per paragraaf: samenvatting + begrippen (de bron voor de AI)
   function groundingText(p) {
     return "BRONTEKST (paragraaf " + p.id + " – " + p.title + "):\n" + (p.summary || "") +
       "\n\nBEGRIPPEN:\n" + p.cards.map(c => "• " + c.term + ": " + c.def).join("\n");
   }
+  function groundingText2(topic) {
+    return "BRONTEKST (hoofdstuk " + topic.title + "):\n" + topic.paragraphs.map(p => p.summary).join("\n\n") +
+      "\n\nBEGRIPPEN:\n" + topic.paragraphs.flatMap(p => p.cards).map(c => "• " + c.term + ": " + c.def).join("\n");
+  }
   function spinnerEl(text) { const d = el("div", "ai-loading"); d.innerHTML = `<span class="spinner"></span><span>${esc(text || "AI denkt na…")}</span>`; return d; }
-  function aiErr(e) { return e && e.code === "NO_KEY" ? "needkey" : ("⚠️ " + (e && e.message || "Er ging iets mis.")); }
+  function handleAiErr(e) {
+    if (e && e.code === "NO_KEY") { mascotSay("Stel eerst je AI-sleutel in ⚙️ (AI is optioneel)"); openSettings(); }
+    else mascotSay("⚠️ " + (e && e.message || "Er ging iets mis met de AI."));
+  }
   function formatSummary(txt) {
     const out = []; let list = null;
     String(txt).split("\n").forEach(line => {
       line = line.trim();
-      if (!line) { if (list) { out.push(list); list = null; } return; }
+      if (!line) { if (list) { out.push(list + "</ul>"); list = null; } return; }
       if (line.startsWith("•")) { if (!list) list = '<ul class="sum-list">'; list += "<li>" + esc(line.replace(/^•\s*/, "")) + "</li>"; }
       else { if (list) { out.push(list + "</ul>"); list = null; } out.push("<p>" + esc(line) + "</p>"); }
     });
     if (list) out.push(list + "</ul>");
     return out.join("");
-  }
-
-  /* ===================================================================
-     RESULT
-     =================================================================== */
-  function resultScreen({ emoji, title, rank, stars, score, xpEarned, onRetry, onBack }) {
-    const v = el("div", "view"); const panel = el("div", "panel result");
-    panel.innerHTML = `<div class="big">${emoji}</div>` + (rank ? `<div class="rank">${rank}</div>` : "") +
-      (stars != null && !rank ? `<div class="stars">${"★".repeat(stars)}<span class="dim">${"★".repeat(3 - stars)}</span></div>` : "") +
-      `<h2>${esc(title)}</h2><div class="score">${esc(score)}</div>` +
-      (xpEarned ? `<div class="xpgain" id="xpg">+0 XP</div>` : "");
-    const actions = el("div", "actions");
-    const r = el("button", "btn", "Opnieuw 🔁"); r.onclick = onRetry;
-    const b = el("button", "btn ghost", "Verder →"); b.onclick = onBack;
-    actions.appendChild(r); actions.appendChild(b); panel.appendChild(actions);
-    v.appendChild(panel); app.replaceChildren(v);
-    if (xpEarned) { const g = $("#xpg"); const t0 = performance.now(); (function st(t) { const k = clamp((t - t0) / 700, 0, 1); g.textContent = "+" + Math.round(xpEarned * (1 - Math.pow(1 - k, 3))) + " XP"; if (k < 1) requestAnimationFrame(st); })(t0); }
   }
 
   /* ===================================================================
@@ -740,7 +714,6 @@
   addEventListener("resize", sizeCanvas); sizeCanvas();
   const CONF_COLORS = ["#58cc02", "#1cb0f6", "#ffc800", "#ce82ff", "#ff4b4b", "#ff9600"];
   const SHAPES = ["rect", "circle", "ribbon"];
-  // origin optioneel: {x, y}; anders vanuit het midden-boven
   function confettiBurst(scale = 1, origin) {
     if (reduceMotion()) return;
     const ox = origin ? origin.x : innerWidth / 2;
@@ -773,7 +746,6 @@
     if (confetti.length) confAnim = requestAnimationFrame(confLoop); else { confAnim = null; cctx.clearRect(0, 0, innerWidth, innerHeight); }
   }
   function centerOf(node) { if (!node) return null; const r = node.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
-  // zwevend "+N XP" bij een goede beurt
   function floatXP(amount, node) {
     if (reduceMotion() || !amount) return;
     const c = centerOf(node) || { x: innerWidth / 2, y: innerHeight / 2 };
@@ -789,34 +761,48 @@
   function mascotSay(text) { const old = $("#bubble"); if (old) old.remove(); const b = el("div", "bubble"); b.id = "bubble"; b.textContent = text; b.title = "Tik om te sluiten"; b.onclick = () => b.remove(); document.body.appendChild(b); clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => b.remove(), 6000); }
   function mascotCheer() { mascotEl.classList.add("cheer"); setTimeout(() => mascotEl.classList.remove("cheer"), 700); }
   mascotEl.onclick = () => { mascotCheer(); sound("correct"); mascotSay(pickHomeTip()); };
-  function pickHomeTip() { const t = ["Doe elke dag één level — je streak dankt je! 🔥", "Begin met 'Leer', daarna de quiz. Blijft beter hangen! 📖", "Twijfel je? Markeer 'm 'Nog niet' en hij komt vanzelf terug. 🃏", "Combo's geven bonus-XP. Hou een reeks goed! ⚡", "Vastgelopen? De AI-tutor legt 't je rustig uit. 🤖", "Processen onthou je het best via de proces-puzzels. 🔢"]; return t[(Math.random() * t.length) | 0]; }
+  function pickHomeTip() { const t = ["Begin met de Theorie, oefen dan met de flitskaarten en vragen. 📖", "De examenopgaven hebben échte antwoordmodellen — vergelijk je antwoord goed. 📝", "Twijfel je bij een flitskaart? Markeer 'm 'Nog niet', hij komt vanzelf terug. 🃏", "Combo's in de quiz geven bonus-XP. Hou een reeks goed! ⚡", "AI is optioneel: laat je antwoord op inhoud én formulering nakijken. 🤖", "Elke dag een beetje oefenen houdt je streak in leven. 🔥"]; return t[(Math.random() * t.length) | 0]; }
 
   /* ===================================================================
      SETTINGS
      =================================================================== */
   function openSettings() {
     const ov = el("div", "overlay"); const m = el("div", "modal"); const keySet = !!getKey();
+    const cur = niveau(), me = method();
     m.innerHTML = `
       <h3><span class="h3-ic">${icon("gear")}</span> Instellingen</h3>
-      <p class="sub">De AI-tutor draait op OpenAI. Stel je sleutel één keer in — daarna onthoudt de app 'm.</p>
-      <div class="note">💡 <b>Op Vercel?</b> Zet een environment variable <code>OPENAI_API_KEY</code> in je project. Dan werkt de AI automatisch via <code>/api/ai</code> en blijft je sleutel server-side. Hieronder hoef je dan niets in te vullen.</div>
+      <p class="sub">Kies je niveau en methode. De AI-tutor is optioneel en draait op OpenAI.</p>
+      <div class="field"><label>Niveau</label>
+        <select id="setNiveau"><option value="havo">HAVO</option><option value="vwo">VWO</option></select></div>
+      <div class="field"><label>Methode</label>
+        <select id="setMethode"><option value="bvj">Biologie voor Jou</option><option value="nectar">Nectar</option></select></div>
+      <div class="ai-optin-note" style="margin:2px 0 14px">🤖 AI-functies (uitleg, feedback op je antwoord & formulering) worden alléén uitgevoerd als jij er zelf op klikt.</div>
+      <div class="note">💡 <b>Op Vercel?</b> Zet een environment variable <code>OPENAI_API_KEY</code> in je project. Dan werkt de AI automatisch via <code>/api/ai</code> en blijft je sleutel server-side.</div>
       <div class="field">
-        <label>OpenAI API-key <span class="${keySet ? "badge-ok" : "badge-warn"}">${keySet ? "✓ opgeslagen" : "nog niet ingesteld"}</span></label>
+        <label>OpenAI API-key <span class="${keySet ? "badge-ok" : "badge-warn"}">${keySet ? "✓ opgeslagen" : "niet ingesteld (optioneel)"}</span></label>
         <input id="apiKey" type="password" placeholder="sk-..." value="${keySet ? "••••••••••••" : ""}">
-        <div class="help">Wordt alleen in je browser (localStorage) bewaard en komt nooit in de code/repo. Aanrader voor GitHub Pages.</div>
+        <div class="help">Wordt alleen in je browser (localStorage) bewaard en komt nooit in de code/repo.</div>
       </div>
-      <div class="field"><label>Model</label>
+      <div class="field"><label>AI-model</label>
         <select id="model"><option value="gpt-4o-mini">gpt-4o-mini (snel & goedkoop)</option><option value="gpt-4o">gpt-4o (slimmer)</option><option value="gpt-4.1-mini">gpt-4.1-mini</option></select>
       </div>
       <div class="toggle"><span>🔊 Geluidseffecten</span><input id="sound" class="switch" type="checkbox" ${state.settings.sound ? "checked" : ""}></div>
       <div class="toggle"><span style="color:var(--red)">🗑️ Alle voortgang wissen</span><button id="reset" class="btn ghost" style="padding:7px 15px">Reset</button></div>
       <div class="row"><button class="btn ghost" id="cancel">Sluiten</button><button class="btn" id="saveS">Opslaan</button></div>`;
     ov.appendChild(m); document.body.appendChild(ov);
+    $("#setNiveau", m).value = state.settings.niveau || "havo";
+    $("#setMethode", m).value = state.settings.methode || "bvj";
     $("#model", m).value = state.settings.model;
     ov.onclick = (e) => { if (e.target === ov) ov.remove(); };
     $("#cancel", m).onclick = () => ov.remove();
-    $("#reset", m).onclick = () => { if (confirm("Weet je zeker dat je alle voortgang (XP, streak, kaarten) wist?")) { state = defaultState(); save(); refreshTopbar(); ov.remove(); go(renderHome); } };
-    $("#saveS", m).onclick = () => { const kv = $("#apiKey", m).value.trim(); if (kv && !/^•+$/.test(kv)) setKey(kv); state.settings.model = $("#model", m).value; state.settings.sound = $("#sound", m).checked; save(); ov.remove(); mascotSay("Opgeslagen! ✅"); };
+    $("#reset", m).onclick = () => { if (confirm("Weet je zeker dat je alle voortgang (XP, streak, kaarten) wist?")) { state = defaultState(); save(); refreshTopbar(); ov.remove(); go(renderSetup, false); } };
+    $("#saveS", m).onclick = () => {
+      const kv = $("#apiKey", m).value.trim(); if (kv && !/^•+$/.test(kv)) setKey(kv);
+      state.settings.niveau = $("#setNiveau", m).value;
+      state.settings.methode = $("#setMethode", m).value;
+      state.settings.model = $("#model", m).value; state.settings.sound = $("#sound", m).checked; save();
+      refreshTopbar(); ov.remove(); mascotSay("Opgeslagen! ✅"); go(renderHome);
+    };
   }
 
   /* ---------- init ---------- */
